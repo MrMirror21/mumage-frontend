@@ -1,14 +1,16 @@
 import { Route, Routes } from 'react-router-dom';
-import Landing from './pages/Landing';
-import Section from './pages/SectionChange';
+import SectionDevide from './pages/SectionChange';
+import Signup from './pages/Signup';
+import Login from './pages/Login';
 
 
 const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/section" element={<Section />} />
+        <Route path="/" element={<SectionDevide />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </>
   );

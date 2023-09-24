@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import Icon from './pages/Icon';
-import SelectBox from './pages/SelectBox';
+import Section from './pages/Section';
+
 
 const App = () => {
   return (
@@ -9,7 +10,7 @@ const App = () => {
         <Route path="/" element={
         <>
           <Icon/>
-          <SelectBox/>
+          <Section/>
         </>
         }
         />

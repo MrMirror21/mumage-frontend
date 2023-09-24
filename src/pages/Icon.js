@@ -3,7 +3,7 @@ import './App.css';
 
 const Icon = () => {
   return (
-    <div id="icon" class="center">뮤미지</div>
+    <div id="icon" className="center">뮤미지</div>
   )
 }
 

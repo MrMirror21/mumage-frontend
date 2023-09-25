@@ -7,7 +7,7 @@ const options = [
     {value : '댄스', label : '댄스'}
   ]
 
-const SelectBox = ({onChange}) => {
+const SelectBox = ({onChange, className}) => {
   const [selectedOption, setSelectedOption] = useState(options[0]);
   
   const handleChange = (option) => {
@@ -17,7 +17,7 @@ const SelectBox = ({onChange}) => {
     }
   }
   return (
-    <div>
+    <div className = {className}>
       <Select id="selectBox"
         value={selectedOption}
         onChange={handleChange}

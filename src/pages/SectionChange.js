@@ -1,61 +1,37 @@
-import {React, useState, useEffect,useRef,Suspense} from 'react'
+import {React, useState, Suspense} from 'react'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
-import Pagination from '../Extra/Pagination';
-import '../SectionChange.css';
 
-import Loading from '../Extra/Loading';
+import styled from 'styled-components'
+import './SectionChange.css';
+
+import Loading from '../components/Features/Loading';
+import ShowFeed from '../components/ShowingFeed/ImageRender';
 
 
 const SectionDevide = () => {
     const [isFollowing, setIsFollowing] = useState(true);
-    const [imgUrl, setImgUrl] = useState([]);
-    const [page, setPage] = useState(1);
 
     const onClickHandler = () => {
         setIsFollowing(!isFollowing);
     }
 
-    const offset = (page - 1) * 10;
-
-    const isRendered = useRef(false);
-    useEffect(() => {
-        if (!isRendered.current) {
-            fetch('https://picsum.photos/v2/list?page=2&limit=100')
-            .then(response => response.json())
-            .then(result => setImgUrl(result));
-        }
-    },[]);
-
-
     return ( 
         <>
             <div>
                 <Header>MUMAGE</Header>
+
                 <LoginSection>
                     <Link className= 'forLink' to='/Login'>Login</Link>
                     <Link className= 'forLink' to='/signup'>Signup</Link>
                 </LoginSection>
-                <Menu onClick={onClickHandler}>
-                    {isFollowing ? <>Following</> : <>Recommend</>}
-                </Menu>
+                
                 <Suspense fallback={<Loading />}>
-                    <Feed>
-                        {imgUrl.slice(offset, offset + 10).map(img => {
-                            return (
-                            <Img src={img.download_url} key={img.id} alt='icon' />
-                            )
-                        })}
-                    </Feed>
+                    <Menu onClick={() => onClickHandler()}>
+                        {isFollowing ? "Following" : "Recommend"}
+                    </Menu>
+                    
+                    <ShowFeed isFollowing={isFollowing} />
                 </Suspense>
-                <footer>
-                    <Pagination
-                    total={imgUrl.length}
-                    limit={10}
-                    page={page}
-                    setPage={setPage}
-                />
-                </footer>
             </div>
         </>
     )
@@ -91,22 +67,7 @@ const LoginSection = styled.div`
     background:#262626
 `
 
-const Img = styled.img`
-    width: 500px;
-    height: 500px;
-    object-fit: cover;
-    border: 1.5px solid #262626;
-    border-radius: 8px;
-    margin-bottom: 2em;
-`
 
-const Feed = styled.div `
-    display: flex;
-    flex-direction:column;
-    align-items:center;
-    padding:5em;
-    margin-left: 6em;
-`
 
 //const TopSection = styled.header`
 //display: flex;

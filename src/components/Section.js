@@ -1,12 +1,12 @@
 import React, {useState} from 'react'
-import StyledSelectBox from './StyledSelectBox'
+import SelectBox from './SelectBox'
 
 const Section = () => {
   const [sectionValue, setSectionValue] = useState('종합');
 
   return (
     <div>
-      <StyledSelectBox onChange = {(value) => setSectionValue(value)} />
+      <SelectBox onChange = {(value) => setSectionValue(value)} />
       <>{sectionValue}</>
     </div>
   )

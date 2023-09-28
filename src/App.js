@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
-import Icon from './pages/Icon';
-import Section from './pages/Section';
+import Landing from './pages/Landing';
+import Explore from './pages/Explore';
 
 const App = () => {
   return (
@@ -8,8 +8,13 @@ const App = () => {
       <Routes>
         <Route path="/" element={
         <>
-          <Icon/>
-          <Section/>
+          <Landing/>
+        </>
+        }
+        />
+        <Route path="/Explore" element={
+        <>
+          <Explore/>
         </>
         }
         />

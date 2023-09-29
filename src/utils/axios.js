@@ -2,11 +2,8 @@ import axios from 'axios'
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
-export const generateImage = (prompt, negative_prompt, setImageURL) => {
-  let data = JSON.stringify({
-    "prompt": `${prompt}`,
-    "negative_prompt": `${negative_prompt}`
-  });
+export const generateImage = (generateOption, setImageURL) => {
+  let data = JSON.stringify(generateOption);
   let config = {
     method: 'post',
     maxBodyLength: Infinity,

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Icon = () => {
   return (
     <IconDiv>
-      <div id="icon" className="center">뮤미지</div>
+      <div>뮤미지</div>
     </IconDiv>
   )
 }
@@ -12,11 +12,7 @@ const Icon = () => {
 export default Icon
 
 const IconDiv = styled.div`
-  .center {
-    text-align : center ;
-  }
-  #icon {
-    border-bottom : 1px solid rgb(47, 47, 47);
-    padding-bottom : 5px;
-  }
+  text-align : center ;
+  border-bottom : 1px solid rgb(47, 47, 47);
+  padding-bottom : 5px;
 `;

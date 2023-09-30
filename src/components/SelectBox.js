@@ -19,7 +19,7 @@ const SelectBox = ({onChange, className}) => {
   }
   return (
     <StyledSelectBox className = {className}>
-      <Select id="selectBox"
+      <Select 
         value={selectedOption}
         onChange={handleChange}
         options={options}

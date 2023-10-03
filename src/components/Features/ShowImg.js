@@ -1,6 +1,25 @@
 import styled from "styled-components";
-const ShowImg = ({imgUrl,imgId}) => {
-    return <Img src={imgUrl} key={imgId} alt='icon' />
+import { useNavigate } from "react-router";
+
+const ShowImg = ({imgUrl,imgId, width, height, authorName, page, isFollowing}) => {
+    const navigate = useNavigate();
+
+    return (
+        <>
+            <Div>{authorName}</Div>
+            <Img 
+                src={imgUrl} 
+                key={imgId} 
+                alt='icon'
+                onClick={() => {navigate(`/imgDetail/${imgId}/${width}/${height}/${authorName}`, {
+                    state: {
+                        pageNum: page,
+                        follow: isFollowing
+                    }
+                })}}
+            />
+        </>
+    )
 }
  
 export default ShowImg;
@@ -11,6 +30,22 @@ const Img = styled.img`
     height: 500px;
     object-fit: cover;
     border: 1.5px solid #262626;
-    border-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
     margin-bottom: 2em;
+    
+&:hover {
+        background: #404040;
+        cursor: pointer;
+    }
+`
+
+const Div = styled.div`
+    width: 500px;
+    background:#262626;
+    color:#FFFFFF;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border: 1.5px solid #262626;
+    text-align:center;
 `

@@ -1,4 +1,5 @@
-import {React, useState, Suspense} from 'react'
+import {React, useState, Suspense,useEffect} from 'react'
+import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 
 import styled from 'styled-components'
@@ -10,27 +11,43 @@ import ShowFeed from '../components/ShowingFeed/ImageRender';
 
 const SectionDevide = () => {
     const [isFollowing, setIsFollowing] = useState(true);
-
+    const [isChanged, setIsChanged] = useState(false);
+    const location = useLocation();
+    
     const onClickHandler = () => {
         setIsFollowing(!isFollowing);
+        setIsChanged(true);
     }
 
+    useEffect(() => {
+        if (location.state != null) {
+            setIsFollowing(location.state.follow);
+        }
+        setIsChanged(false);
+    },[location.state])
+    
     return ( 
         <>
             <div>
-                <Header>MUMAGE</Header>
+                <Sticky>
+                    <Header>MUMAGE</Header>
 
-                <LoginSection>
-                    <Link className= 'forLink' to='/Login'>Login</Link>
-                    <Link className= 'forLink' to='/signup'>Signup</Link>
-                </LoginSection>
+                    <LoginSection>
+                        <Link className= 'forLink' to='/Login'>Login</Link>
+                        <Link className= 'forLink' to='/signup'>Signup</Link>
+                    </LoginSection>
+                </Sticky>
                 
                 <Suspense fallback={<Loading />}>
                     <Menu onClick={() => onClickHandler()}>
                         {isFollowing ? "Following" : "Recommend"}
                     </Menu>
                     
-                    <ShowFeed isFollowing={isFollowing} />
+                    <ShowFeed 
+                        isFollowing={isFollowing} 
+                        pageNum={location.state != null ? location.state.pageNum : null} 
+                        isChanged={isChanged}
+                    />
                 </Suspense>
             </div>
         </>
@@ -57,6 +74,7 @@ const Menu = styled.button`
 const Header = styled.header`
     font-size:50px;
     text-align:center;
+    background: white;
 `
 const LoginSection = styled.div`
     display:flex;
@@ -65,6 +83,11 @@ const LoginSection = styled.div`
     justify-content:right;
     border-radius:15px;
     background:#262626
+`
+
+const Sticky = styled.div `
+    position:sticky;
+    top:0;
 `
 
 

@@ -7,7 +7,7 @@ import Pagination from "./Pagination";
 import ShowImg from "../Features/ShowImg";
 import styled from "styled-components";
 
-const ShowFeed = ({isFollowing}) => {
+const ShowFeed = ({isFollowing, pageNum, isChanged}) => {
     const [url, setUrl] = useState([]);
     const [page, setPage] = useState(1);
     const limit = 5;
@@ -20,15 +20,28 @@ const ShowFeed = ({isFollowing}) => {
     useEffect(() => {
         if (!isRendered.current){
             setUrl(isFollowing ? imgDataFollowing : imgDataRecommend);
+            setPage(1);
         }
-        setPage(1);
-    },[imgDataFollowing, imgDataRecommend, isFollowing])
+        pageNum !== 1 ? setPage(pageNum) : setPage(1);
+        if (isChanged) {
+            setPage(1);
+        }
+    },[imgDataFollowing, imgDataRecommend, isFollowing,pageNum])
     
     return ( 
         <>
             <Feed>
                 {url.slice(offset, offset + limit).map(img => {
-                    return <ShowImg key = {img.id} imgUrl = {img.download_url} imgId = {img.id}/>
+                    return <ShowImg 
+                        key = {img.id} 
+                        imgUrl = {img.download_url} 
+                        imgId = {img.id} 
+                        authorName={img.author}
+                        width={img.width}
+                        height={img.height}
+                        page = {page}
+                        isFollowing = {isFollowing}
+                        />
                 })}
             </Feed>
                     

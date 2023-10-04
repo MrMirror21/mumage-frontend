@@ -1,16 +1,19 @@
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, lazy, useState } from 'react'
 import styled from 'styled-components'
-import { generateImage } from '../utils/axios'
+import { generateImage, searchMusic } from '../utils/axios'
 import Loading from '../components/Loading'
+import SearchBar from '../components/Upload/SearchBar'
 
+const ImagePreview = lazy(() => import('../components/Upload/ImagePreview'))
 
 const Upload = () => {
-  const [imageURL, setImageURL] = useState("")
+  const [imageURL, setImageURL] = useState()
   const [generateOption, setGenerateOption] = useState({
     "prompt" : "",
-    "negative_prompt": "text in the image",
+    "negative_prompt": "text in the image, poor face rendering, awkward hand posture, different number of fingers",
     "samples" : 1,
   })
+  const [searchInput, setSearchInput] = useState("");
 
   const handleRadioClick = (newValue) => {
     setGenerateOption({...generateOption, "samples":newValue})
@@ -18,13 +21,9 @@ const Upload = () => {
 
   return (
     <>
-      <ImageSection>
-        <ImageContainer>
-          <Suspense fallback={<Loading />}>
-            <img src={imageURL} alt="이미지 미리보기" />
-          </Suspense>
-        </ImageContainer>
-      </ImageSection>
+      <Suspense fallback={<Loading />}>
+        <ImagePreview imageURL={imageURL} />
+      </Suspense>
       <ConsoleSection>
         <ConsoleBox>
           <ImageNumberSelector>
@@ -60,26 +59,23 @@ const Upload = () => {
             placeholder='생성할 그림이 무엇인지 입력해주세요.'/>
           <GenerateButton onClick={() => generateImage(generateOption, setImageURL)}>이미지 생성하기</GenerateButton>
         </ConsoleBox>
-      </ConsoleSection> 
+      </ConsoleSection>
+      <SearchSection>
+        <SearchBar
+          width="600px" 
+          height="60px" 
+          placeholder="검색하고 싶은 곡명을 입력해주세요."
+          fontSize="1rem" 
+          value={searchInput} 
+          onChange={setSearchInput}
+          onSubmit={()=>searchMusic(searchInput)}
+        />
+      </SearchSection>
     </>
   )
 }
 
 export default Upload
-const ImageSection = styled.div`
-  display: flex;
-  width: 100vw;
-  justify-content: center;
-`;
-
-const ImageContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 512px;
-  height: 512px;
-  background: #f1f1f1;
-`;
 
 const ConsoleSection = styled.div`
   display: flex;
@@ -119,4 +115,10 @@ const GenerateButton = styled.button`
   font-weight: 600;
   border: none;
   border-radius: 100px;
+`;
+
+const SearchSection = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
 `;

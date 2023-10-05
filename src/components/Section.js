@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import SelectBox from './SelectBox'
 import {FakeDataArr} from '../store/FakeDataArr'
 import styled from 'styled-components';
@@ -8,6 +8,10 @@ const GridContainer = styled.div`
   grid-template-columns: repeat(3, 1fr); 
   gap: 5px; 
   padding: 5px; 
+
+  @media (min-width: 800px) {
+    grid-template-columns: repeat(5, 1fr)
+  }
 `;
 
 const GridItem = styled.div`
@@ -35,11 +39,27 @@ const PageButton = styled(Button)``;
 const Section = () => {
   const [sectionValue, setSectionValue] = useState('종합');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9;
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [itemsPerPage, setItemsPerPage] = useState(15);
 
   const matchedData = FakeDataArr.filter(data => data["장르"] === sectionValue);
   const totalPage = Math.ceil(matchedData.length / itemsPerPage); 
   const displayedData = matchedData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    }
+    window.addEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (windowWidth >= 800) {
+      setItemsPerPage(10);
+    } else {
+      setItemsPerPage(9);
+    }
+  }, [windowWidth]);
 
   const handleUpPage = () => {
     setCurrentPage(currentPage + 1);

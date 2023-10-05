@@ -30,6 +30,8 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const PageButton = styled(Button)``;
+
 const Section = () => {
   const [sectionValue, setSectionValue] = useState('종합');
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,6 +48,22 @@ const Section = () => {
     setCurrentPage(currentPage - 1);
   }
 
+  const handleChangePage = (page) => {
+    setCurrentPage(page);
+  }
+
+  const getPageNumbers = () => {
+    let pages = [];
+    let startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
+    let endPage = Math.min(startPage + 4, totalPage);
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  }
+
   return (
     <div>
       <SelectBoxContainer>
@@ -60,8 +78,17 @@ const Section = () => {
         ))}
       </GridContainer>
       <div>
-      <Button onClick={handleDownPage} disabled={currentPage === 1}>이전</Button>
-        <Button onClick={handleUpPage} disabled={currentPage === totalPage}>다음</Button>
+        <Button onClick={handleDownPage} disabled={currentPage === 1}>&lt;</Button>
+        {getPageNumbers().map(number => (
+          <PageButton
+            key={number}
+            onClick={() => handleChangePage(number)}
+            disabled={currentPage === number}
+          >
+          {number}
+          </PageButton>
+        ))}
+        <Button onClick={handleUpPage} disabled={currentPage === totalPage}>&gt;</Button>
       </div>
     </div>
   )

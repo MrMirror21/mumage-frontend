@@ -14,23 +14,22 @@ const ShowFeed = ({isFollowing, pageNum, isChanged}) => {
     const offset = (page - 1) * limit;
 
     const [imgDataFollowing, imgDataRecommend] = useRecoilValue(getDataSelector);
-
+    
     const isRendered = useRef(false);
-
     useEffect(() => {
         if (!isRendered.current){
             setUrl(isFollowing ? imgDataFollowing : imgDataRecommend);
             setPage(1);
         }
-        pageNum !== 1 ? setPage(pageNum) : setPage(1);
+        pageNum !== null ? setPage(pageNum) : setPage(1);
         if (isChanged) {
-            setPage(1);
-        }
+            setPage(1);  
+        } 
     },[imgDataFollowing, imgDataRecommend, isFollowing,pageNum])
     
     return ( 
         <>
-            <Feed>
+            <Feed className="image">
                 {url.slice(offset, offset + limit).map(img => {
                     return <ShowImg 
                         key = {img.id} 
@@ -45,7 +44,7 @@ const ShowFeed = ({isFollowing, pageNum, isChanged}) => {
                 })}
             </Feed>
                     
-            <footer>
+            <footer className= "pagination">
                 <Pagination 
                     total={url.length} 
                     limit={limit} 
@@ -64,6 +63,5 @@ const Feed = styled.div `
     display: flex;
     flex-direction:column;
     align-items:center;
-    padding:5em;
-    margin-left: 6em;
+    margin-top:5em;
 `

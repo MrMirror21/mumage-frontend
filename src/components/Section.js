@@ -8,10 +8,6 @@ const GridContainer = styled.div`
   grid-template-columns: repeat(3, 1fr); 
   gap: 5px; 
   padding: 5px; 
-
-  @media (min-width: 800px) {
-    grid-template-columns: repeat(5, 1fr)
-  }
 `;
 
 const GridItem = styled.div`
@@ -40,7 +36,8 @@ const Section = () => {
   const [sectionValue, setSectionValue] = useState('종합');
   const [currentPage, setCurrentPage] = useState(1);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [itemsPerPage, setItemsPerPage] = useState(15);
+  const [gridColumns, setGridColumns] = useState(3)
+  const [itemsPerPage, setItemsPerPage] = useState(9);
 
   const matchedData = FakeDataArr.filter(data => data["장르"] === sectionValue);
   const totalPage = Math.ceil(matchedData.length / itemsPerPage); 
@@ -55,9 +52,11 @@ const Section = () => {
 
   useEffect(() => {
     if (windowWidth >= 800) {
+      setGridColumns(5);
       setItemsPerPage(10);
     } else {
-      setItemsPerPage(9);
+      setGridColumns(3);
+      setItemsPerPage(3*3);
     }
   }, [windowWidth]);
 
@@ -67,9 +66,33 @@ const Section = () => {
   const handleDownPage = () => {
     setCurrentPage(currentPage - 1);
   }
-
   const handleChangePage = (page) => {
     setCurrentPage(page);
+  }
+
+  const handle3X3Grid = () => {
+    if (gridColumns !== 3) {
+      setGridColumns(3);
+      setItemsPerPage(3*3);
+    }
+  }
+  const handle4X4Grid = () => {
+    if (gridColumns !== 4) {
+      setGridColumns(4);
+      setItemsPerPage(4*4);
+    }
+  }
+  const handle5X2Grid = () => {
+    if (gridColumns !== 5) {
+      setGridColumns(5);
+      setItemsPerPage(5*2);
+    }
+  }
+  const handle7X3Grid = () => {
+    if (gridColumns !== 7) {
+      setGridColumns(7);
+      setItemsPerPage(7*3);
+    }
   }
 
   const getPageNumbers = () => {
@@ -92,7 +115,11 @@ const Section = () => {
           setCurrentPage(1);
         }} />
       </SelectBoxContainer>
-      <GridContainer>
+      <Button onClick = {handle3X3Grid} style = {{display : windowWidth >= 800 ? 'none' : 'block'}} disabled={gridColumns===3}>3X3</Button>
+      <Button onClick = {handle4X4Grid} style = {{display : windowWidth >= 800 ? 'none' : 'block'}} disabled={gridColumns===4}>4X4</Button>
+      <Button onClick = {handle5X2Grid} style = {{display : windowWidth < 800 ? 'none' : 'block'}} disabled={gridColumns===5}>5X2</Button>
+      <Button onClick = {handle7X3Grid} style = {{display : windowWidth < 800 ? 'none' : 'block'}} disabled={gridColumns===7}>7X3</Button>
+      <GridContainer style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
         {displayedData.map((data, index) => (
           <GridItem key={index}>{data["내용"]}</GridItem>
         ))}

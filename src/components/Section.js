@@ -70,28 +70,10 @@ const Section = () => {
     setCurrentPage(page);
   }
 
-  const handle3X3Grid = () => {
-    if (gridColumns !== 3) {
-      setGridColumns(3);
-      setItemsPerPage(3*3);
-    }
-  }
-  const handle4X4Grid = () => {
-    if (gridColumns !== 4) {
-      setGridColumns(4);
-      setItemsPerPage(4*4);
-    }
-  }
-  const handle5X2Grid = () => {
-    if (gridColumns !== 5) {
-      setGridColumns(5);
-      setItemsPerPage(5*2);
-    }
-  }
-  const handle7X3Grid = () => {
-    if (gridColumns !== 7) {
-      setGridColumns(7);
-      setItemsPerPage(7*3);
+  const handleGridChange = (cols, itemsPerPage) => {
+    if (gridColumns !== cols) {
+      setGridColumns(cols);
+      setItemsPerPage(itemsPerPage);
     }
   }
 
@@ -107,6 +89,11 @@ const Section = () => {
     return pages;
   }
 
+  const isWindowWidthGreaterThan =() => {
+    let width = 800;
+    return windowWidth >= width;
+  }
+
   return (
     <div>
       <SelectBoxContainer>
@@ -115,10 +102,10 @@ const Section = () => {
           setCurrentPage(1);
         }} />
       </SelectBoxContainer>
-      <Button onClick = {handle3X3Grid} style = {{display : windowWidth >= 800 ? 'none' : 'block'}} disabled={gridColumns===3}>3X3</Button>
-      <Button onClick = {handle4X4Grid} style = {{display : windowWidth >= 800 ? 'none' : 'block'}} disabled={gridColumns===4}>4X4</Button>
-      <Button onClick = {handle5X2Grid} style = {{display : windowWidth < 800 ? 'none' : 'block'}} disabled={gridColumns===5}>5X2</Button>
-      <Button onClick = {handle7X3Grid} style = {{display : windowWidth < 800 ? 'none' : 'block'}} disabled={gridColumns===7}>7X3</Button>
+      <Button onClick = {() => handleGridChange(3, 3 * 3)} style = {{display : isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===3}>3X3</Button>
+      <Button onClick = {() => handleGridChange(4, 4 * 4)} style = {{display : isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===4}>4X4</Button>
+      <Button onClick = {() => handleGridChange(5, 5 * 2)} style = {{display : !isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===5}>5X2</Button>
+      <Button onClick = {() => handleGridChange(7, 7 * 3)} style = {{display : !isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===7}>7X3</Button>
       <GridContainer style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
         {displayedData.map((data, index) => (
           <GridItem key={index}>{data["내용"]}</GridItem>

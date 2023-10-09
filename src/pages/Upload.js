@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { generateImage, searchMusic } from '../utils/axios'
 import Loading from '../components/Loading'
 import SearchBar from '../components/Upload/SearchBar'
+import TrackCard from '../components/Upload/TrackCard'
 
 const ImagePreview = lazy(() => import('../components/Upload/ImagePreview'))
 
@@ -14,6 +15,11 @@ const Upload = () => {
     "samples" : 1,
   })
   const [searchInput, setSearchInput] = useState("");
+  const [searchList, setSearchList] = useState("");
+  const [playData, setPlayData] = useState({
+    isPlaying: false,
+    currentlyPlaying: null,
+  });
 
   const handleRadioClick = (newValue) => {
     setGenerateOption({...generateOption, "samples":newValue})
@@ -68,8 +74,12 @@ const Upload = () => {
           fontSize="1rem" 
           value={searchInput} 
           onChange={setSearchInput}
-          onSubmit={()=>searchMusic(searchInput)}
+          onSubmit={()=>searchMusic(searchInput, setSearchList)}
         />
+        
+        {!!searchList[0]? searchList.map((track) => 
+          <TrackCard track={track} playData={playData} setPlayData={setPlayData} /> ) 
+          : undefined}
       </SearchSection>
     </>
   )
@@ -119,6 +129,8 @@ const GenerateButton = styled.button`
 
 const SearchSection = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   margin: 1rem;
 `;

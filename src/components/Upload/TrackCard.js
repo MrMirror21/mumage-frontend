@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ReactComponent as PlayIcon } from "../../assets/play.svg";
 import { ReactComponent as PauseIcon } from "../../assets/pause.svg";
 
-const TrackCard = ({track, playData, setPlayData}) => {
+const TrackCard = ({track, playData, setPlayData, setTrack}) => {
   const audioRef = useRef(null);
 
   const togglePlay = () => {
@@ -18,7 +18,7 @@ const TrackCard = ({track, playData, setPlayData}) => {
   return (
     <>
       <Wrapper>
-        <Card>
+        <Card  onClick={() => setTrack(track)}>
             <Header>
               <AlbumCover src={track.album.images[2].url}/>
             </Header>

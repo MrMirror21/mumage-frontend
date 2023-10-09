@@ -8,7 +8,7 @@ import TrackCard from '../components/Upload/TrackCard'
 const ImagePreview = lazy(() => import('../components/Upload/ImagePreview'))
 
 const Upload = () => {
-  const [imageURL, setImageURL] = useState()
+  const [imageURL, setImageURL] = useState([])
   const [generateOption, setGenerateOption] = useState({
     "prompt" : "",
     "negative_prompt": "text in the image, poor face rendering, awkward hand posture, different number of fingers",
@@ -20,6 +20,7 @@ const Upload = () => {
     isPlaying: false,
     currentlyPlaying: null,
   });
+  const [selectedTrack, setSelectedTrack] = useState();
 
   const handleRadioClick = (newValue) => {
     setGenerateOption({...generateOption, "samples":newValue})
@@ -67,6 +68,7 @@ const Upload = () => {
         </ConsoleBox>
       </ConsoleSection>
       <SearchSection>
+        <div>선택된 음악 : {selectedTrack?.name}</div>
         <SearchBar
           width="600px" 
           height="60px" 
@@ -76,9 +78,8 @@ const Upload = () => {
           onChange={setSearchInput}
           onSubmit={()=>searchMusic(searchInput, setSearchList)}
         />
-        
         {!!searchList[0]? searchList.map((track) => 
-          <TrackCard track={track} playData={playData} setPlayData={setPlayData} /> ) 
+          <TrackCard track={track} playData={playData} setPlayData={setPlayData} setTrack={setSelectedTrack} /> ) 
           : undefined}
       </SearchSection>
     </>

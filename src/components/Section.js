@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import SelectBox from './SelectBox'
 import {FakeDataArr} from '../store/FakeDataArr'
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const GridContainer = styled.div`
   display: grid;
@@ -108,7 +109,9 @@ const Section = () => {
       <Button onClick = {() => handleGridChange(7, 7 * 3)} style = {{display : !isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===7}>7X3</Button>
       <GridContainer style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
         {displayedData.map((data, index) => (
-          <GridItem key={index}>{data["내용"]}</GridItem>
+          <Link to="/Post" key={index}>
+            <GridItem key={index}>{data["내용"]}</GridItem>
+          </Link>
         ))}
       </GridContainer>
       <div>

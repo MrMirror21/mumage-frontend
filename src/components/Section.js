@@ -8,7 +8,8 @@ const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
   gap: 5px; 
-  padding: 5px; 
+  padding: 5px;
+  margin : 16px; 
 `;
 
 const GridItem = styled.div`
@@ -21,17 +22,17 @@ const GridItem = styled.div`
 `;
 
 const Button = styled.button`
-  padding-top : 7px;
-  width: 60px;
-  padding: 8px;
-  border-radius: 15px;
-  background-color: #262626;
-  color: white;
-  align-self: center;
-  cursor: pointer;
+border: none;
+padding: 8px;
+margin: 0;
+background: #262626;
+color: white;
+font-size: 0.5rem;
 `;
 
-const PageButton = styled(Button)``;
+const PageButton = styled(Button)`
+
+`;
 
 const Section = () => {
   const [sectionValue, setSectionValue] = useState('종합');
@@ -103,10 +104,12 @@ const Section = () => {
           setCurrentPage(1);
         }} />
       </SelectBoxContainer>
-      <Button onClick = {() => handleGridChange(3, 3 * 3)} style = {{display : isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===3}>3X3</Button>
-      <Button onClick = {() => handleGridChange(4, 4 * 4)} style = {{display : isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===4}>4X4</Button>
-      <Button onClick = {() => handleGridChange(5, 5 * 2)} style = {{display : !isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===5}>5X2</Button>
-      <Button onClick = {() => handleGridChange(7, 7 * 3)} style = {{display : !isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===7}>7X3</Button>
+      <SelectGridContainer>
+        <Button onClick = {() => handleGridChange(3, 3 * 3)} style = {{display : isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===3}>3X3</Button>
+        <Button onClick = {() => handleGridChange(4, 4 * 4)} style = {{display : isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===4}>4X4</Button>
+        <Button onClick = {() => handleGridChange(5, 5 * 2)} style = {{display : !isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===5}>5X2</Button>
+        <Button onClick = {() => handleGridChange(7, 7 * 3)} style = {{display : !isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===7}>7X3</Button>
+      </SelectGridContainer>
       <GridContainer style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
         {displayedData.map((data, index) => (
           <Link to={`/Post/${data["내용"]}`} key={index}>
@@ -114,19 +117,19 @@ const Section = () => {
           </Link>
         ))}
       </GridContainer>
-      <div>
+      <Pagination>
         <Button onClick={handleDownPage} disabled={currentPage === 1}>&lt;</Button>
-        {getPageNumbers().map(number => (
-          <PageButton
-            key={number}
-            onClick={() => handleChangePage(number)}
-            disabled={currentPage === number}
-          >
-          {number}
-          </PageButton>
-        ))}
+          {getPageNumbers().map(number => (
+            <PageButton
+              key={number}
+              onClick={() => handleChangePage(number)}
+              disabled={currentPage === number}
+            >
+            {number}
+            </PageButton>
+          ))}  
         <Button onClick={handleUpPage} disabled={currentPage === totalPage}>&gt;</Button>
-      </div>
+      </Pagination>
     </div>
   )
 }
@@ -136,5 +139,20 @@ export default Section;
 const SelectBoxContainer = styled.div`
   display: flex;
   justify-content: center; 
-  margin-bottom: 10px;    
+  margin:16px;    
+`;
+
+const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin: 16px;
+`;
+
+const SelectGridContainer= styled.div`
+  display: flex;
+  justify-content: left;
+  gap: 4px;
+  margin: 16px; 
 `;

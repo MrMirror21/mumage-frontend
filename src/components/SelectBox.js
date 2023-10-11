@@ -33,7 +33,7 @@ export default SelectBox;
 
 const StyledSelectBox = styled.div`
   padding-top : 7px;
-  width: 350px;
+  width: 100%;
   padding: 8px;
   border-radius: 15px;
   background-color: #262626;

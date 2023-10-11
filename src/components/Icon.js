@@ -15,4 +15,5 @@ const IconDiv = styled.div`
   text-align : center;
   font-size : 50px;
   padding-bottom : 5px;
+  margin:16px;
 `;

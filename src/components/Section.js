@@ -109,7 +109,7 @@ const Section = () => {
       <Button onClick = {() => handleGridChange(7, 7 * 3)} style = {{display : !isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===7}>7X3</Button>
       <GridContainer style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
         {displayedData.map((data, index) => (
-          <Link to="/Post" key={index}>
+          <Link to={`/Post/${data["내용"]}`} key={index}>
             <GridItem key={index}>{data["내용"]}</GridItem>
           </Link>
         ))}

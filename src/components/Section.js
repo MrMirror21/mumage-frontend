@@ -12,7 +12,7 @@ const GridContainer = styled.div`
   margin : 16px; 
 `;
 
-const GridItem = styled.div`
+export const GridItem = styled.div`
   background-color: white; 
   color : black;
   padding: 50px;
@@ -150,7 +150,7 @@ const Pagination = styled.div`
   margin: 16px;
 `;
 
-const SelectGridContainer= styled.div`
+export const SelectGridContainer= styled.div`
   display: flex;
   justify-content: left;
   gap: 4px;

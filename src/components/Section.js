@@ -12,11 +12,11 @@ const GridContainer = styled.div`
 `;
 
 const GridItem = styled.div`
-  background-color: black; 
-  color: white;
+  background-color: white; 
+  color : black;
   padding: 50px;
   text-align: center;
-  border: 6px solid red;
+  border: 6px solid black;
   aspect-ratio: 1 / 1;
 `;
 
@@ -24,10 +24,10 @@ const Button = styled.button`
   padding-top : 7px;
   width: 60px;
   padding: 8px;
-  border-radius: 12px;
-  background-color: #ffffff;
+  border-radius: 15px;
+  background-color: #262626;
+  color: white;
   align-self: center;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   cursor: pointer;
 `;
 

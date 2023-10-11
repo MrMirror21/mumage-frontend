@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Icon = () => {
   return (
     <IconDiv>
-      <div>뮤미지</div>
+      <div>MUMAGE</div>
     </IconDiv>
   )
 }
@@ -12,7 +12,7 @@ const Icon = () => {
 export default Icon
 
 const IconDiv = styled.div`
-  text-align : center ;
-  border-bottom : 1px solid rgb(47, 47, 47);
+  text-align : center;
+  font-size : 50px;
   padding-bottom : 5px;
 `;

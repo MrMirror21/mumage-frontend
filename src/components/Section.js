@@ -21,7 +21,7 @@ export const GridItem = styled.div`
   aspect-ratio: 1 / 1;
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
 border: none;
 padding: 8px;
 margin: 0;

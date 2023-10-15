@@ -1,23 +1,19 @@
-import { useState, useEffect} from "react";
+import { useState} from "react";
 import styled from "styled-components";
 
-const Pagination = ({total, limit, page, setPage }) => {
+const Pagination = ({total, limit, pageNum, setPage}) => {
     const numPages = Math.ceil(total/limit);
-    const [currentPage, setCurrentPage] = useState(page);
-    const firstNum = currentPage - (currentPage % limit) + 1;
+    const [currentPage, setCurrentPage] = useState(pageNum-1);
+    const firstNum = currentPage - (currentPage % limit) + 1; // 2-> 1, 5 -> 6
     const lastNum = (currentPage - currentPage % limit + limit) < numPages ? currentPage - (currentPage % limit) + limit : numPages;
-
-    useEffect(() => {
-      setCurrentPage(page-1);
-    },[page]);
-
+    
     return ( 
         <>
             <Nav>
-                <Button onClick={() => {setPage(firstNum-1);setCurrentPage(firstNum-2);}} disabled={(page-1)/limit < 1}>
+                <Button onClick={() => {setPage(firstNum-1);setCurrentPage(firstNum-2);}} disabled={(pageNum-1)/limit < 1}>
                   &lt;&lt;
                 </Button>
-                <Button onClick={() => {setPage(page - 1); setCurrentPage(page-2);}} disabled={page ===1}>
+                <Button onClick={() => {setPage(pageNum - 1); setCurrentPage(pageNum-2);}} disabled={pageNum ===1}>
                     &lt;
                 </Button>
                 {Array(lastNum - firstNum+1)
@@ -26,12 +22,12 @@ const Pagination = ({total, limit, page, setPage }) => {
                     <Button
                         key={i}
                         onClick={() => setPage(firstNum + i)}
-                        aria-current={page=== firstNum + i ? "page" : null}
+                        aria-current={pageNum=== firstNum + i ? "page" : null}
                     >
                         {firstNum + i}
                     </Button>
                 ))}
-                <Button onClick={() => {setPage(page + 1); setCurrentPage(page);}} disabled = {page === numPages}>
+                <Button onClick={() => {setPage(pageNum + 1); setCurrentPage(pageNum);}} disabled = {pageNum === numPages}>
                     &gt;
                 </Button>
                 <Button onClick={() => {setPage(lastNum+1); setCurrentPage(lastNum);}} disabled={lastNum===numPages}>

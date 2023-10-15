@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 
-const ShowImg = ({imgUrl,imgId, width, height, authorName, page, isFollowing}) => {
+const ShowImg = ({imgUrl,imgId, width, height, authorName}) => {
     const navigate = useNavigate();
 
     return (
@@ -11,12 +11,7 @@ const ShowImg = ({imgUrl,imgId, width, height, authorName, page, isFollowing}) =
                 src={imgUrl} 
                 key={imgId} 
                 alt='icon'
-                onClick={() => {navigate(`/imgDetail/${imgId}/${width}/${height}/${authorName}`, {
-                    state: {
-                        pageNum: page,
-                        follow: isFollowing
-                    }
-                })}}
+                onClick={() => {navigate(`/imgDetail/${imgId}/${width}/${height}/${authorName}`)}}
             />
         </>
     )

@@ -1,16 +1,17 @@
 import { atom, selector } from "recoil";
 
-export const data1 = atom({
-    key: 'imgDataFollowing',
-    default: [],
+export const page = atom({
+    key : "pageNumState",
+    default : 1,
 });
 
-export const data2 = atom({
-    key: 'imgDataRecommend',
-    default: [],
-})
+export const isfollowing = atom({
+    key : "isfollowing",
+    default : true,
+});
 
-const getDataSelector = selector({
+
+export const getDataSelector = selector({
     key: 'imgData/get',
     get: async ({get}) => {
         const dataFollowing = await(await fetch('https://picsum.photos/v2/list?page=1&limit=100')).json();
@@ -19,4 +20,3 @@ const getDataSelector = selector({
     }
 })
 
-export default getDataSelector;

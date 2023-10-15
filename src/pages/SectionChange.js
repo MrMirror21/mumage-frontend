@@ -1,6 +1,6 @@
-import {React, useState, Suspense,useEffect, useReducer} from 'react'
-import { useLocation } from 'react-router-dom';
+import {React,Suspense, useReducer} from 'react'
 import { Link } from 'react-router-dom'
+import { useRecoilState } from 'recoil';
 
 import Joyride, { ACTIONS,STATUS,EVENTS } from 'react-joyride';
 
@@ -9,24 +9,17 @@ import './SectionChange.css';
 
 import Loading from '../components/Features/Loading';
 import ShowFeed from '../components/ShowingFeed/ImageRender';
-
+import { isfollowing, page} from '../utils/FetchDataRecoil';
 
 const SectionDevide = () => {
-    const [isFollowing, setIsFollowing] = useState(true);
-    const [isChanged, setIsChanged] = useState(false);
-    const location = useLocation();
+    const [isFollowing, setIsFollowing] = useRecoilState(isfollowing);
+    const [pageNum, setPage] = useRecoilState(page);
+
     
     const onClickHandler = () => {
         setIsFollowing(!isFollowing);
-        setIsChanged(true);
+        setPage(1);
     }
-
-    useEffect(() => {
-        if (location.state != null) {
-            setIsFollowing(location.state.follow);
-        }
-        setIsChanged(false);
-    },[location.state])
 
     const [tourState, dispatch] = useReducer(reducer, INITIAL_STATE);
     const callback = (data) => {
@@ -90,11 +83,7 @@ const SectionDevide = () => {
                     {isFollowing ? "Following" : "Recommend"}
                 </Menu>
                 <Suspense fallback={<Loading />}>  
-                    <ShowFeed
-                        isFollowing={isFollowing} 
-                        pageNum={location.state != null ? location.state.pageNum : null} 
-                        isChanged={isChanged}
-                    />
+                    <ShowFeed/>
                 </Suspense>
             </div>
         </>

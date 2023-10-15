@@ -1,12 +1,11 @@
 
-import { useNavigate, useParams, useLocation } from "react-router";
+import { useNavigate, useParams} from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const PageDetail = () => {
     const params = useParams();
     const navigate = useNavigate();
-    const location = useLocation();
 
     return ( 
         <>
@@ -17,11 +16,7 @@ const PageDetail = () => {
                     <Link className= 'forLink' to='/Login'>Login</Link>
                     <Link className= 'forLink' to='/signup'>Signup</Link>
                 </LoginSection>
-                <Button onClick={() => {navigate('/',{
-                    state: {
-                        pageNum: location.state.pageNum,
-                        follow: location.state.follow,
-                    }})}}
+                <Button onClick={() => {navigate('/')}}
                 >
                     &lt;&lt;
                 </Button>

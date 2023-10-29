@@ -1,6 +1,8 @@
-import React, {useState} from 'react'
+import React from 'react'
 import Select from 'react-select';
 import styled from 'styled-components';
+import { selectBoxValueState } from '../utils/DataRecoilState';
+import {useRecoilState} from 'recoil';
 
 const options = [
     {value : '종합', label : '종합'},
@@ -9,8 +11,7 @@ const options = [
   ]
 
 const SelectBox = ({onChange, className}) => {
-  const [selectedOption, setSelectedOption] = useState(options[0]);
-  
+  const [selectedOption, setSelectedOption] = useRecoilState(selectBoxValueState);
   const handleChange = (option) => {
     setSelectedOption(option);
     if (typeof onChange === 'function') {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {useParams} from 'react-router-dom';
+import {useParams, useLocation} from 'react-router-dom';
 import Icon from '../components/Icon';
 import {GridItem, Button} from '../components/Section';
 import styled from 'styled-components';
@@ -8,11 +8,20 @@ import {useNavigate} from 'react-router-dom';
 const Post = () => {
   const {content} = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const currentPage = location.state?.currentPage; 
+  const sectionValue = location.state?.sectionValue;
+
+  const goBackWithState = () => {
+    navigate(-1, {state : {currentPage, sectionValue}});
+  }
+
   return (
 
     <>
       <Icon/>
-      <Button onClick={() => navigate(-1)}>&lt;&lt;</Button>
+      <Button onClick={goBackWithState}>&lt;&lt;</Button>
       <SelectGridContainer>
         <GridItem>{content}</GridItem>
       </SelectGridContainer>

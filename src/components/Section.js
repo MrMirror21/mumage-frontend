@@ -3,6 +3,8 @@ import SelectBox from './SelectBox'
 import {FakeDataArr} from '../store/FakeDataArr'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { currentPageState, sectionValueState } from '../utils/DataRecoilState';
+import {useRecoilState} from 'recoil';
 
 const GridContainer = styled.div`
   display: grid;
@@ -35,8 +37,8 @@ const PageButton = styled(Button)`
 `;
 
 const Section = () => {
-  const [sectionValue, setSectionValue] = useState('종합');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [sectionValue, setSectionValue] = useRecoilState(sectionValueState);
+  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [gridColumns, setGridColumns] = useState(3)
   const [itemsPerPage, setItemsPerPage] = useState(9);

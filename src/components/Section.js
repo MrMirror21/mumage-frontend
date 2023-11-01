@@ -3,7 +3,7 @@ import SelectBox from './SelectBox'
 import {FakeDataArr} from '../store/FakeDataArr'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { currentPageState, sectionValueState } from '../utils/DataRecoilState';
+import { currentPageState, sectionValueState, orderState } from '../utils/DataRecoilState';
 import {useRecoilState} from 'recoil';
 
 const GridContainer = styled.div`
@@ -39,13 +39,20 @@ const PageButton = styled(Button)`
 const Section = () => {
   const [sectionValue, setSectionValue] = useRecoilState(sectionValueState);
   const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
+  const [order, setOrder] = useRecoilState(orderState);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [gridColumns, setGridColumns] = useState(3)
   const [itemsPerPage, setItemsPerPage] = useState(9);
 
   const matchedData = FakeDataArr.filter(data => data["장르"] === sectionValue);
-  const totalPage = Math.ceil(matchedData.length / itemsPerPage); 
-  const displayedData = matchedData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const sortedData = matchedData.sort((a, b) => {
+    if (order == 'likes') {
+      return b["좋아요"] - a["좋아요"];
+    }
+    return 0;
+  })
+  const totalPage = Math.ceil(sortedData.length / itemsPerPage); 
+  const displayedData = sortedData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   useEffect(() => {
     const handleResize = () => {
@@ -106,6 +113,10 @@ const Section = () => {
           setCurrentPage(1);
         }} />
       </SelectBoxContainer>
+      <SelectOrderContainer>
+        <Button onClick = {() => setOrder("default")}>최신</Button>
+        <Button onClick = {() => setOrder("likes")}>트렌딩</Button>
+      </SelectOrderContainer>
       <SelectGridContainer>
         <Button onClick = {() => handleGridChange(3, 3 * 3)} style = {{display : isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===3}>3X3</Button>
         <Button onClick = {() => handleGridChange(4, 4 * 4)} style = {{display : isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===4}>4X4</Button>
@@ -153,6 +164,13 @@ const Pagination = styled.div`
 `;
 
 export const SelectGridContainer= styled.div`
+  display: flex;
+  justify-content: left;
+  gap: 4px;
+  margin: 16px; 
+`;
+
+export const SelectOrderContainer= styled.div`
   display: flex;
   justify-content: left;
   gap: 4px;

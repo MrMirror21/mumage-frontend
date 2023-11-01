@@ -14,3 +14,8 @@ export const selectBoxValueState = atom({
   key: 'selectBoxValueState',
   default: '종합',
 })
+
+export const orderState = atom({
+  key: 'orderState',
+  default: 'default',
+})

@@ -12,9 +12,10 @@ const Post = () => {
 
   const currentPage = location.state?.currentPage; 
   const sectionValue = location.state?.sectionValue;
+  const order = location.state?.order;
 
   const goBackWithState = () => {
-    navigate(-1, {state : {currentPage, sectionValue}});
+    navigate(-1, {state : {currentPage, sectionValue, order}});
   }
 
   return (

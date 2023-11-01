@@ -15,12 +15,15 @@ const GridContainer = styled.div`
 `;
 
 export const GridItem = styled.div`
-  background-color: white; 
-  color : black;
-  padding: 50px;
-  text-align: center;
   border: 6px solid black;
   aspect-ratio: 1 / 1;
+  position : relative;
+  img {
+    position : absolute;
+    width : 100%;
+    height : 100%,
+    object-fit : cover;
+  }
 `;
 
 export const Button = styled.button`
@@ -126,7 +129,7 @@ const Section = () => {
       <GridContainer style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
         {displayedData.map((data, index) => (
           <Link to={`/Post/${data["내용"]}`} key={index}>
-            <GridItem key={index}>{data["내용"]}</GridItem>
+            <GridItem key={index}><img src={data["url"]}/></GridItem>
           </Link>
         ))}
       </GridContainer>

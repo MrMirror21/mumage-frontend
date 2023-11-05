@@ -128,7 +128,7 @@ const Section = () => {
       </SelectGridContainer>
       <GridContainer style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
         {displayedData.map((data, index) => (
-          <Link to={`/Post/${data["내용"]}`} key={index}>
+          <Link to={`/Post/${data["id"]}`} key={index}>
             <GridItem key={index}><img src={data["url"]}/></GridItem>
           </Link>
         ))}

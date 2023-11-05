@@ -146,6 +146,7 @@ const Section = () => {
           ))}  
         <Button onClick={handleUpPage} disabled={currentPage === totalPage}>&gt;</Button>
       </Pagination>
+      <Button><Link to='/ContactUs' style={{ color: 'white', textDecoration: 'none' }}>개발자에게 문의하기</Link></Button>
     </div>
   )
 }

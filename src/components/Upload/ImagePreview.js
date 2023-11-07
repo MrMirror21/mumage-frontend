@@ -6,7 +6,7 @@ const ImagePreview = ({imageURL}) => {
   <>
     <ImageSection>
       <ImageContainer>
-        {imageURL.map((image) => <img src={image} alt="이미지 미리보기" />)}
+        {imageURL.map((image) => <img src={`data:image/png;base64,${image}`} alt="이미지 미리보기" />)}
       </ImageContainer>
     </ImageSection>
   </>

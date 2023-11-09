@@ -1,13 +1,15 @@
 import React from 'react';
 import { useForm, ValidationError } from '@formspree/react';
+import './MailSending.css';
+
 function MailSending() {
     const [state, handleSubmit] = useForm("xwkdzzrk");
     if (state.succeeded) {
-        return <p>Thanks for joining!</p>;
+        return <p>Thanks for your opinion!</p>;
     }
     return (
         <form onSubmit={handleSubmit}>
-        <label htmlFor="email">
+        <label htmlFor="email" className="name-label">
           Email Address
         </label>
         <input
@@ -20,6 +22,9 @@ function MailSending() {
           field="email"
           errors={state.errors}
         />
+        <label htmlFor="email" className="name-label">
+          Your Opinion
+        </label>
         <textarea
           id="message"
           name="message"
@@ -28,6 +33,7 @@ function MailSending() {
           prefix="Message" 
           field="message"
           errors={state.errors}
+          className="validation-error"
         />
         <button type="submit" disabled={state.submitting}>
           Submit
@@ -37,4 +43,3 @@ function MailSending() {
 }
 
 export default MailSending;
-

@@ -1,0 +1,35 @@
+.name-label {
+    color: white;
+  }
+
+form {
+    max-width: 80%;
+    margin: 50px auto;
+    padding: 20px;
+    background: #000000;
+    border-radius: 8px;
+  }
+  
+label {
+  font-size: 16px;
+  color: #000000;
+}
+  
+input[type="email"], textarea {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+  }
+  
+textarea {
+  min-height: 150px;
+}
+  
+button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: black;
+  cursor: pointer;
+}

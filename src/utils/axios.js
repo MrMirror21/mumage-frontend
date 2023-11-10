@@ -47,6 +47,16 @@ export const searchMusic = (searchInput, setSearchList) => {
   });
 }
 
+export const registerUser = (userInfo) => {
+  alert("회원가입이 완료되었습니다.")
+  window.location.href="/signin"
+}
+
+export const login = () => {
+  alert("로그인이 완료되었습니다.")
+  window.location.href="/upload"
+}
+
 const item = {
   "album": {
       "album_type": "album",

@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useForm, ValidationError } from '@formspree/react';
 import './MailSending.css';
 
 function MailSending() {
     const [state, handleSubmit] = useForm("xwkdzzrk");
-    if (state.succeeded) {
-        return <p>Thanks for your opinion!</p>;
-    }
+    useEffect(() => {
+      if (state.succeeded) {
+          alert("Thanks for your opinion!");
+      }
+    }, [state.succeeded]); 
+
     return (
         <form onSubmit={handleSubmit}>
         <label htmlFor="email" className="name-label">

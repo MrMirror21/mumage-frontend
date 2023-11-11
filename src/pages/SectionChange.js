@@ -1,6 +1,6 @@
 import {React,Suspense, useReducer} from 'react'
 import { Link } from 'react-router-dom'
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import Joyride, { ACTIONS,STATUS,EVENTS } from 'react-joyride';
 
@@ -13,7 +13,7 @@ import { isfollowing, page} from '../utils/FetchDataRecoil';
 
 const SectionDevide = () => {
     const [isFollowing, setIsFollowing] = useRecoilState(isfollowing);
-    const [pageNum, setPage] = useRecoilState(page);
+    const setPage = useSetRecoilState(page);
 
     
     const onClickHandler = () => {
@@ -74,6 +74,7 @@ const SectionDevide = () => {
                 <Sticky>
                 <Header className="title">MUMAGE</Header>
                 <LoginSection>
+                    <Link className= 'forLink' to ='/myPage'>myPage</Link>
                     <Link className= 'forLink' to='/Login'>Login</Link>
                     <Link className= 'forLink' to='/signup'>Signup</Link>
                 </LoginSection>

@@ -1,14 +1,28 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useForm, ValidationError } from '@formspree/react';
 import './MailSending.css';
 
 function MailSending() {
-    const [state, handleSubmit] = useForm("xwkdzzrk");
+    const [state, handleSubmit, reset] = useForm("xwkdzzrk");
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+
     useEffect(() => {
       if (state.succeeded) {
           alert("Thanks for your opinion!");
+          setMessage("");
+          setEmail("");
+          reset();
       }
-    }, [state.succeeded]); 
+    }, [state.succeeded], reset); 
+
+    const handleEmailChange = (e) => {
+      setEmail(e.target.value);
+    }
+
+    const handleMessageChange = (e) => {
+      setMessage(e.target.value);
+    }
 
     return (
         <form onSubmit={handleSubmit}>
@@ -19,6 +33,8 @@ function MailSending() {
           id="email"
           type="email" 
           name="email"
+          value={email}
+          onChange={handleEmailChange}
         />
         <ValidationError 
           prefix="Email" 
@@ -31,6 +47,8 @@ function MailSending() {
         <textarea
           id="message"
           name="message"
+          value={message}
+          onChange={handleMessageChange}
         />
         <ValidationError 
           prefix="Message" 

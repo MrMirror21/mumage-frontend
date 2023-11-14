@@ -1,16 +1,36 @@
+import { GiHamburgerMenu } from 'react-icons/gi';
+
+//import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { getSavedProfileImage } from '../../utils/FetchDataRecoil';
+
 import styled from "styled-components";
 import FavoriteGenre from "../Features/genre";
-const Profile = () => {
+import MyMenu from './myMenu';
+import EditProfile from '../../pages/MyPage/EditProfile';
+
+const Profile = ({ width }) => {
+    const navigate = useNavigate();
+
+    const [isSideOpen, setIsSideOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const imgSrc = useRecoilValue(getSavedProfileImage);
+    const defaultImg = "https://img.freepik.com/premium-vector/male-avatar-icon-unknown-anonymous-person-default-avatar-profile-icon-social-media-user-business-man-man-profile-silhouette-isolated-white-background-vector-illustration_735449-120.jpg?w=900";
     //user에 대한 정보를 여기서 받아와서 다 해결
     return (
         <Row>
             <div>
                 <div style={{ marginBottom: "10px" }}>User's Id</div>
-                <ProfilePic src="https://th.bing.com/th/id/OIP.Nen6j3vBZdl8g8kzNfoEHQAAAA?pid=ImgDet&rs=1" />
+                {imgSrc ? <ProfileImg src={imgSrc} alt="profileImg" />
+                    : <ProfileImgD src={defaultImg} alt="profileImg" />}
+
+
                 <div>UserName</div>
             </div>
             <div>
-                MUMAGE
+                <MainIcon onClick={() => navigate('/')}>MUMAGE</MainIcon>
                 <div>
                     <Row2>
                         <div>
@@ -30,25 +50,24 @@ const Profile = () => {
                 <FavoriteGenre />
             </div>
             <div>
-                <MenuIcon src="https://th.bing.com/th/id/OIP.ES8Hv-V7VohDMqblFnbpagHaHa?w=181&h=181&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="menu" />
+                <GiHamburgerMenu style={{ width: "2em", height: "2em" }} onClick={() => setIsSideOpen(!isSideOpen)} />
             </div>
+            {isSideOpen ? <MyMenu setIsModalOpen={setIsModalOpen} setIsSideOpen={setIsSideOpen} width={width} /> : null}
+            <EditProfile modalIsOpen={isModalOpen} setModalIsOpen={setIsModalOpen} setIsSideOpen={setIsSideOpen} isSideOpen={isSideOpen} />
+
         </Row>
     );
 }
 
 export default Profile;
 
-const ProfilePic = styled.img`
-    border-radius: 20px;
-    width: 4em;
-    height: 4em;
-    margin-left:auto;
-    margin-right:auto;
-`
-const MenuIcon = styled.img`
-    width: 1.7em;
-    height: 1.5em;
-    
+
+const MainIcon = styled.div`
+    width: auto;
+    border: 1.5px solid #262626;
+    border-radius: 2em;
+    background: #262626;
+    color: #FFF;
 `
 
 const Row = styled.nav`
@@ -57,6 +76,8 @@ const Row = styled.nav`
     grid-gap: 20px;
     text-align: center;
     margin-top: 20px;
+    
+    
 `
 const Row2 = styled.div`
     display: grid;
@@ -65,4 +86,14 @@ const Row2 = styled.div`
     margin-top: 25px;
 `
 
+const ProfileImg = styled.img`
+    border-radius: 10em;
+    width: 4em;
+    height: 4em;
+`
+const ProfileImgD = styled.img`
+    border-radius:1em;
+    width: 5em;
+    height: 3em;
+`
 //border: 1.5px solid #262626;

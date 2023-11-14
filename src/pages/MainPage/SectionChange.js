@@ -1,21 +1,21 @@
-import {React,Suspense, useReducer} from 'react'
+import { React, Suspense, useReducer } from 'react'
 import { Link } from 'react-router-dom'
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
-import Joyride, { ACTIONS,STATUS,EVENTS } from 'react-joyride';
+import Joyride, { ACTIONS, STATUS, EVENTS } from 'react-joyride';
 
 import styled from 'styled-components'
 import './SectionChange.css';
 
-import Loading from '../components/Features/Loading';
-import ShowFeed from '../components/ShowingFeed/ImageRender';
-import { isfollowing, page} from '../utils/FetchDataRecoil';
+import Loading from '../../components/Features/Loading';
+import ShowFeed from '../../components/ShowingFeed/ImageRender';
+import { isfollowing, page } from '../../utils/FetchDataRecoil';
 
 const SectionDevide = () => {
     const [isFollowing, setIsFollowing] = useRecoilState(isfollowing);
     const setPage = useSetRecoilState(page);
 
-    
+
     const onClickHandler = () => {
         setIsFollowing(!isFollowing);
         setPage(1);
@@ -23,9 +23,9 @@ const SectionDevide = () => {
 
     const [tourState, dispatch] = useReducer(reducer, INITIAL_STATE);
     const callback = (data) => {
-        const {action, index, type, status} = data;
-        if (action === ACTIONS.CLOSE || (status === STATUS.SKIPPED && tourState.run)|| status === STATUS.FINISHED) {
-            dispatch({type:"STOP"});
+        const { action, index, type, status } = data;
+        if (action === ACTIONS.CLOSE || (status === STATUS.SKIPPED && tourState.run) || status === STATUS.FINISHED) {
+            dispatch({ type: "STOP" });
         } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
             dispatch({
                 type: "NEXT_OR_PREV",
@@ -34,27 +34,27 @@ const SectionDevide = () => {
         }
     };
     const startTour = () => {
-        dispatch({ type: "RESTART"});
+        dispatch({ type: "RESTART" });
     };
 
-    return ( 
+    return (
         <>
             <button onClick={startTour}>Start Tour</button>
-            <Joyride 
+            <Joyride
                 styles={{
                     options: {
                         arrowColor: "#262626",
                         backgroundColor: "#262626",
-                        primaryColor:"#FFF",
-                        textColor:"#FFFFFF",
+                        primaryColor: "#FFF",
+                        textColor: "#FFFFFF",
                     },
                     tooltipContainer: {
                         textAlign: "center",
                     },
-                      buttonNext: {
+                    buttonNext: {
                         backgroundColor: "#404040"
                     },
-                      buttonBack: {
+                    buttonBack: {
                         marginRight: 10
                     }
                 }}
@@ -68,29 +68,29 @@ const SectionDevide = () => {
                     next: "next",
                     skip: "skip",
                 }}
-                
+
             />
             <div>
                 <Sticky>
-                <Header className="title">MUMAGE</Header>
-                <LoginSection>
-                    <Link className= 'forLink' to ='/myPage'>myPage</Link>
-                    <Link className= 'forLink' to='/Login'>Login</Link>
-                    <Link className= 'forLink' to='/signup'>Signup</Link>
-                </LoginSection>
-                
+                    <Header className="title">MUMAGE</Header>
+                    <LoginSection>
+                        <Link className='forLink' to='/myPage'>myPage</Link>
+                        <Link className='forLink' to='/Login'>Login</Link>
+                        <Link className='forLink' to='/signup'>Signup</Link>
+                    </LoginSection>
+
                 </Sticky>
                 <Menu className="following" onClick={() => onClickHandler()}>
                     {isFollowing ? "Following" : "Recommend"}
                 </Menu>
-                <Suspense fallback={<Loading />}>  
-                    <ShowFeed/>
+                <Suspense fallback={<Loading />}>
+                    <ShowFeed />
                 </Suspense>
             </div>
         </>
     )
 }
- 
+
 export default SectionDevide;
 
 const steps = [
@@ -116,17 +116,17 @@ const steps = [
 const reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case "START":
-            return {...state, stepIndex:0 };
+            return { ...state, stepIndex: 0 };
         case "RESET":
-            return {...state, stepIndex:0};
+            return { ...state, stepIndex: 0 };
         case "STOP":
-            return {...state, run: false};
+            return { ...state, run: false };
         case "NEXT_OR_PREV":
-            return {...state, ...action.payload};
+            return { ...state, ...action.payload };
         case "RESTART":
             return {
                 ...state,
-                stepIndex:0,
+                stepIndex: 0,
                 run: true,
                 loading: false,
                 key: new Date()
@@ -176,7 +176,7 @@ const LoginSection = styled.div`
     background:#262626
 `
 
-const Sticky = styled.div `
+const Sticky = styled.div`
     position:sticky;
     top:0;
 `

@@ -1,10 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
-import SectionDevide from './pages/SectionChange';
+import SectionDevide from './pages/MainPage/SectionChange';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import PageDetail from './pages/PageDetail';
-import MyPage from './pages/MyPage';
+import PageDetail from './pages/MainPage/PageDetail';
+import MyPage from './pages/MyPage/MyPage';
+import EditProfile from './pages/MyPage/EditProfile';
 
 const App = () => {
   return (

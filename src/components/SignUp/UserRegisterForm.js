@@ -24,7 +24,7 @@ const UserRegisterForm = ({userInfo, setUserInfo}) => {
           <InputContainer>
             <Input
               value={userInfo.userName}
-              onChange={(e) => setUserInfo({...userInfo, "userName" : e.currentTarget.value})}
+              onChange={(e) => setUserInfo({...userInfo, "nickname" : e.currentTarget.value})}
               placeholder="닉네임을 입력해주세요."
               required
             />
@@ -35,7 +35,7 @@ const UserRegisterForm = ({userInfo, setUserInfo}) => {
           <InputContainer>
             <Input
               value={userInfo.userId}
-              onChange={(e) => setUserInfo({...userInfo, "userId" : e.currentTarget.value})}
+              onChange={(e) => setUserInfo({...userInfo, "loginId" : e.currentTarget.value})}
               placeholder="아이디를 입력해주세요."
               required
             />
@@ -47,7 +47,7 @@ const UserRegisterForm = ({userInfo, setUserInfo}) => {
             <Input
               type='password'
               value={userInfo.userPW}
-              onChange={(e) => setUserInfo({...userInfo, "userPW" : e.currentTarget.value})}
+              onChange={(e) => setUserInfo({...userInfo, "password" : e.currentTarget.value})}
               placeholder="비밀번호를 입력해주세요."
               required
             />

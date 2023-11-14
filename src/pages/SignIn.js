@@ -5,8 +5,8 @@ import { login } from '../utils/axios'
 
 const SignIn = () => {
   const [loginInfo, setLoginInfo] = useState({
-    "userId" : "",
-    "userPW" : "",
+    "loginId" : "",
+    "password" : "",
   })
   return (
     <>

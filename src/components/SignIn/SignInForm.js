@@ -12,7 +12,7 @@ const SignInForm = ({ userInfo, setUserInfo, onSubmitHandler }) => {
             <IdInput
               type="id"
               value={userInfo.userId}
-              onChange={(e) => setUserInfo({...userInfo, "userId" : e.currentTarget.value})}
+              onChange={(e) => setUserInfo({...userInfo, "loginId" : e.currentTarget.value})}
               placeholder="아이디"
               required
             />
@@ -21,7 +21,7 @@ const SignInForm = ({ userInfo, setUserInfo, onSubmitHandler }) => {
             <PasswordInput
               type="password"
               value={userInfo.userPW}
-              onChange={(e) => setUserInfo({...userInfo, "userPW" : e.currentTarget.value})}
+              onChange={(e) => setUserInfo({...userInfo, "password" : e.currentTarget.value})}
               placeholder="비밀번호"
               required
             />

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useForm, ValidationError } from '@formspree/react';
-import './MailSending.css';
+import '../styles/MailSending.css';
 
 function MailSending() {
     const [state, handleSubmit, reset] = useForm("xwkdzzrk");

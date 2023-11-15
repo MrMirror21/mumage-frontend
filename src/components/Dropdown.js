@@ -9,7 +9,8 @@ const Dropdown = () => {
         <div className="dropdown">
             <button><FontAwesomeIcon icon={faBars}/></button>
             <div className="dropdownMenu">
-                <Link to='/ContactUs'>개발자에게 문의하기</Link>
+                <Link to='/Explore'>Explore</Link>
+                <Link to='/ContactUs'>ContactUs</Link>
             </div>
         </div>
     );

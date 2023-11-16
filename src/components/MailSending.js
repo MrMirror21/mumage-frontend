@@ -1,15 +1,31 @@
 import React, {useEffect, useState} from 'react';
 import { useForm, ValidationError } from '@formspree/react';
 import '../styles/MailSending.css';
+import './Modal.css';
 
-function MailSending() {
+const Modal= ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div id="modalContainer">
+      <div id="modalContent">
+        <h2>Thanks for your opinion!</h2>
+        <p>Your email has been successfully sent.<br></br>Your opinion will greatly help us improve our services.</p>
+        <button onClick={onClose}>Close</button>
+      </div>
+    </div>
+  );
+}
+
+const MailSending = () => {
     const [state, handleSubmit, reset] = useForm("xwkdzzrk");
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
+    const [isModalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
       if (state.succeeded) {
-          alert("Thanks for your opinion!");
+          setModalOpen(true);
           setMessage("");
           setEmail("");
           reset();
@@ -56,9 +72,10 @@ function MailSending() {
           errors={state.errors}
           className="validation-error"
         />
-        <button type="submit" disabled={state.submitting}>
-          Submit
-        </button>
+        <div>
+        <button type="submit" disabled={state.submitting}>Submit</button>
+        <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
+      </div>
       </form>
     );
 }

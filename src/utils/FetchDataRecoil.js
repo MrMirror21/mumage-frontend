@@ -10,6 +10,19 @@ export const isfollowing = atom({
     default: true,
 });
 
+export const first = atom({
+    key: "first/favorite",
+    default: "",
+})
+
+export const second = atom({
+    key: "second/favorite",
+    default: "",
+})
+export const third = atom({
+    key: "third/favorite",
+    default: "",
+})
 
 export const getDataSelector = selector({
     key: 'imgData/get',
@@ -20,8 +33,25 @@ export const getDataSelector = selector({
     }
 })
 
+export const getFavoriteGenre = selector({
+    key: 'favGenres',
+    get: ({ get }) => {
+        return [get(first), get(second), get(third)]
+    },
+    set: ({ set }, newGenres) => {
+        set(first, newGenres[0]);
+        set(second, newGenres[1]);
+        set(third, newGenres[2]);
+    }
+})
+
 export const getSavedProfileImage = atom({
     key: "UserProfileImage",
     default: "",
 });
 
+export const getSavedFileImage = atom({
+    key: "UploadedFile",
+    default: "",
+}
+)

@@ -47,7 +47,10 @@ const Profile = ({ width }) => {
                         </div>
                     </Row2>
                 </div>
-                <FavoriteGenre />
+                <div>
+                    <FavoriteGenre />
+                </div>
+
             </div>
             <div>
                 <GiHamburgerMenu style={{ width: "2em", height: "2em" }} onClick={() => setIsSideOpen(!isSideOpen)} />

@@ -1,26 +1,21 @@
-import { useState } from "react";
 import styled from "styled-components";
+import { useRecoilValue } from 'recoil';
+import { getFavoriteGenre } from "../../utils/FetchDataRecoil";
+import { useEffect } from "react";
 
 const FavoriteGenre = () => {
-    const [genreList, setGenreList] = useState([
-        {
-            "genre": "#Rock"
-        },
-        {
-            "genre": "#HipHop"
-        },
-        {
-            "genre": "#RnB"
-        },
-    ]);
+
+    const genres = useRecoilValue(getFavoriteGenre);
+    useEffect(() => {
+        console.log(genres);
+    }, [genres]);
+    const display = (genres[0] === "" || genres[0] === " ") ? <Nothing>Write your Favorite Genres!</Nothing> : <Genre>
+        {genres.map((g, i) => (
+            <Ggenre key={i}>#{g}</Ggenre>
+        ))}
+    </Genre>;
     //fetch data and get chosen Genre <div key={post.id} className="post">
-    return (
-        <Genre>
-            {genreList.map((g, i) => (
-                <Ggenre key={i}>{g.genre}</Ggenre>
-            ))}
-        </Genre>
-    );
+    return display;
 }
 
 export default FavoriteGenre;
@@ -41,4 +36,11 @@ const Ggenre = styled.div`
     line-height: 2em;
     width: 100px;
     
+`
+
+const Nothing = styled.div`
+    color: #696969;
+    border-bottom: 3px solid #aaa;
+    line-height: 2em;
+    width: 210px;
 `

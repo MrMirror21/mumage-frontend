@@ -68,8 +68,11 @@ const PageBody = styled.div`
   max-width: 460px;
   min-width: 400px;
   max-height: 1000px;
-  margin: 50px auto;
-  margin-bottom: 0;
+  margin: auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 30px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
   a {
     text-decoration: none;
   }
@@ -80,6 +83,7 @@ const Title = styled.div`
   font-family : Pretendard;
   font-weight: 600;
   font-size: 40px;
+  color: #5151C6;
 `;
 
 const HeadText = styled.div`
@@ -150,15 +154,16 @@ const SubmitButton = styled.div`
   width: 140px;
   box-sizing: border-box;
   font-family: Pretendard;
-  background: #313338;
+  background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));
+
   margin-top: 1.5rem;
   color: #ffffff;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  :hover {
-    opacity: 0.8;
-    transition: 0.3s;
+  &:hover {
+    background: var(--Primary, linear-gradient(91deg, #888BF4 0%, #5151C6 100%));
+    transition: all 0.5s ease 0s;
   }
 
 `;

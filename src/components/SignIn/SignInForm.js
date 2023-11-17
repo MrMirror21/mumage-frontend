@@ -48,11 +48,11 @@ const SignInContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   max-width: 460px;
   min-width: 400px;
-  max-height: 700px;
-  margin: 100px auto;
-  margin-bottom: 0;
+  height: 90vh;
+  margin: auto;
 `;
 
 const MainText = styled.span`
@@ -107,16 +107,17 @@ const SignInBtn = styled.div`
   align-items: center;
   justify-content: center;
   border: none;
-  border-radius: 100px;
+  border-radius: 30px;
   margin: 2rem auto;
-  width: 400px;
+  width: 315px;
+  padding: 14px 24px;
   height: 50px;
   box-sizing: border-box;
   font-family: Pretendard;
   font-size: 1rem;
   color: #ffffff;
   cursor: pointer;
-  background: #313338;
+  background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));
   :hover {
     opacity: 0.8;
     transition: 0.3s;
@@ -150,7 +151,7 @@ const EmailSignUpBtn = styled.div`
   border: none;
   border-radius: 100px;
   margin: 0.2rem;
-  width: 400px;
+  width: 315px;
   height: 50px;
   box-sizing: border-box;
   font-family: Pretendard;

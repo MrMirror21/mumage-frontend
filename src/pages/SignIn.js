@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import SignInForm from '../components/SignIn/SignInForm'
 import { login } from '../utils/axios'
+import styled from 'styled-components'
 
 const SignIn = () => {
   const [loginInfo, setLoginInfo] = useState({
@@ -10,17 +10,20 @@ const SignIn = () => {
   })
   return (
     <>
-      <SignInForm 
-        userInfo={loginInfo}
-        setUserInfo={setLoginInfo}
-        onSubmitHandler={login}
-      />
+      <PageBody>
+        <SignInForm 
+          userInfo={loginInfo}
+          setUserInfo={setLoginInfo}
+          onSubmitHandler={login}
+        />
+      </PageBody>
     </>
   )
 }
 
 export default SignIn
 
-const StyledComponent = styled.div`
-
-`;
+const PageBody = styled.div`
+  width: 100vw;
+  height: 100vh;
+`; 

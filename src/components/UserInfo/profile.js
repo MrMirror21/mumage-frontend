@@ -47,9 +47,9 @@ const Profile = ({ width }) => {
                         </div>
                     </Row2>
                 </div>
-                <div>
+                <GenreContainer>
                     <FavoriteGenre />
-                </div>
+                </GenreContainer>
 
             </div>
             <div>
@@ -87,6 +87,12 @@ const Row2 = styled.div`
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 20px;
     margin-top: 25px;
+`
+
+const GenreContainer = styled.div`
+    display: flex;
+    align-itmes: center;
+    justify-content: center;
 `
 
 const ProfileImg = styled.img`

@@ -39,8 +39,26 @@ export const searchMusic = (searchInput, setSearchList) => {
   
   axios.request(config)
   .then((response) => {
-    console.log(JSON.stringify(response.data));
     setSearchList(response.data.tracks.items)
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+}
+
+export const getLyrics = (trackId, setLyrics) => {
+  let config = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: `https://spotify-lyric-api-984e7b4face0.herokuapp.com/?trackid=${trackId}&format=lrc`,
+    headers: { }
+  };
+
+  axios.request(config)
+  .then((response) => {
+    const originLyrics = response.data.lines;
+    const result = originLyrics.map(line => line.words).join('. ');
+    setLyrics(result);
   })
   .catch((error) => {
     console.log(error);

@@ -17,7 +17,6 @@ export const generateImage = (generateOption, setImageURL) => {
   
   axios.request(config)
   .then((response) => {
-    console.log(JSON.stringify(response.data));
     const UrlArr = response.data.images.map((element) => element.image)
     setImageURL(UrlArr);
   })

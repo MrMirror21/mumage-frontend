@@ -5,6 +5,8 @@ import Loading from '../components/Loading'
 import SearchBar from '../components/Upload/SearchBar'
 import TrackCard from '../components/Upload/TrackCard'
 import { ReactComponent as DeleteIcon } from "../assets/delete.svg";
+import { posts } from '../store/ServerData'
+import fryDream from "../assets/fry's dream.png";
 
 const ImagePreview = lazy(() => import('../components/Upload/ImagePreview'))
 

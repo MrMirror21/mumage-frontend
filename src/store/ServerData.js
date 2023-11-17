@@ -1,0 +1,100 @@
+import fryDream from "../assets/fry's dream.png";
+export const users = [
+  {
+    "userId" : 1,
+    "memberId" : "abc1234",
+    "password" : "abc1234",
+    "name" : "이리듬",
+    "nickname" : "리듬이",
+    "profileUrl" : "",
+    "email" : "abc1234@gmail.com",
+    "genres" : "",
+    "followers" : [
+      {"followerId" : 2},
+      {"followerId" : 3},
+    ],
+    "follows" : [
+      {"followId" : 2},
+      {"followId" : 3},
+    ],
+  },
+  {
+    "userId" : 2,
+    "memberId" : "abcd1234",
+    "password" : "abcd1234",
+    "name" : "팔레트",
+    "nickname" : "팔레트",
+    "profileUrl" : "",
+    "email" : "abcd1234@gmail.com",
+    "genres" : "",
+    "followers" : [
+      {"followerId" : 1},
+      {"followerId" : 3},
+    ],
+    "follows" : [
+      {"followId" : 1},
+      {"followId" : 3},
+    ],
+  },
+  {
+    "userId" : 3,
+    "memberId" : "abc1234",
+    "password" : "abc1234",
+    "name" : "이리듬",
+    "nickname" : "리듬이",
+    "profileUrl" : "",
+    "email" : "abc1234@gmail.com",
+    "genres" : "",
+    "followers" : [
+      {"followerId" : 2},
+      {"followerId" : 3},
+    ],
+    "follows" : [
+      {"followId" : 2},
+      {"followId" : 3},
+    ],
+  },
+]
+
+export const posts = [
+  {
+    "postId" : 1,
+    "userId" : 1,
+    "nickname" : "이리듬",
+    "genre" : "k-pop",
+    "title" : "후라이의 꿈",
+    "trackUrl" : "https://p.scdn.co/mp3-preview/89982dfa4f2b2b1dc930c28fb5d22b0e2d0e9e7f?cid=613834041d6342f8b26d78e730c2c746",
+    "imageUrl" : fryDream,
+    "context" : "나만의 길을 찾고 싶다",
+  },
+  {
+    "postId" : 2,
+    "userId" : 1,
+    "nickname" : "이리듬",
+    "genre" : "",
+    "title" : "",
+    "trackUrl" : "",
+    "imageUrl" : fryDream,
+    "context" : "",
+  },
+  {
+    "postId" : 3,
+    "userId" : 1,
+    "nickname" : "이리듬",
+    "genre" : "",
+    "title" : "",
+    "trackUrl" : "",
+    "imageUrl" : fryDream,
+    "context" : "",
+  },
+  {
+    "postId" : 4,
+    "userId" : 1,
+    "nickname" : "이리듬",
+    "genre" : "",
+    "title" : "",
+    "trackUrl" : "",
+    "imageUrl" : fryDream,
+    "context" : "",
+  },
+]

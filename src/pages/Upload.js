@@ -5,8 +5,7 @@ import Loading from '../components/Loading'
 import SearchBar from '../components/Upload/SearchBar'
 import TrackCard from '../components/Upload/TrackCard'
 import { ReactComponent as DeleteIcon } from "../assets/delete.svg";
-import { posts } from '../store/ServerData'
-import fryDream from "../assets/fry's dream.png";
+
 
 const ImagePreview = lazy(() => import('../components/Upload/ImagePreview'))
 
@@ -14,9 +13,8 @@ const Upload = () => {
   const [imageURL, setImageURL] = useState([])
   const [generateOption, setGenerateOption] = useState({
     "prompt" : "",
-    "negative_prompt": "text in the image, poor face rendering, awkward hand posture, different number of fingers",
+    "negative_prompt": "bad anatomy, distortion, low quality, low contrast, draft, amateur, cut off, frame, ugly face, text, letter, watermark, poor face rendering, awkward hand posture, different number of fingers",
     "samples" : 1,
-    "return_type" : "base64_string"
   })
   const [searchInput, setSearchInput] = useState("");
   const [searchList, setSearchList] = useState("");

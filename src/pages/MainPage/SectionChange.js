@@ -10,15 +10,17 @@ import './SectionChange.css';
 import Loading from '../../components/Features/Loading';
 import ShowFeed from '../../components/ShowingFeed/ImageRender';
 import { isfollowing, page } from '../../utils/FetchDataRecoil';
+import { useState } from 'react';
 
 const SectionDevide = () => {
     const [isFollowing, setIsFollowing] = useRecoilState(isfollowing);
     const setPage = useSetRecoilState(page);
+    const [index, setIndex] = useState(1);
 
-
-    const onClickHandler = () => {
+    const onClickHandler = (Index) => {
         setIsFollowing(!isFollowing);
         setPage(1);
+        setIndex(Index);
     }
 
     const [tourState, dispatch] = useReducer(reducer, INITIAL_STATE);
@@ -38,7 +40,7 @@ const SectionDevide = () => {
     };
 
     return (
-        <>
+        <div style={{ backgroundColor: "#F6F7F9" }}>
             <button onClick={startTour}>Start Tour</button>
             <Joyride
                 styles={{
@@ -72,22 +74,39 @@ const SectionDevide = () => {
             />
             <div>
                 <Sticky>
-                    <Header className="title">MUMAGE</Header>
-                    <LoginSection>
-                        <Link className='forLink' to='/myPage'>myPage</Link>
-                        <Link className='forLink' to='/Login'>Login</Link>
-                        <Link className='forLink' to='/signup'>Signup</Link>
-                    </LoginSection>
-
+                    <Header className="title">
+                        MUMAGE
+                    </Header>
+                    <MenuSection className='following'>
+                        <MenuSectionDetail
+                            onClick={() => onClickHandler(1)}
+                            style={{
+                                background: index === 1 ? "#F1F1FE" : "white",
+                                color: index === 1 ? "#5151C6" : "#BDBDBD",
+                                pointerEvents: index === 1 ? "none" : "visible",
+                            }}
+                            aria-disabled={index === 1}
+                        >
+                            Following
+                        </MenuSectionDetail>
+                        <MenuSectionDetail
+                            onClick={() => onClickHandler(2)}
+                            style={{
+                                background: index === 2 ? "#F1F1FE" : "white",
+                                color: index === 2 ? "#5151C6" : "#BDBDBD",
+                                pointerEvents: index === 2 ? "none" : "visible",
+                            }}
+                        >
+                            Recommend
+                        </MenuSectionDetail>
+                    </MenuSection>
                 </Sticky>
-                <Menu className="following" onClick={() => onClickHandler()}>
-                    {isFollowing ? "Following" : "Recommend"}
-                </Menu>
+
                 <Suspense fallback={<Loading />}>
                     <ShowFeed />
                 </Suspense>
             </div>
-        </>
+        </div>
     )
 }
 
@@ -145,35 +164,11 @@ const INITIAL_STATE = {
     key: new Date(),
 };
 
-const Menu = styled.button`
-    width:100px;
-    padding: 10px;
-    float:right;
-    position:relative;
-    left: -47%;
-    border:none;
-    font-size: 0.8em;
-    margin-top: 1.5em;
-    border-radius:15px;
-    background:#262626;
-    color: white;
-    
-`
 
 const Header = styled.header`
-    font-size:50px;
+    font-size:30px;
     text-align:center;
     background: white;
-    border-radius: 1em;
-`
-
-const LoginSection = styled.div`
-    display:flex;
-    flex-direction:row;
-    border:none;
-    justify-content:right;
-    border-radius:15px;
-    background:#262626
 `
 
 const Sticky = styled.div`
@@ -181,7 +176,22 @@ const Sticky = styled.div`
     top:0;
 `
 
+const MenuSection = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #FFF;
+`
 
+const MenuSectionDetail = styled.div`
+    padding: 10px;
+
+    width: 100%;
+    text-align: center;
+    background-color: #F1F1FE;
+    border-radius: 10px;
+`
 
 //const TopSection = styled.header`
 //display: flex;

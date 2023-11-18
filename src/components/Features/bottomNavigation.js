@@ -1,14 +1,10 @@
-import { Link } from "react-router-dom";
-import { GoHomeFill, GoHome } from "react-icons/go";
+import { Link, useNavigate } from "react-router-dom";
+import { GoHome } from "react-icons/go";
 import { FaRegUser } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import styled from "styled-components";
 import { useState } from "react";
-const styleEmoji = {
-    "width": "2em",
-    "height": " 2em",
-    "color": "#BDBDBD",
-}
+
 
 const styleEmojiPlus = {
     "width": "1.5em",
@@ -17,24 +13,34 @@ const styleEmojiPlus = {
 }
 
 const BottomNavBar = () => {
-    const [firstCol, setFirstCol] = useState(<GoHome style={styleEmoji} />);
-    const onClickHander = () => {
-
+    const navigate = useNavigate();
+    const [index, setIndex] = useState(1);
+    const onClickHander = (Index) => {
+        setIndex(Index);
+        Index === 1 ? navigate("/") : navigate("/myPage");
     }
     return (
         <Sticky>
             <BotNav>
-                <FirstCol onClick={onClickHander} aria-disabled={true}>
-                    <GoHome style={styleEmoji} />
+                <FirstCol onClick={() => onClickHander(1)} aria-disabled={index === 1}>
+                    <GoHome style={{
+                        width: "2.4em",
+                        height: "2.4em",
+                        color: index === 1 ? "#3385ff" : "BDBDBD",
+                    }} />
                 </FirstCol>
-                <SecondCol>
+                <SecondCol onClick={() => navigate('/addPost')}>
                     <Second2Col>
                         <FaPlus style={styleEmojiPlus} />
                     </Second2Col>
 
                 </SecondCol>
-                <ThirdCol>
-                    <FaRegUser style={styleEmoji} />
+                <ThirdCol onClick={() => onClickHander(3)} aria-disabled={index === 3}>
+                    <FaRegUser style={{
+                        width: "2em",
+                        height: "2em",
+                        color: index === 3 ? "#3385ff" : "BDBDBD",
+                    }} />
                 </ThirdCol>
             </BotNav>
         </Sticky>
@@ -45,37 +51,25 @@ export default BottomNavBar;
 
 const BotNav = styled.nav`
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     place-items: center;
     width: 100%;
-    height: 80px;
+    height: 70px;
     flex-shrink: 0;
 `
 
 const Column = styled.div`
     height: 80px;
-    width: 100%;
+    width: 90px;
     display: flex;
     justify-content: center;
     align-items: center;
 
-    &:hover {
-    background: linear-gradient(to left, #3385ff, #0052cc );
-    cursor: pointer;
-    }
-
-    &[disabled] {
-    background: #404040;
+    &[aria-disabled] {
     cursor: revert;
     transform: revert;
     }
 
-    &[aria-current] {
-        background: #404040;
-        font-weight: bold;
-        cursor: revert;
-        transform: revert;
-    }
 `
 
 const FirstCol = styled(Column)`
@@ -83,8 +77,11 @@ const FirstCol = styled(Column)`
 `
 
 const SecondCol = styled(Column)` 
+    position: absolute;
+    bottom: 2em;
     border-radius: 12em;
-    width: 80px;
+    width: 60px;
+    height: 60px;
     background: linear-gradient(to left, #3385ff, #0052cc );
 `
 
@@ -92,8 +89,8 @@ const Second2Col = styled.div`
     display: grid;
     justify-content: center;
     align-items: center;
-    width: 2.5em;
-    height: 2.5em;
+    width: 2em;
+    height: 2em;
     border-radius: 1em;
     background: #FFF;
 `
@@ -104,6 +101,6 @@ const ThirdCol = styled(Column)`
 
 const Sticky = styled.div`
     position:sticky;
-    bottom:0;
+    bottom:0px;
     background: white;
 `

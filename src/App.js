@@ -5,7 +5,6 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import PageDetail from './pages/MainPage/PageDetail';
 import MyPage from './pages/MyPage/MyPage';
-import EditProfile from './pages/MyPage/EditProfile';
 
 const App = () => {
   return (

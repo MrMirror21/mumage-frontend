@@ -61,7 +61,7 @@ const MainText = styled.span`
   color: #7054ff;
 `;
 
-const SignInFormBox = styled.form`
+const SignInFormBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

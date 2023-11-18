@@ -22,7 +22,7 @@ const MyPage = () => {
 
     useEffect(() => {
         if (windowWidth >= 1000) {
-            setGridColumns(4);
+            setGridColumns(5);
             setWidth("25%");
         } else if (windowWidth >= 700 && windowWidth < 1000) {
             setGridColumns(3)

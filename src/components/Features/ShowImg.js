@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import { AiOutlineHeart } from "react-icons/ai";
+import { ReactComponent as DefaultProfile } from "../../assets/Profile.svg";
 
 const ShowImg = ({ imgUrl, imgId, width, height, authorName }) => {
     const navigate = useNavigate();
@@ -10,7 +11,7 @@ const ShowImg = ({ imgUrl, imgId, width, height, authorName }) => {
 
             <Div>
                 <div>
-                    <ProfileImg src="https://img.freepik.com/premium-vector/male-avatar-icon-unknown-anonymous-person-default-avatar-profile-icon-social-media-user-business-man-man-profile-silhouette-isolated-white-background-vector-illustration_735449-120.jpg?w=900" />
+                    <DefaultProfile style={{ marginLeft: "10px" }} />
                 </div>
                 <div style={{ textAlign: "center" }}>{authorName}</div>
             </Div>

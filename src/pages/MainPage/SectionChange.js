@@ -166,6 +166,7 @@ const INITIAL_STATE = {
 
 
 const Header = styled.header`
+    color: #5151C6;
     font-size:30px;
     text-align:center;
     background: white;
@@ -200,5 +201,4 @@ const MenuSectionDetail = styled.div`
 //background:#262626;
 //gap: 1em;
 //`
-
 

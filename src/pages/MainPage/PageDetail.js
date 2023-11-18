@@ -1,7 +1,7 @@
 import { AiOutlineHeart } from "react-icons/ai";
 import { IoMdArrowBack } from "react-icons/io";
 import { useNavigate, useParams } from "react-router";
-import { Link } from "react-router-dom";
+import { ReactComponent as DefaultProfile } from "../../assets/Profile.svg";
 import styled from "styled-components";
 
 const PageDetail = () => {
@@ -30,8 +30,8 @@ const PageDetail = () => {
             </Sticky>
             <Frame>
                 <Div>
-                    <div>
-                        <ProfileImg src="https://img.freepik.com/premium-vector/male-avatar-icon-unknown-anonymous-person-default-avatar-profile-icon-social-media-user-business-man-man-profile-silhouette-isolated-white-background-vector-illustration_735449-120.jpg?w=900" />
+                    <div style={{ marginLeft: "10px" }}>
+                        <DefaultProfile />
                     </div>
                     <div style={{ marginBottom: "5px" }}>{params.authorName}</div>
                 </Div>
@@ -91,15 +91,6 @@ const Div = styled.div`
     gap: 20px;
 `
 
-const ProfileImg = styled.img`
-    margin-left: 10px;
-    object-fit: cover;
-    border-radius: 10em;
-    width: 1.5em;
-    height: 1.5em;
-    border: 2px solid #000;
-`
-
 const Sticky = styled.div`
     position:sticky;
     top:0;
@@ -120,7 +111,8 @@ const GenreInfo = styled.div`
     text-align:center;
     margin-left: 5px;
     margin-top: 10px;
-    background: #BDBDBD;
+    background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));;
+    color:white;
 `
 
 const HeartInfo = styled.div`

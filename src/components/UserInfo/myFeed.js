@@ -57,7 +57,7 @@ const MyFeed = ({ gridColumns }) => {
 
     return (
         <Fr>
-            <Row style={{ gridTemplateColumns: `repeat(${gridColumns}, 1fr)`, gridColumn: '2/3' }}>
+            <Row style={{ gridTemplateColumns: `repeat(${gridColumns}, 1fr)` }}>
                 {posts.map((post) => (
                     <div key={post.id} className="post">
                         <FeedImg src={post.imageUrl} alt={`Post by ${post.username}`} />
@@ -74,22 +74,22 @@ const Row = styled.nav`
     display: grid;
     text-align: center;
     align-items: center;
-    
+    gap: 20px;
 `
 const Fr = styled.nav`
-    display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
-    text-align: center;
+    display: flex;
+    justify-content: center;
     align-items: center;
     margin-top: 50px;
+    
     
 `
 //grid - template - columns: 1fr 1fr 1fr 1fr;
 
 const FeedImg = styled.img`
-    width: 250px;
-    height: 250px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     align-items: center;
-    margin-top: -4px;
+    border-radius: 10px;
 `

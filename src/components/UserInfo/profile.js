@@ -2,68 +2,119 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 
 //import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { getSavedProfileImage } from '../../utils/FetchDataRecoil';
 
+import { ReactComponent as DefaultProfile } from "../../assets/Profile.svg";
 import styled from "styled-components";
 import FavoriteGenre from "../Features/genre";
 import MyMenu from './myMenu';
 import EditProfile from '../../pages/MyPage/EditProfile';
 
 const Profile = ({ width }) => {
-    const navigate = useNavigate();
 
     const [isSideOpen, setIsSideOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const imgSrc = useRecoilValue(getSavedProfileImage);
-    const defaultImg = "https://img.freepik.com/premium-vector/male-avatar-icon-unknown-anonymous-person-default-avatar-profile-icon-social-media-user-business-man-man-profile-silhouette-isolated-white-background-vector-illustration_735449-120.jpg?w=900";
     //user에 대한 정보를 여기서 받아와서 다 해결
+
+    const UserInfo = {
+        "userID": "Joonyjin_",
+        "UserName": "Hyungjoon Jin",
+        "User Profile": "",
+        "Followers": [
+            { "followerId": 2 },
+            { "followerId": 3 },
+        ],
+        "Follows": [
+            { "followId": 2 },
+            { "followId": 3 },
+        ],
+    }
+    const UserProfile = imgSrc === "" ? <DefaultProfile style={{ width: "4em", height: "4em", borderRadius: "5em" }} />
+        : <ProfileImg src={imgSrc} />;
     return (
-        <Row>
-            <div>
-                <div style={{ marginBottom: "10px" }}>User's Id</div>
-                {imgSrc ? <ProfileImg src={imgSrc} alt="profileImg" />
-                    : <ProfileImgD src={defaultImg} alt="profileImg" />}
+        <Column>
+            <BasicWrapper style={{ fontStyle: "italic" }}>@{UserInfo.userID}</BasicWrapper>
+            <GiHamburgerMenu style={{ width: "2em", height: "2em", position: "absolute", right: "2em", top: "2em", color: "#696969" }} onClick={() => setIsSideOpen(!isSideOpen)} />
+            <BasicWrapper>{UserProfile}</BasicWrapper>
+            <BottomLineLeft /> <BottomLineRight />
+            <BasicWrapper>
+                <UserName>{UserInfo.UserName}</UserName>
+            </BasicWrapper>
+            <BasicWrapper>
+                <FollowInfo style={{ gap: "10px" }}>
+                    <div style={{ fontWeight: "bold" }}>{UserInfo["Followers"].length}</div>
+                    <div style={{ color: "#BDBDBD" }}>Follower</div>
+                </FollowInfo>
+                <FollowInfo style={{ gap: "10px" }}>
+                    <div style={{ fontWeight: "bold" }}>{UserInfo["Follows"].length}</div>
+                    <div style={{ color: "#BDBDBD" }}>Following</div>
+                </FollowInfo>
+            </BasicWrapper>
+            <GenreContainer>
+                <FavoriteGenre />
+            </GenreContainer>
 
 
-                <div>UserName</div>
-            </div>
-            <div>
-                <MainIcon onClick={() => navigate('/')}>MUMAGE</MainIcon>
-                <div>
-                    <Row2>
-                        <div>
-                            <div>Posts</div>
-                            <div>0</div>
-                        </div>
-                        <div>
-                            <div>Followers</div>
-                            <div>957</div>
-                        </div>
-                        <div>
-                            <div>Following</div>
-                            <div>1063</div>
-                        </div>
-                    </Row2>
-                </div>
-                <GenreContainer>
-                    <FavoriteGenre />
-                </GenreContainer>
-
-            </div>
-            <div>
-                <GiHamburgerMenu style={{ width: "2em", height: "2em" }} onClick={() => setIsSideOpen(!isSideOpen)} />
-            </div>
             {isSideOpen ? <MyMenu setIsModalOpen={setIsModalOpen} setIsSideOpen={setIsSideOpen} width={width} /> : null}
             <EditProfile modalIsOpen={isModalOpen} setModalIsOpen={setIsModalOpen} setIsSideOpen={setIsSideOpen} isSideOpen={isSideOpen} />
 
-        </Row>
+        </Column>
     );
 }
 
 export default Profile;
 
+const Column = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+const BasicWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    
+`
+
+const UserName = styled(BasicWrapper)`
+    font-weight: bold;
+`
+
+const BottomLineLeft = styled.div`
+    border-bottom: solid;
+    position: absolute;
+    width: 41%;
+    top: 6em;
+    display: flex;
+    color: #BDBDBD;
+`
+const BottomLineRight = styled.div`
+    border-bottom: solid;
+    position: absolute;
+    width: 41%;
+    top: 6em;
+    right: 0;
+    display: flex;
+    color: #BDBDBD;
+`
+
+const ProfileImg = styled.img`
+    border-radius: 10em;
+    width: 5em;
+    height: 5em;
+    object-fit: cover;
+`
+const FollowInfo = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+    width: 25%;
+    height: 30px;
+    background: #F6F7F9;
+`
 
 const MainIcon = styled.div`
     width: auto;
@@ -95,11 +146,7 @@ const GenreContainer = styled.div`
     justify-content: center;
 `
 
-const ProfileImg = styled.img`
-    border-radius: 10em;
-    width: 4em;
-    height: 4em;
-`
+
 const ProfileImgD = styled.img`
     border-radius:1em;
     width: 5em;

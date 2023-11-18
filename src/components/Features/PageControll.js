@@ -1,9 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { GoHome } from "react-icons/go";
 import { FaRegUser } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import styled from "styled-components";
 import { useState } from "react";
+import SectionDevide from "../../pages/MainPage/SectionChange";
+import MyPage from "../../pages/MyPage/MyPage";
 
 
 const styleEmojiPlus = {
@@ -12,42 +14,45 @@ const styleEmojiPlus = {
     "color": "#3385ff",
 }
 
-const BottomNavBar = () => {
+const PageControll = () => {
     const navigate = useNavigate();
     const [index, setIndex] = useState(1);
     const onClickHander = (Index) => {
         setIndex(Index);
-        Index === 1 ? navigate("/") : navigate("/myPage");
     }
     return (
-        <Sticky>
-            <BotNav>
-                <FirstCol onClick={() => onClickHander(1)} aria-disabled={index === 1}>
-                    <GoHome style={{
-                        width: "2.4em",
-                        height: "2.4em",
-                        color: index === 1 ? "#3385ff" : "BDBDBD",
-                    }} />
-                </FirstCol>
-                <SecondCol onClick={() => navigate('/addPost')}>
-                    <Second2Col>
-                        <FaPlus style={styleEmojiPlus} />
-                    </Second2Col>
+        <>
+            {index === 1 ? <SectionDevide /> : <MyPage />}
+            <Sticky>
+                <BotNav>
+                    <FirstCol onClick={() => onClickHander(1)} aria-disabled={index === 1}>
+                        <GoHome style={{
+                            width: "2.4em",
+                            height: "2.4em",
+                            color: index === 1 ? "#3385ff" : "BDBDBD",
+                        }} />
+                    </FirstCol>
+                    <SecondCol onClick={() => navigate('/addPost')}>
+                        <Second2Col>
+                            <FaPlus style={styleEmojiPlus} />
+                        </Second2Col>
 
-                </SecondCol>
-                <ThirdCol onClick={() => onClickHander(3)} aria-disabled={index === 3}>
-                    <FaRegUser style={{
-                        width: "2em",
-                        height: "2em",
-                        color: index === 3 ? "#3385ff" : "BDBDBD",
-                    }} />
-                </ThirdCol>
-            </BotNav>
-        </Sticky>
+                    </SecondCol>
+                    <ThirdCol onClick={() => onClickHander(3)} aria-disabled={index === 3}>
+                        <FaRegUser style={{
+                            width: "2em",
+                            height: "2em",
+                            color: index === 3 ? "#3385ff" : "BDBDBD",
+                        }} />
+                    </ThirdCol>
+                </BotNav>
+            </Sticky>
+        </>
+
     );
 }
 
-export default BottomNavBar;
+export default PageControll;
 
 const BotNav = styled.nav`
     display: grid;

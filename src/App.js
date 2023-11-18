@@ -5,12 +5,13 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import PageDetail from './pages/MainPage/PageDetail';
 import MyPage from './pages/MyPage/MyPage';
+import PageControll from './components/Features/PageControll';
 
 const App = () => {
   return (
     <RecoilRoot>
       <Routes>
-        <Route path="/" element={<SectionDevide />} />
+        <Route path="/" element={<PageControll />} />
         <Route path="/imgDetail/:imgId/:width/:height/:authorName" element={<PageDetail />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />

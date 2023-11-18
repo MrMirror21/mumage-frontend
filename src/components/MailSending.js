@@ -41,7 +41,7 @@ const MailSending = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form id="contactForm" onSubmit={handleSubmit}>
         <label htmlFor="email" className="name-label">
           Email Address
         </label>
@@ -62,6 +62,7 @@ const MailSending = () => {
         </label>
         <textarea
           id="message"
+          type="message"
           name="message"
           value={message}
           onChange={handleMessageChange}

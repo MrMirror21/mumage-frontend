@@ -17,7 +17,6 @@ export const generateImage = (generateOption, setImageURL) => {
   
   axios.request(config)
   .then((response) => {
-    console.log(JSON.stringify(response.data));
     const UrlArr = response.data.images.map((element) => element.image)
     setImageURL(UrlArr);
   })
@@ -39,12 +38,40 @@ export const searchMusic = (searchInput, setSearchList) => {
   
   axios.request(config)
   .then((response) => {
-    console.log(JSON.stringify(response.data));
     setSearchList(response.data.tracks.items)
   })
   .catch((error) => {
     console.log(error);
   });
+}
+
+export const getLyrics = (trackId, setLyrics) => {
+  let config = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: `https://spotify-lyric-api-984e7b4face0.herokuapp.com/?trackid=${trackId}&format=lrc`,
+    headers: { }
+  };
+
+  axios.request(config)
+  .then((response) => {
+    const originLyrics = response.data.lines;
+    const result = originLyrics.map(line => line.words).join('. ');
+    setLyrics(result);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+}
+
+export const registerUser = (userInfo) => {
+  alert("회원가입이 완료되었습니다.")
+  window.location.href="/signin"
+}
+
+export const login = () => {
+  alert("로그인이 완료되었습니다.")
+  window.location.href="/upload"
 }
 
 const item = {

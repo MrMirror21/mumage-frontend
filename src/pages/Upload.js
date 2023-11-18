@@ -1,10 +1,11 @@
 import React, { Suspense, lazy, useState } from 'react'
 import styled from 'styled-components'
-import { generateImage, searchMusic } from '../utils/axios'
+import { generateImage, getLyrics, searchMusic } from '../utils/axios'
 import Loading from '../components/Loading'
 import SearchBar from '../components/Upload/SearchBar'
 import TrackCard from '../components/Upload/TrackCard'
 import { ReactComponent as DeleteIcon } from "../assets/delete.svg";
+
 
 const ImagePreview = lazy(() => import('../components/Upload/ImagePreview'))
 
@@ -12,9 +13,8 @@ const Upload = () => {
   const [imageURL, setImageURL] = useState([])
   const [generateOption, setGenerateOption] = useState({
     "prompt" : "",
-    "negative_prompt": "text in the image, poor face rendering, awkward hand posture, different number of fingers",
+    "negative_prompt": "bad anatomy, distortion, low quality, low contrast, draft, amateur, cut off, frame, ugly face, text, letter, watermark, poor face rendering, awkward hand posture, different number of fingers",
     "samples" : 1,
-    "return_type" : "base64_string"
   })
   const [searchInput, setSearchInput] = useState("");
   const [searchList, setSearchList] = useState("");
@@ -26,6 +26,8 @@ const Upload = () => {
 
   const [hashtag, setHashtag] = useState("");
   const [hashtagList, setHashtagList] = useState([]);
+
+  const [lyrics, setLyrics] = useState("");
 
   const handleInput = () => async (event) => {
     const targetValue = event.currentTarget.value;
@@ -147,11 +149,53 @@ const handleTagClick = () => async (e) => {
             ))}
         </HashtagListContainer>
       </TagSection>
+      <LyricsSection>
+        <GenerateLyricsButton onClick={()=>getLyrics(selectedTrack.id, setLyrics)}>가사 찾기</GenerateLyricsButton>
+        <LyricsPreview>
+          {lyrics}
+        </LyricsPreview>
+      </LyricsSection>
+
     </>
   )
 }
 
 export default Upload
+
+const LyricsSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LyricsPreview = styled.div`
+
+`;
+
+const GenerateLyricsButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: none;
+  border-radius: 100px;
+  height: 50px;
+  width: 140px;
+  box-sizing: border-box;
+  font-family: Pretendard;
+  background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));
+
+  margin-top: 1.5rem;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover {
+    background: var(--Primary, linear-gradient(91deg, #888BF4 0%, #5151C6 100%));
+    transition: all 0.5s ease 0s;
+  }
+`;
 
 const ConsoleSection = styled.div`
   display: flex;

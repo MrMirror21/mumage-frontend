@@ -5,17 +5,17 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { currentPageState, sectionValueState, orderState } from '../utils/DataRecoilState';
 import {useRecoilState} from 'recoil';
+import '../styles/Section.css';
 
 const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
-  gap: 5px; 
+  gap: 20px; 
   padding: 5px;
   margin : 16px; 
 `;
 
 export const GridItem = styled.div`
-  border: 6px solid black;
   aspect-ratio: 1 / 1;
   position : relative;
   img {
@@ -23,16 +23,16 @@ export const GridItem = styled.div`
     width : 100%;
     height : 100%,
     object-fit : cover;
+    border-radius: 10px;
   }
 `;
 
 export const Button = styled.button`
-border: none;
-padding: 8px;
-margin: 0;
-background: #262626;
-color: white;
-font-size: 0.5rem;
+  padding: 5px 10px 6px 10px;
+  color: white;
+  cursor: pointer;
+  border-radius: 30px;
+  background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));
 `;
 
 const PageButton = styled(Button)`
@@ -56,6 +56,22 @@ const Section = () => {
   })
   const totalPage = Math.ceil(sortedData.length / itemsPerPage); 
   const displayedData = sortedData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const toggleSmallGridSize = () => {
+    if (gridColumns === 3) {
+      handleGridChange(4, 4 * 4);
+    } else {
+      handleGridChange(3, 3 * 3);
+    }
+  }
+
+  const toggleLargeGridSize = () => {
+    if (gridColumns === 5) {
+      handleGridChange(7, 7 * 3);
+    } else {
+      handleGridChange(5, 5 * 2);
+    }
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -108,24 +124,31 @@ const Section = () => {
     return windowWidth >= width;
   }
 
+  const toggleOrder = () => {
+    if (order === 'default') {
+      setOrder('likes');
+    } else {
+      setOrder('default');
+    }
+  }
+
   return (
     <div>
       <SelectBoxContainer>
-        <SelectBox onChange = {(value) => {
+        <SelectBox onChange={(value) => {
           setSectionValue(value);
           setCurrentPage(1);
         }} />
       </SelectBoxContainer>
-      <SelectOrderContainer>
-        <Button onClick = {() => setOrder("default")}>최신</Button>
-        <Button onClick = {() => setOrder("likes")}>트렌딩</Button>
-      </SelectOrderContainer>
-      <SelectGridContainer>
-        <Button onClick = {() => handleGridChange(3, 3 * 3)} style = {{display : isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===3}>3X3</Button>
-        <Button onClick = {() => handleGridChange(4, 4 * 4)} style = {{display : isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===4}>4X4</Button>
-        <Button onClick = {() => handleGridChange(5, 5 * 2)} style = {{display : !isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===5}>5X2</Button>
-        <Button onClick = {() => handleGridChange(7, 7 * 3)} style = {{display : !isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===7}>7X3</Button>
-      </SelectGridContainer>
+
+      <div className="section-menu">
+        <button className="section-menu-icon" onClick={toggleSmallGridSize}>
+          {gridColumns === 3 ? 'View more' : 'View less'}
+        </button>
+        <button className="section-menu-icon" onClick={toggleOrder}>
+          {order === 'default' ? 'Trending' : 'Recent'}
+        </button>
+      </div>
       <GridContainer style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
         {displayedData.map((data, index) => (
           <Link to={`/Post/${data["id"]}`} key={index}>

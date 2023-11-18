@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
-const Dropdown = () => {
+const Dropdown = ({name}) => {
     return (
         <div className="menu">
             <button id="menu-icon"><FontAwesomeIcon icon={faBars} style={{ backgroundColor: 'white', fontSize: '20px' }}/></button>
-            <div id="contact-us">ContactUs</div>
+            <div id="name">{name}</div>
             <div className="dropdownMenu">
                 <Link className="menu-a" to='/Explore'>Explore</Link>
                 <Link className="menu-a" to='/ContactUs'>ContactUs</Link>

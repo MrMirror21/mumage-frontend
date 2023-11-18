@@ -7,7 +7,7 @@ import Dropdown from '../components/Dropdown';
 const ContactUs = () => {
   return (
     <>
-      <Icon/><Dropdown/>
+      <Icon/><Dropdown name="ContactUs"/>
       <MailSending/>
     </>
   );

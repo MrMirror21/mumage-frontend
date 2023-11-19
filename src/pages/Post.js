@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import {useParams, useLocation} from 'react-router-dom';
 import '../styles/Post.css'
 import Icon from '../components/Icon';
@@ -7,8 +7,30 @@ import {useNavigate} from 'react-router-dom';
 import {FakeDataArr} from '../store/FakeDataArr';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
-import {faUser} from '@fortawesome/free-solid-svg-icons';
+import {faUser, faPlay, faStop} from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+
+export const AudioPreview = ({ trackUrl }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(new Audio(trackUrl));
+
+  const togglePlay = () => {
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  return (
+    <div>
+      <button style={{backgroundColor:'white', border :'none', width:'100%'}} onClick={togglePlay}>
+        {isPlaying ? <FontAwesomeIcon className="audio" icon={faStop} style={{ backgroundColor: 'white', fontSize: '20px' }} /> : <FontAwesomeIcon className="audio" icon={faPlay} style={{ backgroundColor: 'white', fontSize: '20px' }} />}
+      </button>
+    </div>
+  );
+};
 
 export const GridItem = styled.div`
   aspect-ratio: 1 / 1;
@@ -51,6 +73,7 @@ const Post = () => {
       <SelectGridContainer>
         <GridItem><img src={postData["imageUrl"]}></img></GridItem>
       </SelectGridContainer>
+      <AudioPreview trackUrl={postData["trackUrl"]} />
       <div className='like-num-menu'>
         <div id="likeNum" >
           <div id="like-num">{postData["좋아요"]}</div>

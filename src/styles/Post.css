@@ -81,3 +81,9 @@
     color: var(--text-text-secondary, #828282);
     font-weight: 500;
 }
+
+.audio {
+    color : #5151C6;
+    padding: 10px 14px;
+    align-items: center;
+}

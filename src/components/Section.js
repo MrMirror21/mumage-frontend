@@ -46,8 +46,7 @@ const Section = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [gridColumns, setGridColumns] = useState(3)
   const [itemsPerPage, setItemsPerPage] = useState(9);
-
-  const matchedData = FakeDataArr.filter(data => data["장르"] === sectionValue);
+  const matchedData = FakeDataArr.filter(data => data["genre"] === sectionValue);
   const sortedData = matchedData.sort((a, b) => {
     if (order == 'likes') {
       return b["좋아요"] - a["좋아요"];
@@ -151,8 +150,8 @@ const Section = () => {
       </div>
       <GridContainer style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
         {displayedData.map((data, index) => (
-          <Link to={`/Post/${data["id"]}`} key={index}>
-            <GridItem key={index}><img src={data["url"]}/></GridItem>
+          <Link to={`/Post/${data["postId"]}`} key={index}>
+            <GridItem key={index}><img src={data["imageUrl"]}/></GridItem>
           </Link>
         ))}
       </GridContainer>

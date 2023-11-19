@@ -7,7 +7,7 @@ import {useNavigate} from 'react-router-dom';
 import {FakeDataArr} from '../store/FakeDataArr';
 
 const Post = () => {
-  const {id} = useParams();
+  const {postId} = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -15,7 +15,7 @@ const Post = () => {
   const sectionValue = location.state?.sectionValue;
   const order = location.state?.order;
 
-  const postData = FakeDataArr.find(data => data["id"] === id);
+  const postData = FakeDataArr.find(data => data["postId"] === parseInt(postId, 10));
 
   const goBackWithState = () => {
     navigate(-1, {state : {currentPage, sectionValue, order}});
@@ -27,7 +27,7 @@ const Post = () => {
       <Icon/>
       <Button onClick={goBackWithState}>&lt;&lt;</Button>
       <SelectGridContainer>
-        <GridItem><img src={postData["url"]}></img></GridItem>
+        <GridItem><img src={postData["imageUrl"]}></img></GridItem>
       </SelectGridContainer>
     </>
   );

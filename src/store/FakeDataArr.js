@@ -1,51 +1,47 @@
 export const FakeDataArr = 
 [
   {
-    "장르" : "발라드",
-    "id" : "발라드1",
+    "postId" : 1,
+    "userId" : 1,
+    "nickname" : "이소연",
+    "genre" : "발라드",
+    "title" : "종합 1번, 발라드 1번",
     "좋아요" : 1,
-    "url" : "https://picsum.photos/id/0/200/200"
+    "trackUrl" : "https://p.scdn.co/mp3-preview/89982dfa4f2b2b1dc930c28fb5d22b0e2d0e9e7f?cid=613834041d6342f8b26d78e730c2c746",
+    "imageUrl" : "https://picsum.photos/id/0/200/200",
+    "context" : "좋아요 1개",
   },
   {
-    "장르" : "발라드",
-    "id" : "발라드3",
-    "좋아요" : 3,
-    "url" : "https://picsum.photos/id/1/200/200"
-  },
-  {
-    "장르" : "종합",
-    "id" : "종합3",
-    "좋아요" : 3,
-    "url" : "https://picsum.photos/id/2/200/200"
-  },
-  {
-    "장르" : "댄스",
-    "id" : "댄스4",
-    "좋아요" : 4,
-    "url" : "https://picsum.photos/id/3/200/200"
-  },
-  {
-    "장르" : "댄스",
-    "id" : "댄스1",
+    "postId" : 2,
+    "userId" : 2,
+    "nickname" : "이몽이",
+    "genre" : "발라드",
+    "title" : "종합 2번, 발라드 2번",
     "좋아요" : 1,
-    "url" : "https://picsum.photos/id/4/200/200"
+    "trackUrl" : "https://p.scdn.co/mp3-preview/89982dfa4f2b2b1dc930c28fb5d22b0e2d0e9e7f?cid=613834041d6342f8b26d78e730c2c746",
+    "imageUrl" : "https://picsum.photos/id/1/200/200",
+    "context" : "좋아요 1개",
   },
   {
-    "장르" : "댄스",
-    "id" : "댄스3-1",
+    "postId" : 3,
+    "userId" : 3,
+    "nickname" : "이룡이",
+    "genre" : "댄스",
+    "title" : "종합 3번, 댄스 1번",
     "좋아요" : 3,
-    "url" : "https://picsum.photos/id/5/200/200"
+    "trackUrl" : "https://p.scdn.co/mp3-preview/89982dfa4f2b2b1dc930c28fb5d22b0e2d0e9e7f?cid=613834041d6342f8b26d78e730c2c746",
+    "imageUrl" : "https://picsum.photos/id/3/200/200",
+    "context" : "좋아요 3개",
   },
   {
-    "장르" : "댄스",
-    "id" : "댄스3-2",
-    "좋아요" : 3,
-    "url" : "https://picsum.photos/id/6/200/200"
-  },
-  {
-    "장르" : "발라드",
-    "id" : "발라드4",
+    "postId" : 4,
+    "userId" : 4,
+    "nickname" : "이연이",
+    "genre" : "댄스",
+    "title" : "종합 4번, 댄스 2번",
     "좋아요" : 2,
-    "url" : "https://picsum.photos/id/7/200/200"
+    "trackUrl" : "https://p.scdn.co/mp3-preview/89982dfa4f2b2b1dc930c28fb5d22b0e2d0e9e7f?cid=613834041d6342f8b26d78e730c2c746",
+    "imageUrl" : "https://picsum.photos/id/4/200/200",
+    "context" : "좋아요 2개",
   },
 ]

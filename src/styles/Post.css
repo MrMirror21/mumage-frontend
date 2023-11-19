@@ -12,10 +12,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center; 
-    padding: 12px 16px;
+    padding: 0px 5px;
+    margin-bottom: 15px;
 }
 #nickname {
-    padding: 12px 16px;
+    padding: 5px 10px;
     color: var(--text-text-primary, #242424);
     font-size: 25px;
 }
@@ -28,12 +29,32 @@
     align-items: center; 
 }
 
+#User {
+    display: flex;
+    width: 375px;
+    padding: 10px 14px;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+}
+
 #like-num {
     margin-right: 10px;
     color: var(--text-text-secondary, #828282);
 }
 
 #like-num-icon {
+    display: inline-block;
+    color: transparent;
+    color : #5151C6
+}
+
+#user {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+#user-icon {
     display: inline-block;
     color: transparent;
     color : #5151C6
@@ -51,10 +72,12 @@
 }
 
 #title {
-    font-size: 25px;
+    font-size: 20px;
     margin-bottom: 10px;
+    font-weight: 700;
 }
 
 #context {
     color: var(--text-text-secondary, #828282);
+    font-weight: 500;
 }

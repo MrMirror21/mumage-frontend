@@ -32,6 +32,6 @@ button[type="submit"] {
   padding: 5px 10px 6px 10px;
   color: white;
   cursor: pointer;
-  border-radius: 30px;
+  border-radius: 10px;
   background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));
 }

@@ -7,7 +7,8 @@ import {useNavigate} from 'react-router-dom';
 import {FakeDataArr} from '../store/FakeDataArr';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
-import {faHeart} from '@fortawesome/free-solid-svg-icons';
+import {faUser} from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 
 export const GridItem = styled.div`
   aspect-ratio: 1 / 1;
@@ -41,16 +42,19 @@ const Post = () => {
       <Icon/>
       <div className="arrow-left-menu">
         <button id="arrow-left-icon" onClick={goBackWithState}><FontAwesomeIcon icon={faArrowLeft} style = {{backgroundColor:'white', fontSize:'20px'}} /></button>
-        <button id="like"><FontAwesomeIcon icon={faHeart} style = {{backgroundColor:'white', fontSize:'20px'}} /></button>
+        <button id="like"><FontAwesomeIcon id="like-num-icon" icon={faHeartRegular} style={{ backgroundColor: 'white', fontSize: '20px' }} /></button>
       </div>
-      <div id="nickname">{postData["nickname"]}</div>
+      <div id="User">
+        <FontAwesomeIcon id="user-icon"icon={faUser} style={{ backgroundColor: 'white', fontSize: '20px' }} />
+        <div id="user">{postData["nickname"]}</div>
+      </div>
       <SelectGridContainer>
         <GridItem><img src={postData["imageUrl"]}></img></GridItem>
       </SelectGridContainer>
       <div className='like-num-menu'>
         <div id="likeNum" >
           <div id="like-num">{postData["좋아요"]}</div>
-          <FontAwesomeIcon id="like-num-icon"icon={faHeart} style = {{backgroundColor:'white', fontSize:'20px'}} />
+          <FontAwesomeIcon id="like-num-icon"icon={faHeartRegular} style = {{backgroundColor:'white', fontSize:'20px'}} />
         </div>
       </div>
       <div id="text">
@@ -64,5 +68,5 @@ const Post = () => {
 export default Post;
 
 const SelectGridContainer = styled.div`
-  margin: 16px; 
+  margin: 0; 
 `;

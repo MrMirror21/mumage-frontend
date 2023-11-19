@@ -24,14 +24,15 @@ export const GridItem = styled.div`
     height : 100%,
     object-fit : cover;
     border-radius: 10px;
+    z-index: 10;
   }
 `;
 
 export const Button = styled.button`
-  padding: 5px 10px 6px 10px;
+  padding: 5px 8px 5px 8px;
   color: white;
   cursor: pointer;
-  border-radius: 30px;
+  border-radius: 10px;
   background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));
 `;
 
@@ -133,7 +134,7 @@ const Section = () => {
 
   return (
     <div>
-      <SelectBoxContainer>
+      <SelectBoxContainer id="select-block">
         <SelectBox onChange={(value) => {
           setSectionValue(value);
           setCurrentPage(1);
@@ -148,7 +149,7 @@ const Section = () => {
           {order === 'default' ? 'Trending' : 'Recent'}
         </button>
       </div>
-      <GridContainer style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
+      <GridContainer id="grid-block"style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
         {displayedData.map((data, index) => (
           <Link to={`/Post/${data["postId"]}`} key={index}>
             <GridItem key={index}><img src={data["imageUrl"]}/></GridItem>

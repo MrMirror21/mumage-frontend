@@ -33,13 +33,17 @@ const SelectBox = ({onChange, className}) => {
     }),
     option: (provided, state) => ({
       ...provided,
-      opacity: 0.6,
+      opacity: 0.9,
       textAlign: 'center',
       fontWeight: 700,
       background: 'var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%))',
       padding: '16px',
       marginBottom: '5px',
       borderRadius: '10px',
+      zIndex: 1000,
+      position: 'relative',
+      lineHeight:'10px',
+      border: '3px solid #5151C6',
       color:'white',
       ':hover': {
         opacity: 1,
@@ -72,4 +76,5 @@ const StyledSelectBox = styled.div`
   background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));
   align-self: center;
   cursor: pointer;
+  opacity: 0.9;
 `;

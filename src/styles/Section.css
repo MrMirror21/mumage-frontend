@@ -14,3 +14,13 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+#grid-block {
+    z-index: 1;
+    position:relative;
+}
+
+#select-block {
+    z-index: 50;
+    position:relative;
+}

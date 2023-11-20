@@ -59,6 +59,7 @@ const ShowFeed = () => {
                                                 onClick={() => { navigate(`imgDetail/${post["postId"]}`); }}
                                             />
                                             <DivBot>
+                                                {post["liked"]}
                                                 <AiOutlineHeart style={{ width: "1.5em", height: "1.5em", color: "red" }} />
                                             </DivBot>
                                         </Div>

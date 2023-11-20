@@ -69,10 +69,12 @@ const PageDetail = () => {
                             </GenreInfo>
                         )
                     })}
-                    <HeartInfo>
-                        <AiOutlineHeart style={{ width: "2.5em", height: "2.5em", color: "red" }} />
-                    </HeartInfo>
+
                 </Row>
+                <HeartInfo>
+                    {post["liked"]}
+                    <AiOutlineHeart style={{ width: "2.5em", height: "2.5em", color: "red" }} />
+                </HeartInfo>
 
                 <SongInfo>
                     <div style={{ fontStyle: "italic" }}>Song Title: {post.title}</div>
@@ -149,9 +151,11 @@ const GenreInfo = styled.div`
 `
 
 const HeartInfo = styled.div`
-    position: absolute;
-    right: 1em;
-    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 `
 
 const SongInfo = styled.div`
@@ -159,7 +163,7 @@ const SongInfo = styled.div`
     padding: 3px;
     text-align:center;
     margin-left: 5px;
-    margin-top: 50px;
+    margin-top: 20px;
     margin-bottom: 25px;
 `
 

@@ -35,6 +35,7 @@ const MyPage = () => {
     return (
         <Frame>
             <Profile width={width} />
+
             <MyFeed gridColumns={gridColumns} />
         </Frame>
     );

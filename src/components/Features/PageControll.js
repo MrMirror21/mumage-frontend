@@ -7,10 +7,10 @@ import { useEffect } from "react";
 import SectionDevide from "../../pages/MainPage/SectionChange";
 import MyPage from "../../pages/MyPage/MyPage";
 
-import { users } from "../../store/ServerData";
-import { index, userInfo } from "../../utils/FetchDataRecoil";
+import { postsDataState, usersDataState } from "../../store/ServerData";
+import { index, postsState, userInfo, usersState } from "../../utils/FetchDataRecoil";
 
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 
 const styleEmojiPlus = {
@@ -26,9 +26,16 @@ const PageControll = () => {
         setIndex(Index);
     }
     const setUser = useSetRecoilState(userInfo);
+    const users = useRecoilValue(usersDataState);
+    const posts = useRecoilValue(postsDataState);
+
+    const setUsers = useSetRecoilState(usersState);
+    const setPosts = useSetRecoilState(postsState);
 
     useEffect(() => {
-        setUser(users[1]);
+        setUsers(users);
+        setPosts(posts);
+        setUser(users[0]);
     }, [setUser]);
 
 

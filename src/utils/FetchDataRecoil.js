@@ -1,5 +1,7 @@
 import { atom, selector } from "recoil";
-import { users, posts } from "../store/ServerData";
+
+
+
 export const index = atom({
     key: "indexPage",
     default: 1,
@@ -55,12 +57,12 @@ export const getSavedFileImage = atom({
 
 export const usersState = atom({
     key: "usersState",
-    default: [...users],
+    default: [],
 });
 
 export const postsState = atom({
     key: "postsState",
-    default: [...posts],
+    default: [],
 });
 
 export const postsFilterState = atom({

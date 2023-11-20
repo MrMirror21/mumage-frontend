@@ -1,15 +1,16 @@
 import styled from "styled-components";
 import { useRecoilValue } from 'recoil';
-import { getFavoriteGenre } from "../../utils/FetchDataRecoil";
+import { userInfo } from "../../utils/FetchDataRecoil";
 
 const FavoriteGenre = () => {
 
-    const genres = useRecoilValue(getFavoriteGenre);
-    const display = (genres[0] === "" || genres[0] === " ") ? <Nothing>Write your Favorite Genres!</Nothing> : <Genre>
-        {genres.map((g, i) => (
-            <Ggenre key={i}>#{g}</Ggenre>
-        ))}
-    </Genre>;
+    const aa = useRecoilValue(userInfo);
+    const display =
+        <Genre>
+            {aa["genres"][0] === "" ? null : aa["genres"].map((g, i) => (
+                <Ggenre key={i}>#{g}</Ggenre>
+            ))}
+        </Genre>;
     //fetch data and get chosen Genre <div key={post.id} className="post">
     return display;
 }

@@ -21,7 +21,7 @@ const Pagination = ({ total, limit, pageNum, setPage }) => {
           .map((_, i) => (
             <Button
               key={i}
-              onClick={() => setPage(firstNum + i)}
+              onClick={() => { setPage(firstNum + i); }}
               aria-current={pageNum === firstNum + i ? "page" : null}
             >
               {firstNum + i}

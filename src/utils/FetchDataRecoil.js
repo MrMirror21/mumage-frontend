@@ -1,4 +1,10 @@
 import { atom, selector } from "recoil";
+import { users, posts } from "../store/ServerData";
+
+export const index = atom({
+    key: "indexPage",
+    default: 1,
+})
 
 export const page = atom({
     key: "pageNumState",
@@ -13,25 +19,17 @@ export const isfollowing = atom({
 export const first = atom({
     key: "first/favorite",
     default: "",
-})
+});
 
 export const second = atom({
     key: "second/favorite",
     default: "",
-})
+});
+
 export const third = atom({
     key: "third/favorite",
     default: "",
-})
-
-export const getDataSelector = selector({
-    key: 'imgData/get',
-    get: async ({ get }) => {
-        const dataFollowing = await (await fetch('https://picsum.photos/v2/list?page=1&limit=100')).json();
-        const dataRecommend = await (await fetch('https://picsum.photos/v2/list?page=3&limit=100')).json();
-        return [dataFollowing, dataRecommend];
-    }
-})
+});
 
 export const getFavoriteGenre = selector({
     key: 'favGenres',
@@ -45,13 +43,59 @@ export const getFavoriteGenre = selector({
     }
 })
 
-export const getSavedProfileImage = atom({
-    key: "UserProfileImage",
-    default: "",
-});
+export const userInfo = atom({
+    key: "user",
+    default: {},
+})
+
 
 export const getSavedFileImage = atom({
     key: "UploadedFile",
     default: "",
-}
-)
+});
+
+export const usersState = atom({
+    key: "usersState",
+    default: users,
+});
+
+export const postsState = atom({
+    key: "postsState",
+    default: posts,
+});
+
+export const postsFilterState = atom({
+    key: "postsFilterState",
+    default: "Show All",
+});
+
+export const filteredPostsState = selector({
+    key: "filteredPostsState",
+    get: async ({ get }) => {
+        const filter = get(postsFilterState);
+        const list = get(postsState);
+        const user = get(userInfo);
+        switch (filter) {
+            case 'Following':
+                const ll = list.filter((post) => {
+                    let ok = false;
+                    for (var i = 0; i < user["follows"].length; i++) {
+                        if (user["follows"][i]["followId"] === post["userId"]) {
+                            ok = true;
+                        }
+                    }
+                    return ok;
+                });
+                return ll;
+            case 'Recommend':
+                return list.filter((post) => {
+                    return post["userId"] !== user["userId"];
+                });
+            default:
+                return list;
+        }
+    }
+});
+
+
+

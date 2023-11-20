@@ -1,5 +1,4 @@
 import { React, Suspense, useReducer } from 'react'
-import { Link } from 'react-router-dom'
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import Joyride, { ACTIONS, STATUS, EVENTS } from 'react-joyride';
@@ -9,19 +8,22 @@ import './SectionChange.css';
 
 import Loading from '../../components/Features/Loading';
 import ShowFeed from '../../components/ShowingFeed/ImageRender';
-import { isfollowing, page } from '../../utils/FetchDataRecoil';
+import { isfollowing, page, userInfo } from '../../utils/FetchDataRecoil';
 import { useState } from 'react';
+import { users } from '../../store/ServerData';
 
 const SectionDevide = () => {
     const [isFollowing, setIsFollowing] = useRecoilState(isfollowing);
     const setPage = useSetRecoilState(page);
-    const [index, setIndex] = useState(1);
-
+    const [index, setIndex] = useState(isFollowing ? 1 : 2);
     const onClickHandler = (Index) => {
-        setIsFollowing(!isFollowing);
+        setIsFollowing(Index === 1 ? true : false);
         setPage(1);
         setIndex(Index);
     }
+
+
+    const [followList, setFollowList] = useRecoilState(userInfo);
 
     const [tourState, dispatch] = useReducer(reducer, INITIAL_STATE);
     const callback = (data) => {
@@ -38,6 +40,7 @@ const SectionDevide = () => {
     const startTour = () => {
         dispatch({ type: "RESTART" });
     };
+
 
     return (
         <div style={{ backgroundColor: "#F6F7F9" }}>

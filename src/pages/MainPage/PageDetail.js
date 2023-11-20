@@ -1,15 +1,25 @@
 import { AiOutlineHeart } from "react-icons/ai";
 import { IoMdArrowBack } from "react-icons/io";
 import { useNavigate, useParams } from "react-router";
-import { ReactComponent as DefaultProfile } from "../../assets/Profile.svg";
 import styled from "styled-components";
-
+import { posts, users } from "../../store/ServerData";
 const PageDetail = () => {
     const params = useParams();
+    const postIdentifier = params.postId;
+    const post = posts[postIdentifier - 1];
+    const userIdPost = post["userId"];
+    const user = users.find((e) => {
+        return e["userId"] === userIdPost
+    });
+    const Profile = user["profileUrl"];
+    const UserProfile = typeof (user["profileUrl"]) === 'string' ? <ProfileImg src={user["profileUrl"]} alt="profileImg" />
+        : <Profile style={{
+            borderRadius: "10em",
+            width: "2em",
+            height: "2em",
+            objectFit: "cover",
+        }} />;
     const navigate = useNavigate();
-    const genre = "K-Pop";
-    const title = "Fry's Dream";
-    const context = "나만의 길을 찾고 싶다";
     const heart = 304;
     return (
         <>
@@ -31,25 +41,33 @@ const PageDetail = () => {
             <Frame>
                 <Div>
                     <div style={{ marginLeft: "10px" }}>
-                        <DefaultProfile />
+                        {UserProfile}
                     </div>
-                    <div style={{ marginBottom: "5px" }}>{params.authorName}</div>
+                    <div style={{ marginBottom: "5px" }}>{post.nickname}</div>
                 </Div>
-                <Img src={`https://picsum.photos/id/${params.imgId}/${params.width}/${params.height}`} alt='icon' />
+                <Img src={post.imageUrl} key={post.postId} alt='icon' />
             </Frame>
             <div>
                 <HeadComment>
-                    {context}
+                    {post.context}
                 </HeadComment>
-                <GenreInfo>
-                    <div style={{ fontStyle: "italic" }}>#{genre}</div>
-                </GenreInfo>
+                <Row>
+                    {post.genre.map((e, i) => {
+                        return (
+                            <GenreInfo key={i}>
+                                <div style={{ fontStyle: "italic" }}>
+                                    #{e}
+                                </div>
+                            </GenreInfo>
+                        )
+                    })}
+                </Row>
                 <HeartInfo>
                     <AiOutlineHeart style={{ width: "2em", height: "2em" }} />
                     <div>{heart}</div>
                 </HeartInfo>
                 <SongInfo>
-                    <div style={{ fontStyle: "italic" }}>Song Title: {title}</div>
+                    <div style={{ fontStyle: "italic" }}>Song Title: {post.title}</div>
                 </SongInfo>
             </div>
         </>
@@ -57,6 +75,11 @@ const PageDetail = () => {
 }
 
 export default PageDetail;
+
+const Row = styled.div`
+    display: flex;
+    flex-direction: row;
+`
 
 const TopSection = styled.div`
     display: flex;
@@ -104,10 +127,12 @@ const HeadComment = styled.div`
 `
 
 const GenreInfo = styled.div`
-    display: block;
+    display: flex;
+    flex-direction: row;
     padding: 3px;
     border-radius: 10px;
-    width: 80px;
+    width: auto;
+    height: 30px;
     text-align:center;
     margin-left: 5px;
     margin-top: 10px;
@@ -130,4 +155,11 @@ const SongInfo = styled.div`
     margin-left: 5px;
     margin-top: 50px;
     margin-bottom: 25px;
+`
+
+const ProfileImg = styled.img`
+    border-radius: 10em;
+    width: 2em;
+    height: 2em;
+    object-fit: cover;
 `

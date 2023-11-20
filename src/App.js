@@ -4,7 +4,7 @@ import PageDetail from './pages/MainPage/PageDetail';
 import MyPage from './pages/MyPage/MyPage';
 import PageControll from './components/Features/PageControll';
 import Upload from './pages/Upload';
-import SignUp from './pages/SignUp';
+import SignUp from './pages/Signup';
 import SignIn from './pages/SignIn';
 import Explore from './pages/Explore';
 import Post from './pages/Post';
@@ -18,7 +18,7 @@ const App = () => {
       <RecoilRoot>
         <Routes>
           <Route path="/" element={<PageControll />} />
-          <Route path="/imgDetail/:imgId/:width/:height/:authorName" element={<PageDetail />} />
+          <Route path="/imgDetail/:postId" element={<PageDetail />} />
           <Route path="/MyPage" element={<MyPage />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />

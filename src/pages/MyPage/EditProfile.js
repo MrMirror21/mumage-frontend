@@ -6,23 +6,28 @@ import React, { useRef, useEffect } from 'react';
 import useConfirm from '../../hooks/confirm';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 
-import { getSavedProfileImage, getSavedFileImage, getFavoriteGenre } from '../../utils/FetchDataRecoil';
+import { getSavedFileImage, getFavoriteGenre } from '../../utils/FetchDataRecoil';
 
 import AvatarEditor from 'react-avatar-editor';
 import styled from 'styled-components';
 import { useState } from 'react';
 
+import { ReactComponent as ProfileIcon } from "../../assets/Profile.svg";
+import { users } from '../../store/ServerData';
 
 
-const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen }) => {
+
+const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen, user, setUser }) => {
     useEffect(() => {
-        modalIsOpen ? setIsSideOpen(false) : setIsSideOpen(isSideOpen)
-        console.log(file);
+        modalIsOpen ? setIsSideOpen(false) : setIsSideOpen(isSideOpen);
     }, [modalIsOpen]);
 
-    const setSavedImage = useSetRecoilState(getSavedProfileImage);
     const [file, setFile] = useRecoilState(getSavedFileImage);
     const editorRef = useRef(null);
+
+    const index = users.findIndex((e) => {
+        return e.userId === user.userId;
+    });
 
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
@@ -37,15 +42,31 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen })
 
     const action = () => {
         setFile("");
-        setSavedImage(null);
         setModalIsOpen(false);
+        setUser(prev => ({
+            ...prev,
+            "profileUrl": ProfileIcon,
+        }));
+        users[index] = {
+            ...users[index],
+            "profileUrl": ProfileIcon,
+        }
     }
 
     const actionAll = () => {
         setFile("");
-        setSavedImage(null);
         setModalIsOpen(false);
         setFavoriteGenre(["", "", ""]);
+        setUser(prev => ({
+            ...prev,
+            "profileUrl": ProfileIcon,
+            "genres": [],
+        }));
+        users[index] = {
+            ...users[index],
+            "profileUrl": ProfileIcon,
+            "genres": [],
+        }
     }
 
     const confirmDelete = useConfirm(
@@ -74,7 +95,16 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen })
     const handleSave = () => {
         if (editorRef.current) {
             const canvas = editorRef.current.getImageScaledToCanvas().toDataURL();
-            setSavedImage(canvas);
+            setUser(prev => ({
+                ...prev,
+                "profileUrl": canvas,
+                "genres": [firstValue, secondValue, thirdValue],
+            }));
+            users[index] = {
+                ...users[index],
+                "profileUrl": canvas,
+                "genres": [firstValue, secondValue, thirdValue],
+            }
             setModalIsOpen(false);
             setFavoriteGenre([firstValue, secondValue, thirdValue]);
             alert("Done!");
@@ -87,9 +117,9 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen })
         <div key={file.name} >
             <div>
                 <AvatarEditor
-                    key={file ? file.name : 'no-file'}
+                    key={file ? file.name : "setted-image"}
                     ref={editorRef}
-                    image={file.preview}
+                    image={file ? file.preview : typeof (user["profileUrl"]) === 'string' ? user["profileUrl"] : require('../../assets/Profile.svg').default}
                     width={100}
                     height={100}
                     border={0}
@@ -101,10 +131,7 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen })
             </div>
         </div>
     );
-    useEffect(() => {
-        // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-        return () => URL.revokeObjectURL(file.preview);
-    }, [file]);
+
 
 
     return (

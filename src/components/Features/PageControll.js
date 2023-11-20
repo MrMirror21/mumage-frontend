@@ -3,9 +3,14 @@ import { GoHome } from "react-icons/go";
 import { FaRegUser } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SectionDevide from "../../pages/MainPage/SectionChange";
 import MyPage from "../../pages/MyPage/MyPage";
+
+import { users } from "../../store/ServerData";
+import { index, userInfo } from "../../utils/FetchDataRecoil";
+
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 
 const styleEmojiPlus = {
@@ -16,20 +21,27 @@ const styleEmojiPlus = {
 
 const PageControll = () => {
     const navigate = useNavigate();
-    const [index, setIndex] = useState(1);
+    const [ind, setIndex] = useRecoilState(index);
     const onClickHander = (Index) => {
         setIndex(Index);
     }
+    const setUser = useSetRecoilState(userInfo);
+
+    useEffect(() => {
+        setUser(users[2]);
+    }, [setUser]);
+
+
     return (
         <>
-            {index === 1 ? <SectionDevide /> : <MyPage />}
+            {ind === 1 ? <SectionDevide /> : <MyPage />}
             <Sticky>
                 <BotNav>
-                    <FirstCol onClick={() => onClickHander(1)} aria-disabled={index === 1}>
+                    <FirstCol onClick={() => onClickHander(1)} aria-disabled={ind === 1}>
                         <GoHome style={{
                             width: "2.4em",
                             height: "2.4em",
-                            color: index === 1 ? "#3385ff" : "BDBDBD",
+                            color: ind === 1 ? "#3385ff" : "BDBDBD",
                         }} />
                     </FirstCol>
                     <SecondCol onClick={() => navigate('/addPost')}>
@@ -38,11 +50,11 @@ const PageControll = () => {
                         </Second2Col>
 
                     </SecondCol>
-                    <ThirdCol onClick={() => onClickHander(3)} aria-disabled={index === 3}>
+                    <ThirdCol onClick={() => onClickHander(3)} aria-disabled={ind === 3}>
                         <FaRegUser style={{
                             width: "2em",
                             height: "2em",
-                            color: index === 3 ? "#3385ff" : "BDBDBD",
+                            color: ind === 3 ? "#3385ff" : "BDBDBD",
                         }} />
                     </ThirdCol>
                 </BotNav>

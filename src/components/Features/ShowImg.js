@@ -55,15 +55,6 @@ const Div = styled.div`
     align-items: center;
 `
 
-const ProfileImg = styled.img`
-    margin-left: 10px;
-    object-fit: cover;
-    border-radius: 10em;
-    width: 1.5em;
-    height: 1.5em;
-    border: 2px solid #000;
-`
-
 const DivBot = styled.div`
     display: flex;
     justify-content: right;

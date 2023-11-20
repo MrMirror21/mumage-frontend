@@ -1,67 +1,20 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { userInfo } from "../../utils/FetchDataRecoil";
+import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { posts } from "../../store/ServerData";
 
 const MyFeed = ({ gridColumns }) => {
-    const [posts, setPosts] = useState([
-        {
-            id: 1,
-            username: 'john_doe',
-            imageUrl: 'https://placekitten.com/300/200',
-            likes: 120,
-            comments: [
-                { id: 1, username: 'mary', text: 'Cute kitty!' },
-                { id: 2, username: 'jane', text: 'Love it! 😻' },
-            ],
-        },
-        {
-            id: 2,
-            username: 'john_doe',
-            imageUrl: 'https://placekitten.com/300/200',
-            likes: 120,
-            comments: [
-                { id: 1, username: 'mary', text: 'Cute kitty!' },
-                { id: 2, username: 'jane', text: 'Love it! 😻' },
-            ],
-        },
-        {
-            id: 3,
-            username: 'john_doe',
-            imageUrl: 'https://placekitten.com/300/200',
-            likes: 120,
-            comments: [
-                { id: 1, username: 'mary', text: 'Cute kitty!' },
-                { id: 2, username: 'jane', text: 'Love it! 😻' },
-            ],
-        },
-        {
-            id: 4,
-            username: 'john_doe',
-            imageUrl: 'https://placekitten.com/300/200',
-            likes: 120,
-            comments: [
-                { id: 1, username: 'mary', text: 'Cute kitty!' },
-                { id: 2, username: 'jane', text: 'Love it! 😻' },
-            ],
-        },
-        {
-            id: 5,
-            username: 'john_doe',
-            imageUrl: 'https://placekitten.com/300/200',
-            likes: 120,
-            comments: [
-                { id: 1, username: 'mary', text: 'Cute kitty!' },
-                { id: 2, username: 'jane', text: 'Love it! 😻' },
-            ],
-        },// Add more posts as needed
-    ]);
-
+    const navigate = useNavigate();
+    const user = useRecoilValue(userInfo);
     return (
         <Fr>
             <Row style={{ gridTemplateColumns: `repeat(${gridColumns}, 1fr)` }}>
                 {posts.map((post) => (
-                    <div key={post.id} className="post">
-                        <FeedImg src={post.imageUrl} alt={`Post by ${post.username}`} />
-                    </div>
+                    user["userId"] === post["userId"] ?
+                        <div key={post["postId"]} className="post">
+                            <FeedImg src={post.imageUrl} alt={`Post by ${post.username}`} onClick={() => navigate(`/imgDetail/${post.postId}`)} />
+                        </div> : <div key={post["postId"]}></div>
                 ))}
             </Row>
         </Fr>

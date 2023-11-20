@@ -5,13 +5,10 @@ import Profile from '../../components/UserInfo/profile';
 import MyFeed from '../../components/UserInfo/myFeed';
 
 
-
 const MyPage = () => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [gridColumns, setGridColumns] = useState(3);
     const [width, setWidth] = useState("0%");
-
-
 
     useEffect(() => {
         const handleResize = () => {

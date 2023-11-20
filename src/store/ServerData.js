@@ -2,6 +2,12 @@ import fryDream from "../assets/fry's dream.png";
 import smoke from "../assets/smoke.png";
 import drama from "../assets/drama.png";
 import nowAndThen from "../assets/now and then.png";
+import houdini from "../assets/Houdini.png";
+import standingNextToYou from "../assets/standing next to you.png";
+import perfectNight from "../assets/perfect night.png";
+import sayingEndOfUs from "../assets/헤어지자 말해요.png";
+import fallInFall from "../assets/가을 타나봐.png"
+import notSorry from "../assets/not sorry.png";
 import { ReactComponent as ProfileIcon } from "../assets/Profile.svg";
 
 export const users = [
@@ -113,5 +119,65 @@ export const posts = [
     "trackUrl" : "https://open.spotify.com/track/4vziJcnB2Qyi9o4nIRUeN7",
     "imageUrl" : nowAndThen,
     "context" : "옛날 생각이 나네요",
+  },
+  {
+    "postId" : 5,
+    "userId" : 1,
+    "nickname" : "이리듬",
+    "genre" : ["dance pop", "pop", "uk pop"],
+    "title" : "Houdini",
+    "trackUrl" : "https://p.scdn.co/mp3-preview/df4af86970ffb1a7042d1d228bcea7b4aabfdba4?cid=613834041d6342f8b26d78e730c2c746",
+    "imageUrl" : houdini,
+    "context" : "",
+  },
+  {
+  "postId" : 6,
+  "userId" : 1,
+  "nickname" : "이리듬",
+  "genre" : ["k-pop"],
+  "title" : "Standing Next to You",
+  "trackUrl" : "https://p.scdn.co/mp3-preview/b1cac49f0f6043eae3a0c0557fe16a9579fbc519?cid=613834041d6342f8b26d78e730c2c746",
+  "imageUrl" : standingNextToYou,
+  "context" : "",
+  },
+  {
+    "postId" : 7,
+    "userId" : 1,
+    "nickname" : "이리듬",
+    "genre" : ["k-pop"],
+    "title" : "Perfect Night",
+    "trackUrl" : "https://p.scdn.co/mp3-preview/4e84e2dc9edab896f88263c634e88f39a6db61e1?cid=613834041d6342f8b26d78e730c2c746",
+    "imageUrl" : perfectNight,
+    "context" : "",
+  },
+  {
+    "postId" : 8,
+    "userId" : 1,
+    "nickname" : "이리듬",
+    "genre" : ["k-pop ballad"],
+    "title" : "헤어지자 말해요",
+    "trackUrl" : "https://p.scdn.co/mp3-preview/55878d433b375e41b0fdde2f5fded09c88898ba4?cid=613834041d6342f8b26d78e730c2c746",
+    "imageUrl" : sayingEndOfUs,
+    "context" : "",
+  },
+  {
+    "postId" : 9,
+    "userId" : 1,
+    "nickname" : "이리듬",
+    "genre" : ["k-pop ballad"],
+    "title" : "가을 타나봐",
+    "trackUrl" : "https://p.scdn.co/mp3-preview/43307ae13246ac33e9867ddd26ba29902fb03064?cid=613834041d6342f8b26d78e730c2c746",
+    "imageUrl" : fallInFall,
+    "context" : "",
+  },
+  {
+    "postId" : 10,
+    "userId" : 1,
+    "nickname" : "이리듬",
+    "genre" : ["k-rap"],
+    "title" : "Not Sorry",
+    "trackUrl" : "https://p.scdn.co/mp3-preview/c4c18d76b50f4b91857fae57dd909c5977cf6949?cid=613834041d6342f8b26d78e730c2c746",
+    "imageUrl" : notSorry,
+    "context" : "",
   },
 ]

@@ -3,7 +3,7 @@ import { GoHome } from "react-icons/go";
 import { FaRegUser } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import SectionDevide from "../../pages/MainPage/SectionChange";
 import MyPage from "../../pages/MyPage/MyPage";
 
@@ -28,7 +28,7 @@ const PageControll = () => {
     const setUser = useSetRecoilState(userInfo);
 
     useEffect(() => {
-        setUser(users[2]);
+        setUser(users[1]);
     }, [setUser]);
 
 

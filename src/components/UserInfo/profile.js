@@ -25,7 +25,7 @@ const Profile = ({ width }) => {
     return (
         <Column>
             <BasicWrapper style={{ fontStyle: "italic" }}>@{user["nickname"]}</BasicWrapper>
-            <GiHamburgerMenu style={{ width: "2em", height: "2em", position: "absolute", right: "2em", top: "2em", color: "#696969" }} onClick={() => setIsSideOpen(!isSideOpen)} />
+            <GiHamburgerMenu style={{ width: "2em", height: "2em", position: "absolute", right: "2em", top: "2em", color: "#696969" }} onClick={() => setIsSideOpen(true)} />
             <BasicWrapper>{UserProfile}</BasicWrapper>
             <BottomLineLeft /> <BottomLineRight />
             <BasicWrapper>
@@ -47,8 +47,7 @@ const Profile = ({ width }) => {
 
 
             {isSideOpen ? <MyMenu setIsModalOpen={setIsModalOpen} setIsSideOpen={setIsSideOpen} width={width} /> : null}
-            <EditProfile modalIsOpen={isModalOpen} setModalIsOpen={setIsModalOpen} setIsSideOpen={setIsSideOpen} isSideOpen={isSideOpen} user={user} setUser={setUser} />
-
+            {isModalOpen ? <EditProfile modalIsOpen={isModalOpen} setModalIsOpen={setIsModalOpen} setIsSideOpen={setIsSideOpen} isSideOpen={isSideOpen} user={user} setUser={setUser} /> : null}
         </Column>
     );
 }

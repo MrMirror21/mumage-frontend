@@ -5,14 +5,17 @@ import { userInfo } from "../../utils/FetchDataRecoil";
 const FavoriteGenre = () => {
 
     const aa = useRecoilValue(userInfo);
-    const display =
-        <Genre>
-            {aa["genres"][0] === "" ? null : aa["genres"].map((g, i) => (
+    const display = aa["genres"][0] === "" && aa["genres"][1] === "" && aa["genres"][2] === "" ? null :
+        aa["genres"].map((g, i) => (
+            g === "" ? null :
                 <Ggenre key={i}>#{g}</Ggenre>
-            ))}
-        </Genre>;
+        ))
     //fetch data and get chosen Genre <div key={post.id} className="post">
-    return display;
+    return (
+        <Genre>
+            {display}
+        </Genre>
+    )
 }
 
 export default FavoriteGenre;

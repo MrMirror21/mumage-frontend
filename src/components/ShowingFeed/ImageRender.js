@@ -2,11 +2,12 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from "react";
 
-import { filteredPostsState, isfollowing, page, postsFilterState } from '../../utils/FetchDataRecoil';
+import { filteredPostsState, isfollowing, page, postsFilterState, usersState } from '../../utils/FetchDataRecoil';
 import Pagination from "./Pagination";
 import styled from "styled-components";
 
 import { AiOutlineHeart } from 'react-icons/ai';
+import { GrDocumentSound } from "react-icons/gr";
 
 
 const ShowFeed = () => {
@@ -15,55 +16,72 @@ const ShowFeed = () => {
     const [pageNum, setPage] = useRecoilState(page);
     const setFilter = useSetRecoilState(postsFilterState);
     const postsList = useRecoilValue(filteredPostsState);
+    const users = useRecoilValue(usersState);
 
     useEffect(() => {
         const updateFilter = () => {
             isFollowing ? setFilter("Following") : setFilter("Recommend");
         }
         updateFilter();
-        window.scrollTo(0, 0);
     }, [isFollowing, setFilter]);
-
-    const limit = 4;
+    const limit = 5;
     const offset = (pageNum - 1) * limit;
     return (
         <>
-            <Feed className="image">
-                {postsList.slice(offset, offset + limit).map((post, i) => {
-                    const numOfHearts = 304;
-                    return (
-                        <Frame key={post.postId}>
-                            <Div>
-                                <Div>
-                                    <div>
-                                    </div>
-                                    <div style={{ textAlign: "center" }}>{post["nickname"]}</div>
-                                </Div>
-                                <Img
-                                    src={post["imageUrl"]}
-                                    key={post["postId"]}
-                                    alt='icon'
-                                    onClick={() => { navigate(`imgDetail/${post["postId"]}`); }}
-                                />
-                                <DivBot>
-                                    {numOfHearts}
-                                    <AiOutlineHeart style={{ width: "1.5em", height: "1.5em", color: "red" }} />
-                                </DivBot>
-                            </Div>
-                        </Frame>
-                    );
-                })}
-            </Feed>
+            {
+                postsList.length !== 0 ?
 
-            <footer className="pagination">
-                <Pagination
-                    total={postsList.length}
-                    limit={limit}
-                    pageNum={pageNum}
-                    setPage={setPage}
-                />
-            </footer>
+                    <>
+                        <Feed className="image">
+                            {postsList.slice(offset, offset + limit).map((post) => {
+                                const user = users.find((e) => {
+                                    return e["userId"] === post["userId"];
+                                });
+                                const Profile = user["profileUrl"];
+                                const UserProfile = typeof (user["profileUrl"]) === 'string' ? <ProfileImg src={user["profileUrl"]} alt="profileImg" />
+                                    : <Profile style={{
+                                        borderRadius: "10em",
+                                        width: "1.5em",
+                                        height: "1.5em",
+                                        objectFit: "cover",
+                                    }} />;
+                                return (
+                                    <Frame key={post.postId}>
+                                        <Div style={{ alignItems: "center" }}>
+                                            <NameDiv>
+                                                {UserProfile}
+                                                {post["nickname"]}
+                                            </NameDiv>
+                                            <Img
+                                                src={post["imageUrl"]}
+                                                key={post["postId"]}
+                                                alt='icon'
+                                                onClick={() => { navigate(`imgDetail/${post["postId"]}`); }}
+                                            />
+                                            <DivBot>
+                                                <AiOutlineHeart style={{ width: "1.5em", height: "1.5em", color: "red" }} />
+                                            </DivBot>
+                                        </Div>
+                                    </Frame>
+                                );
+                            })}
+                        </Feed>
 
+                        <footer className="pagination">
+                            <Pagination
+                                total={postsList.length}
+                                limit={limit}
+                                pageNum={pageNum}
+                                setPage={setPage}
+                            />
+                        </footer>
+                    </> :
+                    <EmptyPage>
+                        <GrDocumentSound size="8em" color="#BDBDBD" />
+                        <div style={{ color: "#BDBDBD", fontSize: "25px", fontStyle: "italic" }}>No Posts</div>
+                    </EmptyPage>
+
+            }
         </>
     );
 }
@@ -101,7 +119,11 @@ const Div = styled.div`
     flex-direction: column;
     gap: 5px;
 `
-
+const NameDiv = styled.div`
+    display: flex;
+    justify-content: space-around;
+    
+`
 const DivBot = styled.div`
     display: flex;
     justify-content: right;
@@ -111,7 +133,18 @@ const DivBot = styled.div`
 
 const ProfileImg = styled.img`
     border-radius: 10em;
-    width: 2em;
-    height: 2em;
+    width: 1.5em;
+    height: 1.5em;
     object-fit: cover;
+`
+
+const EmptyPage = styled.div`
+    width: 100%;
+    height:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10em;
+    background-color: #F6F7F9;
 `

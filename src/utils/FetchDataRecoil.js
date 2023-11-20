@@ -1,6 +1,5 @@
 import { atom, selector } from "recoil";
 import { users, posts } from "../store/ServerData";
-
 export const index = atom({
     key: "indexPage",
     default: 1,
@@ -56,12 +55,12 @@ export const getSavedFileImage = atom({
 
 export const usersState = atom({
     key: "usersState",
-    default: users,
+    default: [...users],
 });
 
 export const postsState = atom({
     key: "postsState",
-    default: posts,
+    default: [...posts],
 });
 
 export const postsFilterState = atom({
@@ -82,6 +81,7 @@ export const filteredPostsState = selector({
                     for (var i = 0; i < user["follows"].length; i++) {
                         if (user["follows"][i]["followId"] === post["userId"]) {
                             ok = true;
+                            break;
                         }
                     }
                     return ok;
@@ -90,6 +90,12 @@ export const filteredPostsState = selector({
             case 'Recommend':
                 return list.filter((post) => {
                     return post["userId"] !== user["userId"];
+                });
+            case 'MyFeed':
+                return list.filter((post) => {
+                    {
+                        return user["userId"] === post["userId"]
+                    }
                 });
             default:
                 return list;

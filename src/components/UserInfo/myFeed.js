@@ -1,22 +1,40 @@
 import styled from "styled-components";
-import { userInfo } from "../../utils/FetchDataRecoil";
-import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
-import { posts } from "../../store/ServerData";
+import { GrDocumentSound } from "react-icons/gr";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { filteredPostsState, postsFilterState } from "../../utils/FetchDataRecoil";
+import { useEffect } from "react";
 
 const MyFeed = ({ gridColumns }) => {
     const navigate = useNavigate();
-    const user = useRecoilValue(userInfo);
+    const setFilter = useSetRecoilState(postsFilterState);
+    const postsList = useRecoilValue(filteredPostsState);
+
+    useEffect(() => {
+        const updateFilter = () => {
+            setFilter("MyFeed");
+        }
+        updateFilter();
+    }, [setFilter]);
     return (
         <Fr>
-            <Row style={{ gridTemplateColumns: `repeat(${gridColumns}, 1fr)` }}>
-                {posts.map((post) => (
-                    user["userId"] === post["userId"] ?
+            {postsList.length !== 0 ?
+                <Row style={{ gridTemplateColumns: `repeat(${gridColumns}, 1fr)` }}>
+                    {postsList.map((post) => (
                         <div key={post["postId"]} className="post">
-                            <FeedImg src={post.imageUrl} alt={`Post by ${post.username}`} onClick={() => navigate(`/imgDetail/${post.postId}`)} />
-                        </div> : <div key={post["postId"]}></div>
-                ))}
-            </Row>
+                            <FeedImg
+                                src={post.imageUrl}
+                                alt={`Post by ${post.username}`}
+                                onClick={() => navigate(`/imgDetail/${post.postId}`)} />
+                        </div>
+                    ))}
+                </Row> :
+                <EmptyPage>
+                    <GrDocumentSound size="8em" color="#BDBDBD" />
+                    <div style={{ color: "#BDBDBD", fontSize: "25px", fontStyle: "italic" }}>No Feed</div>
+                </EmptyPage>
+            }
+
         </Fr>
     );
 }
@@ -35,7 +53,6 @@ const Fr = styled.nav`
     align-items: center;
     margin-top: 50px;
     
-    
 `
 //grid - template - columns: 1fr 1fr 1fr 1fr;
 
@@ -45,4 +62,15 @@ const FeedImg = styled.img`
     object-fit: cover;
     align-items: center;
     border-radius: 10px;
+`
+
+const EmptyPage = styled.div`
+    width: 100%;
+    height:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5em;
+    background-color: #F6F7F9;
 `

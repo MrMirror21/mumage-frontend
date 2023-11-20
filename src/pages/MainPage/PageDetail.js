@@ -2,10 +2,16 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { IoMdArrowBack } from "react-icons/io";
 import { useNavigate, useParams } from "react-router";
 import styled from "styled-components";
-import { posts, users } from "../../store/ServerData";
+
+import { postsState, usersState } from "../../utils/FetchDataRecoil";
+import { useRecoilValue } from "recoil";
+
 const PageDetail = () => {
     const params = useParams();
     const postIdentifier = params.postId;
+    const posts = useRecoilValue(postsState);
+    const users = useRecoilValue(usersState);
+
     const post = posts[postIdentifier - 1];
     const userIdPost = post["userId"];
     const user = users.find((e) => {
@@ -20,7 +26,6 @@ const PageDetail = () => {
             objectFit: "cover",
         }} />;
     const navigate = useNavigate();
-    const heart = 304;
     return (
         <>
             <Sticky>
@@ -49,7 +54,10 @@ const PageDetail = () => {
             </Frame>
             <div>
                 <HeadComment>
-                    {post.context}
+                    {post.context === "" ?
+                        <div style={{ color: "#BDBDBD" }}>No Context</div>
+                        : post.context
+                    }
                 </HeadComment>
                 <Row>
                     {post.genre.map((e, i) => {
@@ -61,11 +69,11 @@ const PageDetail = () => {
                             </GenreInfo>
                         )
                     })}
+                    <HeartInfo>
+                        <AiOutlineHeart style={{ width: "2.5em", height: "2.5em", color: "red" }} />
+                    </HeartInfo>
                 </Row>
-                <HeartInfo>
-                    <AiOutlineHeart style={{ width: "2em", height: "2em" }} />
-                    <div>{heart}</div>
-                </HeartInfo>
+
                 <SongInfo>
                     <div style={{ fontStyle: "italic" }}>Song Title: {post.title}</div>
                 </SongInfo>
@@ -136,16 +144,14 @@ const GenreInfo = styled.div`
     text-align:center;
     margin-left: 5px;
     margin-top: 10px;
-    background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));;
+    background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));
     color:white;
 `
 
 const HeartInfo = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+    position: absolute;
+    right: 1em;
+    margin-top: 5px;
 `
 
 const SongInfo = styled.div`

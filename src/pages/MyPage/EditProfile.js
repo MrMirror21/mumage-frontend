@@ -4,7 +4,7 @@ import { IoMdAddCircle } from "react-icons/io";
 
 import React, { useRef, useEffect } from 'react';
 import useConfirm from '../../hooks/confirm';
-import { useSetRecoilState, useRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
 
 import { getSavedFileImage, getFavoriteGenre } from '../../utils/FetchDataRecoil';
 
@@ -13,7 +13,6 @@ import styled from 'styled-components';
 import { useState } from 'react';
 
 import { ReactComponent as ProfileIcon } from "../../assets/Profile.svg";
-import { users } from '../../store/ServerData';
 
 
 
@@ -25,9 +24,6 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen, u
     const [file, setFile] = useRecoilState(getSavedFileImage);
     const editorRef = useRef(null);
 
-    const index = users.findIndex((e) => {
-        return e.userId === user.userId;
-    });
 
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
@@ -47,10 +43,6 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen, u
             ...prev,
             "profileUrl": ProfileIcon,
         }));
-        users[index] = {
-            ...users[index],
-            "profileUrl": ProfileIcon,
-        }
     }
 
     const actionAll = () => {
@@ -62,11 +54,6 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen, u
             "profileUrl": ProfileIcon,
             "genres": [],
         }));
-        users[index] = {
-            ...users[index],
-            "profileUrl": ProfileIcon,
-            "genres": [],
-        }
     }
 
     const confirmDelete = useConfirm(
@@ -100,11 +87,6 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen, u
                 "profileUrl": canvas,
                 "genres": [firstValue, secondValue, thirdValue],
             }));
-            users[index] = {
-                ...users[index],
-                "profileUrl": canvas,
-                "genres": [firstValue, secondValue, thirdValue],
-            }
             setModalIsOpen(false);
             setFavoriteGenre([firstValue, secondValue, thirdValue]);
             alert("Done!");
@@ -133,6 +115,7 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen, u
     );
 
 
+    console.log(modalIsOpen);
 
     return (
         <Modal style={customStyles} isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} appElement={document.getElementById('root')} >

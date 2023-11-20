@@ -6,7 +6,7 @@ import Dropdown from '../components/Dropdown';
 const Explore = () => {
   return (
     <>
-      <Icon/><Dropdown/>
+      <Icon/><Dropdown name="Explore"/>
       <Section/>
     </>
   );

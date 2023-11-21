@@ -8,18 +8,17 @@ import { Navigation } from 'react-minimal-side-navigation';
 import 'react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css'
 import styled from "styled-components";
 
-const MyMenu = ({ setIsModalOpen, setIsSideOpen, width }) => {
+const MyMenu = ({ openModal, setIsSideOpen, width }) => {
     const navigate = useNavigate();
 
     const handleNavigationSelect = (selectedItemId) => {
         if (selectedItemId === '/editProfile') {
-            setIsModalOpen(true);
+            openModal();
         }
         else {
             navigate(selectedItemId);
         }
     };
-
     return (
         <Menu style={{ width: width, transitionTimingFunction: "ease-in" }}>
             <Navigation

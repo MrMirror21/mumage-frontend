@@ -1,4 +1,5 @@
 import { atom, selector } from "recoil";
+import { postsDataState } from "../store/ServerData";
 
 
 
@@ -70,6 +71,18 @@ export const postsFilterState = atom({
     default: "Show All",
 });
 
+export const getMyFeed = selector({
+    key: "getMyFeed",
+    get: ({ get }) => {
+        const list = get(postsDataState);
+        const user = get(userInfo);
+        const myFeed = list.filter((e) => {
+            return e["userId"] === user["userId"];
+        })
+        return myFeed;
+    }
+})
+
 export const filteredPostsState = selector({
     key: "filteredPostsState",
     get: async ({ get }) => {
@@ -95,9 +108,7 @@ export const filteredPostsState = selector({
                 });
             case 'MyFeed':
                 return list.filter((post) => {
-                    {
-                        return user["userId"] === post["userId"]
-                    }
+                    return user["userId"] === post["userId"]
                 });
             default:
                 return list;

@@ -35,7 +35,7 @@ const PageDetail = () => {
                         height: "2em",
                         marginLeft: "8px",
                     }}
-                        onClick={() => navigate('/')} />
+                        onClick={() => navigate(-1)} />
                     <div style={{ fontSize: "25px", fontWeight: "bold" }}>
                         MUMAGE
                     </div>

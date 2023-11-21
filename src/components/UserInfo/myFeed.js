@@ -1,21 +1,13 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { GrDocumentSound } from "react-icons/gr";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { filteredPostsState, postsFilterState } from "../../utils/FetchDataRecoil";
-import { useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { getMyFeed } from "../../utils/FetchDataRecoil";
 
 const MyFeed = ({ gridColumns }) => {
     const navigate = useNavigate();
-    const setFilter = useSetRecoilState(postsFilterState);
-    const postsList = useRecoilValue(filteredPostsState);
+    const postsList = useRecoilValue(getMyFeed);
 
-    useEffect(() => {
-        const updateFilter = () => {
-            setFilter("MyFeed");
-        }
-        updateFilter();
-    }, [setFilter]);
     return (
         <Fr>
             {postsList.length !== 0 ?

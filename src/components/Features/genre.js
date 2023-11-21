@@ -3,7 +3,6 @@ import { useRecoilValue } from 'recoil';
 import { userInfo } from "../../utils/FetchDataRecoil";
 
 const FavoriteGenre = () => {
-
     const aa = useRecoilValue(userInfo);
     const display = aa["genres"][0] === "" && aa["genres"][1] === "" && aa["genres"][2] === "" ? null :
         aa["genres"].map((g, i) => (

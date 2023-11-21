@@ -14,6 +14,15 @@ const Profile = ({ width }) => {
     const [user, setUser] = useRecoilState(userInfo);
     const [isSideOpen, setIsSideOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    }
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    }
+
     const Profile = user["profileUrl"];
     const UserProfile = typeof (user["profileUrl"]) === 'string' ? <ProfileImg src={user["profileUrl"]} alt="profileImg" />
         : <Profile style={{
@@ -46,9 +55,16 @@ const Profile = ({ width }) => {
             </GenreContainer>
 
 
-            {isSideOpen ? <MyMenu setIsModalOpen={setIsModalOpen} setIsSideOpen={setIsSideOpen} width={width} /> : null}
-            {isModalOpen ? <EditProfile modalIsOpen={isModalOpen} setModalIsOpen={setIsModalOpen} setIsSideOpen={setIsSideOpen} isSideOpen={isSideOpen} user={user} setUser={setUser} /> : null}
+            {isSideOpen ? <MyMenu openModal={() => openModal()} setIsSideOpen={setIsSideOpen} width={width} /> : null}
+
+            {isModalOpen ? <EditProfile
+                onRequestClose={() => closeModal()}
+                modalIsOpen={isModalOpen}
+                setIsSideOpen={setIsSideOpen}
+                isSideOpen={isSideOpen} user={user}
+                setUser={setUser} /> : null}
         </Column>
+
     );
 }
 

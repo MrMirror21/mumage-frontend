@@ -15,6 +15,9 @@ const MyPage = () => {
             setWindowWidth(window.innerWidth);
         }
         window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
     }, []);
 
     useEffect(() => {
@@ -32,10 +35,10 @@ const MyPage = () => {
     }, [windowWidth]);
 
 
+
     return (
         <Frame>
             <Profile width={width} />
-
             <MyFeed gridColumns={gridColumns} />
         </Frame>
     );

@@ -24,8 +24,9 @@ const PageControll = () => {
     const [ind, setIndex] = useRecoilState(index);
     const onClickHander = (Index) => {
         setIndex(Index);
+
     }
-    const setUser = useSetRecoilState(userInfo);
+    const [user, setUser] = useRecoilState(userInfo);
     const users = useRecoilValue(usersDataState);
     const posts = useRecoilValue(postsDataState);
 
@@ -36,7 +37,9 @@ const PageControll = () => {
         setUsers(users);
         setPosts(posts);
         setUser(users[0]);
-    }, [setUser]);
+
+    }, [posts, users, setUser, setUsers, setPosts]);
+
 
 
     return (

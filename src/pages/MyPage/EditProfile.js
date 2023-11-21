@@ -4,26 +4,25 @@ import { IoMdAddCircle } from "react-icons/io";
 
 import React, { useRef, useEffect } from 'react';
 import useConfirm from '../../hooks/confirm';
-import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useRecoilState } from 'recoil';
 
 import { getSavedFileImage, getFavoriteGenre } from '../../utils/FetchDataRecoil';
-
 import AvatarEditor from 'react-avatar-editor';
 import styled from 'styled-components';
 import { useState } from 'react';
 
 import { ReactComponent as ProfileIcon } from "../../assets/Profile.svg";
+import { usersDataState } from '../../store/ServerData';
 
 
 
-const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen, user, setUser }) => {
+const EditProfile = ({ onRequestClose, modalIsOpen, setIsSideOpen, isSideOpen, user, setUser }) => {
     useEffect(() => {
         modalIsOpen ? setIsSideOpen(false) : setIsSideOpen(isSideOpen);
-    }, [modalIsOpen]);
-
+    }, [modalIsOpen, setIsSideOpen, isSideOpen]);
     const [file, setFile] = useRecoilState(getSavedFileImage);
     const editorRef = useRef(null);
-
+    const [users, setUsers] = useRecoilState(usersDataState);
 
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
@@ -38,22 +37,46 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen, u
 
     const action = () => {
         setFile("");
-        setModalIsOpen(false);
+
         setUser(prev => ({
             ...prev,
             "profileUrl": ProfileIcon,
         }));
+        setUsers((prev) => {
+            return prev.map((p) => {
+                if (p["userId"] === user["userId"]) {
+                    return {
+                        ...p,
+                        "profileUrl": ProfileIcon,
+                    };
+                }
+                return p;
+            })
+        })
+        onRequestClose();
     }
 
     const actionAll = () => {
         setFile("");
-        setModalIsOpen(false);
+        onRequestClose();
         setFavoriteGenre(["", "", ""]);
         setUser(prev => ({
             ...prev,
             "profileUrl": ProfileIcon,
             "genres": [],
         }));
+        setUsers((prev) => {
+            return prev.map((p) => {
+                if (p["userId"] === user["userId"]) {
+                    return {
+                        ...p,
+                        "genres": [],
+                        "profileUrl": ProfileIcon,
+                    };
+                }
+                return p;
+            })
+        })
     }
 
     const confirmDelete = useConfirm(
@@ -87,9 +110,21 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen, u
                 "profileUrl": canvas,
                 "genres": [firstValue, secondValue, thirdValue],
             }));
-            setModalIsOpen(false);
             setFavoriteGenre([firstValue, secondValue, thirdValue]);
+            setUsers((prev) => {
+                return prev.map((p) => {
+                    if (p["userId"] === user["userId"]) {
+                        return {
+                            ...p,
+                            "genres": [firstValue, secondValue, thirdValue],
+                            "profileUrl": canvas,
+                        };
+                    }
+                    return p;
+                })
+            })
             alert("Done!");
+            onRequestClose();
         }
     }
     //getRootPros : dropzone의 클릭, 드래그 등 각종 이벤트에 대응하는 함수
@@ -114,11 +149,8 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen, u
         </div>
     );
 
-
-    console.log(modalIsOpen);
-
     return (
-        <Modal style={customStyles} isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} appElement={document.getElementById('root')} >
+        <Modal style={customStyles} isOpen={modalIsOpen} onRequestClose={onRequestClose} appElement={document.getElementById('root')} >
             <Frame>
                 <Header>Edit Profile</Header>
                 {thumbs}
@@ -157,7 +189,7 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen, u
 
                 <BottomNavigation>
                     <ResetButton onClick={() => handleReset()}>Reset</ResetButton>
-                    <SaveExitButton onClick={handleSave}>Save & Exit</SaveExitButton>
+                    <SaveExitButton onClick={() => handleSave()}>Save & Exit</SaveExitButton>
                     <ResetButton onClick={handleResetAll}>Reset all</ResetButton>
                 </BottomNavigation>
             </Frame>

@@ -18,6 +18,8 @@ export default ImagePreview
 const ImageSection = styled.div`
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
   width: 100vw;
 `;
 
@@ -25,5 +27,6 @@ const ImageContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   background: #f1f1f1;
 `;

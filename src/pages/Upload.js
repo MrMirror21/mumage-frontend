@@ -58,13 +58,6 @@ const onCheckEnter = async (e) => {
     setGenerateOption({...generateOption, "samples":newValue})
   }
 
-  const handleGenerateImage = async () => {
-    const lyrics = getLyrics(selectedTrack.id);
-    const prompt = await getPrompt(lyrics);
-    const newGenerateOption = {...generateOption, "prompt" : prompt};
-    //generateImage(newGenerateOption, setImageURL);
-  }
-
   return (
     <>
       <Suspense fallback={<Loading />}>
@@ -121,22 +114,9 @@ const onCheckEnter = async (e) => {
           <TrackCard track={track} playData={playData} setPlayData={setPlayData} setTrack={setSelectedTrack} /> ) 
           : undefined}
       </SearchSection>
-      <TagSection>
-        <HashtagInputContainer>
-          <Input
-            type="hashtag"
-            value={hashtag}
-            onChange={handleInput("hashtag")}
-            onKeyPress={onCheckEnter}
-            placeholder="#태그 입력 후 Enter"
-            required
-          />
-        </HashtagInputContainer>
-        <HashtagList tagList={hashtagList} setTagList={setHashtagList} />
-      </TagSection>
       <LyricsSection>
         {/**<GenerateLyricsButton onClick={()=>getLyrics(selectedTrack.id)}>가사 찾기</GenerateLyricsButton>*/}
-        <GenerateLyricsButton onClick={()=>handleGenerateImage()}>프롬프트 생성</GenerateLyricsButton>
+        <GenerateLyricsButton onClick={()=>getLyrics(selectedTrack.id, generateOption, setImageURL)}>프롬프트 생성</GenerateLyricsButton>
       </LyricsSection>
 
     </>
@@ -257,7 +237,5 @@ export const Input = styled.input`
   font-size: 18px;
   color: #313338;
   background: #fafafa;
-  :focus {
-    outline: none;
-  }
+  outline: none;
 `;

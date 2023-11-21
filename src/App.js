@@ -10,6 +10,7 @@ import Post from './pages/Post';
 import ContactUs from './pages/ContactUs';
 import GlobalStyles from './styles/GlobalStyles';
 import { Suspense } from 'react';
+import UserPage from './pages/UserPage/UserPage';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
             <Route path="/Explore" element={<Explore />} />
             <Route path="/Post/:postId" element={<Post />}></Route>
             <Route path="/Contactus" element={<ContactUs />} />
+            <Route path="/UserPage/:userId" element={<UserPage />} />
           </Routes>
         </Suspense>
       </RecoilRoot>

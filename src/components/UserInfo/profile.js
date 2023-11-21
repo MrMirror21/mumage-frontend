@@ -51,7 +51,7 @@ const Profile = ({ width }) => {
                 </FollowInfo>
             </BasicWrapper>
             <GenreContainer>
-                <FavoriteGenre />
+                <FavoriteGenre genreList={user["genres"]} />
             </GenreContainer>
 
 

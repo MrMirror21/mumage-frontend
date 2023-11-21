@@ -1,11 +1,8 @@
 import styled from "styled-components";
-import { useRecoilValue } from 'recoil';
-import { userInfo } from "../../utils/FetchDataRecoil";
 
-const FavoriteGenre = () => {
-    const aa = useRecoilValue(userInfo);
-    const display = aa["genres"][0] === "" && aa["genres"][1] === "" && aa["genres"][2] === "" ? null :
-        aa["genres"].map((g, i) => (
+const FavoriteGenre = ({ genreList }) => {
+    const display = genreList[0] === "" && genreList["genres"][1] === "" && genreList["genres"][2] === "" ? null :
+        genreList.map((g, i) => (
             g === "" ? null :
                 <Ggenre key={i}>#{g}</Ggenre>
         ))

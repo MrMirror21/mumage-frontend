@@ -14,10 +14,11 @@ export const generateImage = (generateOption, setImageURL) => {
     },
     data : data
   };
-  
+  console.log("start generating");
   axios.request(config)
   .then((response) => {
     const UrlArr = response.data.images.map((element) => element.image)
+    console.log(UrlArr[0]);
     setImageURL(UrlArr);
   })
   .catch((error) => {
@@ -57,10 +58,13 @@ export const getLyrics = (trackId, setLyrics) => {
   .then((response) => {
     const originLyrics = response.data.lines;
     const result = originLyrics.map(line => line.words).join('. ');
-    setLyrics(result);
+    console.log("lyrics done");
+    console.log(result);
+    return result;
   })
   .catch((error) => {
     console.log(error);
+    alert("해당 곡은 가사를 지원하지 않습니다. 다른 곡을 선택해주세요.")
   });
 }
 
@@ -73,6 +77,37 @@ export const login = () => {
   alert("로그인이 완료되었습니다.")
   window.location.href="/upload"
 }
+
+export const getPrompt = async (message) => {
+  const apiKey = process.env.REACT_APP_GPT_KEY;
+  let config = {
+    method: 'post',
+    maxBodyLength: Infinity,
+    url: 'https://api.openai.com/v1/chat/completions',
+    headers: {
+      'Content-Type' : 'application/json',
+      'Authorization' : `Bearer ${apiKey}`
+    },
+    data : {
+      'model' : "gpt-3.5-turbo",
+      "messages": [
+        { "role": "system", "content": "You are a helpful assistant."},
+        { "role": "user", "content": `Please write a prompt in English to input into the generative AI that will create an image that matches the lyrics below. ${message}`},
+      ],
+      'max_tokens': 500,
+    }
+  }
+  
+  axios.request(config)
+  .then((response) => {
+    console.log(response.data.choices[0].message.content);
+    return response.data.choices[0].message.content;
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+};
+
 
 const item = {
   "album": {

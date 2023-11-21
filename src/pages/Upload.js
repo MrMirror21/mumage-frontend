@@ -1,10 +1,10 @@
 import React, { Suspense, lazy, useState } from 'react'
 import styled from 'styled-components'
-import { generateImage, getLyrics, searchMusic } from '../utils/axios'
+import { generateImage, getLyrics, getPrompt, searchMusic } from '../utils/axios'
 import Loading from '../components/Loading'
 import SearchBar from '../components/Upload/SearchBar'
 import TrackCard from '../components/Upload/TrackCard'
-import { ReactComponent as DeleteIcon } from "../assets/delete.svg";
+import HashtagList from '../components/HashTagList'
 
 
 const ImagePreview = lazy(() => import('../components/Upload/ImagePreview'))
@@ -26,8 +26,6 @@ const Upload = () => {
 
   const [hashtag, setHashtag] = useState("");
   const [hashtagList, setHashtagList] = useState([]);
-
-  const [lyrics, setLyrics] = useState("");
 
   const handleInput = () => async (event) => {
     const targetValue = event.currentTarget.value;
@@ -56,14 +54,15 @@ const onCheckEnter = async (e) => {
   }
 };
 
-const handleTagClick = () => async (e) => {
-  const targetVal = e.currentTarget.id;
-  const newTagList = hashtagList.filter((tag) => tag !== targetVal);
-  setHashtagList(newTagList);
-};
-
   const handleRadioClick = (newValue) => {
     setGenerateOption({...generateOption, "samples":newValue})
+  }
+
+  const handleGenerateImage = async () => {
+    const lyrics = getLyrics(selectedTrack.id);
+    const prompt = await getPrompt(lyrics);
+    const newGenerateOption = {...generateOption, "prompt" : prompt};
+    //generateImage(newGenerateOption, setImageURL);
   }
 
   return (
@@ -104,7 +103,7 @@ const handleTagClick = () => async (e) => {
             value={generateOption.prompt} 
             onChange={(e) => setGenerateOption({...generateOption, "prompt" : e.currentTarget.value})}
             placeholder='생성할 그림이 무엇인지 입력해주세요.'/>
-          <GenerateButton onClick={() => generateImage(generateOption, setImageURL)}>이미지 생성하기</GenerateButton>
+          <GenerateButton onClick={() => generateImage(generateOption)}>이미지 생성하기</GenerateButton>
         </ConsoleBox>
       </ConsoleSection>
       <SearchSection>
@@ -123,7 +122,7 @@ const handleTagClick = () => async (e) => {
           : undefined}
       </SearchSection>
       <TagSection>
-      <HashtagInputContainer>
+        <HashtagInputContainer>
           <Input
             type="hashtag"
             value={hashtag}
@@ -133,27 +132,11 @@ const handleTagClick = () => async (e) => {
             required
           />
         </HashtagInputContainer>
-        <HashtagListContainer>
-          {hashtagList &&
-            hashtagList.map((tag) => (
-              <>
-                <ProjectHashtagContainer>
-                  <HashtagContentContainer>
-                    <HashtagText>{tag}</HashtagText>
-                    <IconContainer onClick={handleTagClick()} id={tag}>
-                      <DeleteIcon className="Icon" />
-                    </IconContainer>
-                  </HashtagContentContainer>
-                </ProjectHashtagContainer>
-              </>
-            ))}
-        </HashtagListContainer>
+        <HashtagList tagList={hashtagList} setTagList={setHashtagList} />
       </TagSection>
       <LyricsSection>
-        <GenerateLyricsButton onClick={()=>getLyrics(selectedTrack.id, setLyrics)}>가사 찾기</GenerateLyricsButton>
-        <LyricsPreview>
-          {lyrics}
-        </LyricsPreview>
+        {/**<GenerateLyricsButton onClick={()=>getLyrics(selectedTrack.id)}>가사 찾기</GenerateLyricsButton>*/}
+        <GenerateLyricsButton onClick={()=>handleGenerateImage()}>프롬프트 생성</GenerateLyricsButton>
       </LyricsSection>
 
     </>
@@ -167,10 +150,6 @@ const LyricsSection = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`;
-
-const LyricsPreview = styled.div`
-
 `;
 
 const GenerateLyricsButton = styled.div`
@@ -266,92 +245,6 @@ export const HashtagInputContainer = styled.div`
   font-size: 1rem;
   color: #313338;
   background: #fafafa;
-`;
-
-export const HashtagListContainer = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: left;
-  max-width: 460px;
-  padding: 0;
-`;
-
-export const HashtagText = styled.span`
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 16px;
-  color: #8b8b8b;
-`;
-
-export const IconContainer = styled.div`
-  background: none;
-  line-height: 9px;
-  .Icon {
-    width: 12px;
-    height: 12px;
-    fill: #8b8b8b;
-    stroke: #8b8b8b;
-    margin-left: 10px;
-    cursor: pointer;
-  }
-`;
-
-export const HashtagContentContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const HashtagContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 16px;
-
-  position: static;
-  height: 36px;
-
-  border: 1px solid #d2d2d2;
-  box-sizing: border-box;
-  border-radius: 100px;
-
-  font-size: 16px;
-  line-height: 16px;
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  margin: 16px 10px 0px 0px;
-`;
-
-const ProjectHashtagContainer = styled(HashtagContainer)`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 16px;
-
-  position: static;
-  height: 36px;
-
-  border: 1px solid #7054ff;
-  box-sizing: border-box;
-  border-radius: 100px;
-
-  font-size: 16px;
-  line-height: 16px;
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  margin: 16px 10px 0px 0px;
-  span,
-  .Icon {
-    color: #7054ff;
-    fill: #7054ff;
-    stroke: #7054ff;
-  }
 `;
 
 export const Input = styled.input`

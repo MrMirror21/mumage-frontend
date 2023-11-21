@@ -74,11 +74,18 @@
 #title {
     font-size: 20px;
     margin-bottom: 10px;
-    font-weight: 700;
+    font-weight: 600;
+}
+
+#artist {
+    font-size: 15px;
+    margin-bottom: 20px;
+    color: var(--text-text-secondary, #828282);
+    font-weight: 500;
 }
 
 #context {
-    color: var(--text-text-secondary, #828282);
+    font-size: 18px;
     font-weight: 500;
 }
 

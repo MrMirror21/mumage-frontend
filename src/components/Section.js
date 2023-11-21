@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import SelectBox from './SelectBox'
-import {FakeDataArr} from '../store/FakeDataArr'
+import {postsDataState} from '../store/ServerData'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { currentPageState, sectionValueState, orderState } from '../utils/DataRecoilState';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import '../styles/Section.css';
 
 const GridContainer = styled.div`
@@ -47,10 +47,13 @@ const Section = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [gridColumns, setGridColumns] = useState(3)
   const [itemsPerPage, setItemsPerPage] = useState(9);
-  const matchedData = FakeDataArr.filter(data => data["genre"] === sectionValue);
+  const postData = useRecoilValue(postsDataState);
+
+  const matchedData = postData.filter(data => data["genre"].includes(sectionValue));
+  
   const sortedData = matchedData.sort((a, b) => {
     if (order == 'likes') {
-      return b["좋아요"] - a["좋아요"];
+      return b["liked"] - a["liked"];
     }
     return 0;
   })

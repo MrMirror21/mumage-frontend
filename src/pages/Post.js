@@ -4,30 +4,40 @@ import '../styles/Post.css'
 import Icon from '../components/Icon';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
-import {FakeDataArr} from '../store/FakeDataArr';
+import {postsDataState} from '../store/ServerData';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import {faUser, faPlay, faStop} from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import { useRecoilValue } from 'recoil';
 
 export const AudioPreview = ({ trackUrl }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(new Audio(trackUrl));
+  const [playData, setPlayData] = useState({ isPlaying: false, currentlyPlaying: null });
+  const audioRef = useRef(null);
 
   const togglePlay = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
+    if (playData.currentlyPlaying) {
+      playData.currentlyPlaying.current.pause();
     }
-    setIsPlaying(!isPlaying);
+    audioRef.current.play();
+    setPlayData({ isPlaying: true, currentlyPlaying: audioRef });
+  };
+
+  const togglePause = () => {
+    if (playData.currentlyPlaying) {
+      playData.currentlyPlaying.current.pause();
+      setPlayData({ isPlaying: false, currentlyPlaying: null });
+    }
   };
 
   return (
     <div>
-      <button style={{backgroundColor:'white', border :'none', width:'100%'}} onClick={togglePlay}>
-        {isPlaying ? <FontAwesomeIcon className="audio" icon={faStop} style={{ backgroundColor: 'white', fontSize: '20px' }} /> : <FontAwesomeIcon className="audio" icon={faPlay} style={{ backgroundColor: 'white', fontSize: '20px' }} />}
+      <button style={{ backgroundColor: 'white', border: 'none', width: '100%' }} onClick={playData.isPlaying ? togglePause : togglePlay}>
+        {playData.isPlaying ? <FontAwesomeIcon className="audio" icon={faStop} style={{ backgroundColor: 'white', fontSize: '20px' }} /> : <FontAwesomeIcon className="audio" icon={faPlay} style={{ backgroundColor: 'white', fontSize: '20px' }} />}
       </button>
+      <audio ref={audioRef}>
+        <source src={trackUrl} />
+      </audio>
     </div>
   );
 };
@@ -47,12 +57,14 @@ const Post = () => {
   const {postId} = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  
+  const postDetails = useRecoilValue(postsDataState);
+  const postData = postDetails.find(data => data["postId"] === parseInt(postId, 10));
+
 
   const currentPage = location.state?.currentPage; 
   const sectionValue = location.state?.sectionValue;
   const order = location.state?.order;
-
-  const postData = FakeDataArr.find(data => data["postId"] === parseInt(postId, 10));
 
   const goBackWithState = () => {
     navigate(-1, {state : {currentPage, sectionValue, order}});
@@ -76,12 +88,13 @@ const Post = () => {
       <AudioPreview trackUrl={postData["trackUrl"]} />
       <div className='like-num-menu'>
         <div id="likeNum" >
-          <div id="like-num">{postData["좋아요"]}</div>
+          <div id="like-num">{postData["liked"]}</div>
           <FontAwesomeIcon id="like-num-icon"icon={faHeartRegular} style = {{backgroundColor:'white', fontSize:'20px'}} />
         </div>
       </div>
       <div id="text">
         <div id="title">{postData["title"]}</div>
+        <div id="artist">{postData["artist"]}</div>
         <div id="context">{postData["context"]}</div>
       </div>
     </>

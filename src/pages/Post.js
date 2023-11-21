@@ -12,23 +12,32 @@ import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import { useRecoilValue } from 'recoil';
 
 export const AudioPreview = ({ trackUrl }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(new Audio(trackUrl));
+  const [playData, setPlayData] = useState({ isPlaying: false, currentlyPlaying: null });
+  const audioRef = useRef(null);
 
   const togglePlay = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
+    if (playData.currentlyPlaying) {
+      playData.currentlyPlaying.current.pause();
     }
-    setIsPlaying(!isPlaying);
+    audioRef.current.play();
+    setPlayData({ isPlaying: true, currentlyPlaying: audioRef });
+  };
+
+  const togglePause = () => {
+    if (playData.currentlyPlaying) {
+      playData.currentlyPlaying.current.pause();
+      setPlayData({ isPlaying: false, currentlyPlaying: null });
+    }
   };
 
   return (
     <div>
-      <button style={{backgroundColor:'white', border :'none', width:'100%'}} onClick={togglePlay}>
-        {isPlaying ? <FontAwesomeIcon className="audio" icon={faStop} style={{ backgroundColor: 'white', fontSize: '20px' }} /> : <FontAwesomeIcon className="audio" icon={faPlay} style={{ backgroundColor: 'white', fontSize: '20px' }} />}
+      <button style={{ backgroundColor: 'white', border: 'none', width: '100%' }} onClick={playData.isPlaying ? togglePause : togglePlay}>
+        {playData.isPlaying ? <FontAwesomeIcon className="audio" icon={faStop} style={{ backgroundColor: 'white', fontSize: '20px' }} /> : <FontAwesomeIcon className="audio" icon={faPlay} style={{ backgroundColor: 'white', fontSize: '20px' }} />}
       </button>
+      <audio ref={audioRef}>
+        <source src={trackUrl} />
+      </audio>
     </div>
   );
 };
@@ -79,7 +88,7 @@ const Post = () => {
       <AudioPreview trackUrl={postData["trackUrl"]} />
       <div className='like-num-menu'>
         <div id="likeNum" >
-          <div id="like-num">{postData["좋아요"]}</div>
+          <div id="like-num">{postData["liked"]}</div>
           <FontAwesomeIcon id="like-num-icon"icon={faHeartRegular} style = {{backgroundColor:'white', fontSize:'20px'}} />
         </div>
       </div>

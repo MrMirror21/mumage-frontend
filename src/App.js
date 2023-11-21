@@ -3,7 +3,7 @@ import { RecoilRoot } from 'recoil';
 import PageDetail from './pages/MainPage/PageDetail';
 import PageControll from './components/Features/PageControll';
 import Upload from './pages/Upload';
-import SignUp from './pages/SignUp';
+import SignUp from './pages/Signup';
 import SignIn from './pages/SignIn';
 import Explore from './pages/Explore';
 import Post from './pages/Post';

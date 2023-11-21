@@ -1,21 +1,97 @@
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { IoMdArrowBack } from "react-icons/io";
 import { useNavigate, useParams } from "react-router";
 import styled from "styled-components";
 
-import { postsState, usersState } from "../../utils/FetchDataRecoil";
-import { useRecoilValue } from "recoil";
+import { userInfo } from "../../utils/FetchDataRecoil";
+import { useRecoilState } from "recoil";
+import { postsDataState, usersDataState } from "../../store/ServerData";
 
 const PageDetail = () => {
     const params = useParams();
     const postIdentifier = params.postId;
-    const posts = useRecoilValue(postsState);
-    const users = useRecoilValue(usersState);
+    const [posts, setPosts] = useRecoilState(postsDataState);
+    const [users, setUsers] = useRecoilState(usersDataState);
+    const [userOwn, setUserOwn] = useRecoilState(userInfo);
+
+    const isHeart = () => {
+        return userOwn["liked"].some((likedPostId) => post["postId"] === likedPostId["postId"])
+    }
+
+    const onHeartClickHandler = () => {
+        if (isHeart()) {
+            setPosts((prev) => {
+                return prev.map((post) => {
+                    if (post["postId"] === parseInt(postIdentifier)) {
+                        return {
+                            ...post,
+                            "liked": post["liked"] - 1,
+                        };
+                    } else {
+                        return post;
+                    }
+                })
+            })
+            setUsers((prev) => {
+                return prev.map((p) => {
+                    if (p["userId"] === userOwn["userId"]) {
+                        const likedList = p["liked"].filter((i) => i["postId"] !== parseInt(postIdentifier));
+                        console.log(likedList);
+                        return {
+                            ...p,
+                            "liked": likedList,
+                        }
+                    }
+                    return p;
+                });
+            })
+            setUserOwn((prev) => {
+                const likedList = prev["liked"].filter((i) => {
+                    return i["postId"] !== parseInt(postIdentifier);
+                })
+                return {
+                    ...prev,
+                    "liked": likedList,
+                }
+            })
+        } else {
+            setPosts((prev) => {
+                return prev.map((post) => {
+                    if (post["postId"] === parseInt(postIdentifier)) {
+                        return {
+                            ...post,
+                            "liked": post["liked"] + 1,
+                        };
+                    } else {
+                        return post;
+                    }
+                })
+            })
+            setUsers((prev) => {
+                return prev.map((p) => {
+                    if (p["userId"] === userOwn["userId"]) {
+                        const likedList = [...p["liked"], { "postId": parseInt(postIdentifier) }];
+                        return {
+                            ...p,
+                            "liked": likedList,
+                        }
+                    }
+                    return p;
+                });
+            })
+            setUserOwn((prev) => {
+                const likedList = [...prev["liked"], { "postId": parseInt(postIdentifier) }];
+                return {
+                    ...prev,
+                    "liked": likedList,
+                }
+            })
+        }
+    }
 
     const post = posts[postIdentifier - 1];
-    const userIdPost = post["userId"];
     const user = users.find((e) => {
-        return e["userId"] === userIdPost
+        return e["userId"] === post["userId"]
     });
     const Profile = user["profileUrl"];
     const UserProfile = typeof (user["profileUrl"]) === 'string' ? <ProfileImg src={user["profileUrl"]} alt="profileImg" />
@@ -35,7 +111,7 @@ const PageDetail = () => {
                         height: "2em",
                         marginLeft: "8px",
                     }}
-                        onClick={() => navigate(-1)} />
+                        onClick={() => navigate('/')} />
                     <div style={{ fontSize: "25px", fontWeight: "bold" }}>
                         MUMAGE
                     </div>
@@ -73,7 +149,12 @@ const PageDetail = () => {
                 </Row>
                 <HeartInfo>
                     {post["liked"]}
-                    <AiOutlineHeart style={{ width: "2.5em", height: "2.5em", color: "red" }} />
+                    <div onClick={onHeartClickHandler}>
+                        {isHeart() ?
+                            <AiFillHeart style={{ width: "2.5em", height: "2.5em", color: "red" }} />
+                            : <AiOutlineHeart style={{ width: "2.5em", height: "2.5em", color: "red" }} />
+                        }
+                    </div>
                 </HeartInfo>
 
                 <SongInfo>

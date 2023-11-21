@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { React, useReducer } from 'react'
 import { GoHome } from "react-icons/go";
 import { FaRegUser } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
@@ -12,6 +13,8 @@ import { index, postsState, userInfo, usersState } from "../../utils/FetchDataRe
 
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
+
+import Joyride, { ACTIONS, STATUS, EVENTS } from 'react-joyride';
 
 const styleEmojiPlus = {
     "width": "1.5em",
@@ -36,14 +39,60 @@ const PageControll = () => {
     useEffect(() => {
         setUsers(users);
         setPosts(posts);
-        setUser(users[0]);
+        setUser(users[1]);
 
     }, [posts, users, setUser, setUsers, setPosts]);
 
+    const [tourState, dispatch] = useReducer(reducer, INITIAL_STATE);
+    const callback = (data) => {
+        const { action, index, type, status } = data;
+        if (action === ACTIONS.CLOSE || (status === STATUS.SKIPPED && tourState.run) || status === STATUS.FINISHED) {
+            dispatch({ type: "STOP" });
+        } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
+            dispatch({
+                type: "NEXT_OR_PREV",
+                payload: { stepIndex: index + (action === ACTIONS.PREV ? -1 : 1) },
+            });
+        }
+    };
+    const startTour = () => {
+        dispatch({ type: "RESTART" });
+    };
 
 
     return (
         <>
+            <button onClick={startTour}>Start Tour</button>
+            <Joyride
+                styles={{
+                    options: {
+                        arrowColor: "#262626",
+                        backgroundColor: "#262626",
+                        primaryColor: "#FFF",
+                        textColor: "#FFFFFF",
+                    },
+                    tooltipContainer: {
+                        textAlign: "center",
+                    },
+                    buttonNext: {
+                        backgroundColor: "#404040"
+                    },
+                    buttonBack: {
+                        marginRight: 10
+                    }
+                }}
+                {...tourState}
+                callback={callback}
+                showProgress={true}
+                showSkipButton={true}
+                locale={{
+                    last: "done",
+                    back: "back",
+                    next: "next",
+                    skip: "skip",
+                }}
+
+            />
             {ind === 1 ? <SectionDevide /> : <MyPage />}
             <Sticky>
                 <BotNav>
@@ -54,7 +103,7 @@ const PageControll = () => {
                             color: ind === 1 ? "#3385ff" : "BDBDBD",
                         }} />
                     </FirstCol>
-                    <SecondCol onClick={() => navigate('/addPost')}>
+                    <SecondCol onClick={() => navigate('/addPost')} className="bottomNav">
                         <Second2Col>
                             <FaPlus style={styleEmojiPlus} />
                         </Second2Col>
@@ -131,3 +180,59 @@ const Sticky = styled.div`
     bottom:0px;
     background: white;
 `
+
+const steps = [
+    {
+        target: ".title",
+        content: "우리의 로고에요!",
+        disableBeacon: true,
+    },
+    {
+        target: ".following",
+        content: "클릭시 추천이미지를 보여줘요!",
+    },
+    {
+        target: ".image",
+        content: "이미지 & 클릭시 상세페이지 이동",
+    },
+    {
+        target: ".pagination",
+        content: "페이지를 이동할 수 있어요!"
+    },
+    {
+        target: ".bottomNav",
+        content: "+ 버튼을 눌러 함께 공유해요!"
+    },
+];
+
+const reducer = (state = INITIAL_STATE, action) => {
+    switch (action.type) {
+        case "START":
+            return { ...state, stepIndex: 0 };
+        case "RESET":
+            return { ...state, stepIndex: 0 };
+        case "STOP":
+            return { ...state, run: false };
+        case "NEXT_OR_PREV":
+            return { ...state, ...action.payload };
+        case "RESTART":
+            return {
+                ...state,
+                stepIndex: 0,
+                run: true,
+                loading: false,
+                key: new Date()
+            };
+        default:
+            return state;
+    }
+}
+
+const INITIAL_STATE = {
+    run: false,
+    continuous: true,
+    loading: false,
+    stepIndex: 0,
+    steps: steps,
+    key: new Date(),
+};

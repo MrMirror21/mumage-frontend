@@ -6,7 +6,7 @@ import { filteredPostsState, isfollowing, page, postsFilterState, usersState } f
 import Pagination from "./Pagination";
 import styled from "styled-components";
 
-import { AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { GrDocumentSound } from "react-icons/gr";
 
 

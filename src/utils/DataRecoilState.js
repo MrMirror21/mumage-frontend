@@ -7,12 +7,12 @@ export const currentPageState = atom({
 
 export const sectionValueState = atom({
   key: 'sectionValueState',
-  default: '종합',
+  default: 'k-pop',
 });
 
 export const selectBoxValueState = atom({
   key: 'selectBoxValueState',
-  default: '종합',
+  default: 'k-pop',
 })
 
 export const orderState = atom({

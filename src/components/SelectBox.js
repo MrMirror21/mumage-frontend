@@ -7,7 +7,10 @@ import {useRecoilState} from 'recoil';
 const options = [
     {value : 'k-pop', label : 'k-pop'},
     {value : 'k-rap', label : 'k-rap'},
-    {value : 'korean r&b', label : 'korean r&b'}
+    {value : 'k-pop ballad', label : 'k-pop ballad'},
+    {value : 'rock', label : 'rock'},
+    {value : 'pop', label : 'pop'},
+    {value : 'easy listening', label : 'easy listening'},
   ]
 
 const SelectBox = ({onChange, className}) => {
@@ -24,12 +27,12 @@ const SelectBox = ({onChange, className}) => {
       display: 'flex',
       alignItems: 'center',
       position: 'relative',
+      boxShadow: 'none',
+      outline: 'none'
     }),
     menu: (styles) => ({
       ...styles,
       background: 'transparent', 
-      border: 'none',
-      boxShadow: 'none'
     }),
     option: (provided, state) => ({
       ...provided,
@@ -43,12 +46,12 @@ const SelectBox = ({onChange, className}) => {
       zIndex: 1000,
       position: 'relative',
       lineHeight:'10px',
-      border: '3px solid #5151C6',
+      border: 'none',
       color:'white',
       ':hover': {
         opacity: 1,
       },
-    })
+    }),
   };
   
   return (

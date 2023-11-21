@@ -39,7 +39,7 @@
     font-weight: 700;
     background: var(--Primary, linear-gradient(271deg, #3f43ca 0%, #0505c9 100%));
     margin-bottom: 5px;
-    border: 3px solid #0505c9;
+    border: none;
     line-height: 10px;
     display: flex;
     border-radius: 10px;
@@ -51,8 +51,9 @@
 
 
 #name {
-    flex-grow: 1; 
-    text-align: center; 
+    position: absolute; 
+    left: 50%;         
+    transform: translateX(-50%); 
     color: #000;
     font-size: 20px;
     font-weight: 700;

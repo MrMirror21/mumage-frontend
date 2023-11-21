@@ -5,9 +5,9 @@ import { selectBoxValueState } from '../utils/DataRecoilState';
 import {useRecoilState} from 'recoil';
 
 const options = [
-    {value : '종합', label : '종합'},
-    {value : '발라드', label : '발라드'},
-    {value : '댄스', label : '댄스'}
+    {value : 'k-pop', label : 'k-pop'},
+    {value : 'k-rap', label : 'k-rap'},
+    {value : 'korean r&b', label : 'korean r&b'}
   ]
 
 const SelectBox = ({onChange, className}) => {

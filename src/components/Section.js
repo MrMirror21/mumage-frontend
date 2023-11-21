@@ -48,7 +48,9 @@ const Section = () => {
   const [gridColumns, setGridColumns] = useState(3)
   const [itemsPerPage, setItemsPerPage] = useState(9);
   const postData = useRecoilValue(postsDataState);
-  const matchedData = postsDataState.filter(data => data["genre"].includes(sectionValue));
+
+  const matchedData = postData.filter(data => data["genre"].includes(sectionValue));
+  
   const sortedData = matchedData.sort((a, b) => {
     if (order == 'likes') {
       return b["liked"] - a["liked"];

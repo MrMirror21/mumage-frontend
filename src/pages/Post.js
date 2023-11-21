@@ -4,11 +4,12 @@ import '../styles/Post.css'
 import Icon from '../components/Icon';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
-import {FakeDataArr} from '../store/FakeDataArr';
+import {postsDataState} from '../store/ServerData';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import {faUser, faPlay, faStop} from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import { useRecoilValue } from 'recoil';
 
 export const AudioPreview = ({ trackUrl }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -47,12 +48,14 @@ const Post = () => {
   const {postId} = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  
+  const postDetails = useRecoilValue(postsDataState);
+  const postData = postDetails.find(data => data["postId"] === parseInt(postId, 10));
+
 
   const currentPage = location.state?.currentPage; 
   const sectionValue = location.state?.sectionValue;
   const order = location.state?.order;
-
-  const postData = FakeDataArr.find(data => data["postId"] === parseInt(postId, 10));
 
   const goBackWithState = () => {
     navigate(-1, {state : {currentPage, sectionValue, order}});
@@ -82,6 +85,7 @@ const Post = () => {
       </div>
       <div id="text">
         <div id="title">{postData["title"]}</div>
+        <div id="artist">{postData["artist"]}</div>
         <div id="context">{postData["context"]}</div>
       </div>
     </>

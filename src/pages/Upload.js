@@ -1,18 +1,20 @@
 import React, { lazy, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { generateImage, getGenre, getLyrics, searchMusic } from '../utils/axios'
 import SearchBar from '../components/Upload/SearchBar'
 import TrackCard from '../components/Upload/TrackCard'
 import { useRecoilState } from 'recoil'
 import { postsDataState } from '../store/ServerData'
+import Icon from '../components/Icon'
 
 const ImagePreview = lazy(() => import('../components/Upload/ImagePreview'))
 
 const Upload = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState("music");
   const [imageURL, setImageURL] = useState([])
-  const posts = useRecoilState(postsDataState);
+  const [posts, setPosts] = useRecoilState(postsDataState);
   const [generateOption, setGenerateOption] = useState({
     "prompt" : "",
     "negative_prompt": "bad anatomy, distortion, low quality, low contrast, draft, amateur, cut off, frame, ugly face, text, letter, watermark, poor face rendering, awkward hand posture, different number of fingers",
@@ -24,7 +26,7 @@ const Upload = () => {
     "userId": 2,
     "nickname": "팔레트",
     "genre": [],
-    "title": selectedTrack?.title,
+    "title": selectedTrack?.name,
     "artist": selectedTrack?.album.artists[0].name,
     "trackUrl": "",
     "externalUrl" : selectedTrack?.external_urls.spotify,
@@ -44,9 +46,18 @@ const handleChooseTrack = () => {
   setCurrentStep("image");
 }
 
+const handleUpload = async () => {
+  console.log(postData)
+  setPosts([...posts, postData])
+  alert("업로드가 완료되었습니다.")
+  navigate("/")
+}
+
   return (
     <>
-      <Link to='/'><Header>MUMAGE</Header></Link>
+      <HeaderWrapper>
+        <Link to='/'><Icon /></Link>
+      </HeaderWrapper>
       <Wrapper>
         {currentStep === "music" ? 
           <SearchSection>
@@ -84,6 +95,7 @@ const handleChooseTrack = () => {
                   <GenerateLyricsButton onClick={()=>getLyrics(selectedTrack.id, generateOption, setImageURL, setGenerateOption)}>프롬프트 생성</GenerateLyricsButton>
                   : <RegenerateButton onClick={()=>generateImage(generateOption, setImageURL)}>재생성하기</RegenerateButton>
                 }
+                <UploadButton onClick={()=>handleUpload()}>업로드</UploadButton>
               </ButtonSection>
             </ConsoleBox>
           </ConsoleSection>
@@ -95,6 +107,10 @@ const handleChooseTrack = () => {
 }
 
 export default Upload
+
+const HeaderWrapper = styled.div`
+  background: #ffffff;
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -169,6 +185,8 @@ const GenerateLyricsButton = styled.div`
 const PrevButton = styled(GenerateLyricsButton)``;
 
 const RegenerateButton = styled(GenerateLyricsButton)``;
+
+const UploadButton = styled(GenerateLyricsButton)``;
 
 const ConsoleSection = styled.div`
   display: flex;

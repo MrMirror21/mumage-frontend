@@ -294,6 +294,7 @@ const Fr = styled.nav`
     justify-content: center;
     align-items: center;
     margin-top: 0px;
+    padding: 20px 20px 20px 20px;
     
 `
 //grid - template - columns: 1fr 1fr 1fr 1fr;

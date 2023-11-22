@@ -51,8 +51,9 @@ const Fr = styled.nav`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 0px;
-    
+    margin-top: 10px;
+
+    padding: 20px 20px 20px 20px;
 `
 //grid - template - columns: 1fr 1fr 1fr 1fr;
 

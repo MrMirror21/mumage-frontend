@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { GrDocumentSound } from "react-icons/gr";
 import { postsDataState, usersDataState } from '../../store/ServerData';
+import TrackCard from '../Features/GetTrack';
 
 
 const ShowFeed = () => {
@@ -104,6 +105,8 @@ const ShowFeed = () => {
     }, [isFollowing, setFilter]);
     const limit = 5;
     const offset = (pageNum - 1) * limit;
+
+
     return (
         <>
             {
@@ -129,8 +132,12 @@ const ShowFeed = () => {
                                             <NameDiv onClick={() => {
                                                 navigate(`/userPage/${post["userId"]}`)
                                             }}>
-                                                {UserProfile}
-                                                {post["nickname"]}
+                                                <div>
+                                                    {UserProfile}
+                                                </div>
+                                                <div>
+                                                    {post["nickname"]}
+                                                </div>
                                             </NameDiv>
                                             <Img
                                                 src={post["imageUrl"]}
@@ -138,16 +145,27 @@ const ShowFeed = () => {
                                                 alt='icon'
                                                 onClick={() => { navigate(`imgDetail/${post["postId"]}`); }}
                                             />
-                                            <DivBot>
-                                                {post["liked"]}
-                                                <div onClick={() => onHeartClickHandler(post["postId"])}>
-                                                    {isHeart(post["postId"]) ?
-                                                        <AiFillHeart style={{ width: "1.5em", height: "1.5em", color: "red" }} />
-                                                        : <AiOutlineHeart style={{ width: "1.5em", height: "1.5em", color: "red" }} />}
-
+                                            <DivBotInfo>
+                                                <div style={{ display: "flex", flexDirection: "column", gap: "7px", justifyContent: "center", alignItems: "center", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
+                                                    <div style={{ fontWeight: "bold" }}>{post["title"]}</div>
+                                                    <div style={{ color: "#BDBDBD", fontSize: "14px", fontStyle: "italic" }}> {post["artist"]}</div>
                                                 </div>
+                                                <SongPlaySection>
+                                                    <TrackCard track={post["trackUrl"]} />
+                                                </SongPlaySection>
+                                                <DivBot>
+                                                    <div>
+                                                        {post["liked"]}
+                                                    </div>
+                                                    <div onClick={() => onHeartClickHandler(post["postId"])}>
+                                                        {isHeart(post["postId"]) ?
+                                                            <AiFillHeart style={{ width: "1.5em", height: "1.5em", color: "#5151C6" }} />
+                                                            : <AiOutlineHeart style={{ width: "1.5em", height: "1.5em", color: "#5151C6" }} />}
 
-                                            </DivBot>
+                                                    </div>
+
+                                                </DivBot>
+                                            </DivBotInfo>
                                         </Div>
                                     </Frame>
                                 );
@@ -183,8 +201,9 @@ const Feed = styled.div`
                                             gap: 10px;
                                             `
 
-const Frame = styled.div`
+const Frame = styled.div` 
                                             background-color: #FFF;
+                                            max-width: 32em;
                                             border-radius: 10px;
                                             padding: 0.5em 0em 0.5em 0em;
                                             margin-bottom: 10px;
@@ -193,6 +212,7 @@ const Frame = styled.div`
 const Img = styled.img`
                                             width: 100%;
                                             height: 100%;
+                                            max-width: 32em;
                                             object-fit: cover;
 
                                             &:hover {
@@ -208,15 +228,30 @@ const Div = styled.div`
                                             `
 const NameDiv = styled.div`
                                             display: flex;
-                                            justify-content: space-around;
-
+                                            width: 100%;
+                                            jutify-contenr: start;
+                                            align-items: center;
+                                            line-height: 0.8;
+                                            gap: 10px;
+                                            padding: 0 0 0 10px;
                                             `
 const DivBot = styled.div`
                                             display: flex;
-                                            justify-content: right;
-                                            margin-right: 20px;
-                                            gap:5px;
+                                            justify-content: center;
+                                            align-items: center;
+                                            line-height: 0.8;
+                                            gap: 10px;
+                                            padding: 0 15px 0 0px;
                                             `
+
+const DivBotInfo = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    justify-content: center;
+    align-item: center;
+    
+`
 
 const ProfileImg = styled.img`
                                             border-radius: 10em;
@@ -235,3 +270,12 @@ const EmptyPage = styled.div`
                                             padding: 10em;
                                             background-color: #F6F7F9;
                                             `
+
+
+const SongPlaySection = styled.div`
+display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                            
+                                            
+    `

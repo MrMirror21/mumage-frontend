@@ -22,9 +22,6 @@ const SectionDevide = () => {
         <div style={{ backgroundColor: "#F6F7F9" }}>
             <div>
                 <Sticky>
-                    <Header className="title">
-                        MUMAGE
-                    </Header>
                     <MenuSection className='following'>
                         <MenuSectionDetail
                             onClick={() => onClickHandler(1)}
@@ -61,12 +58,7 @@ export default SectionDevide;
 
 
 
-const Header = styled.header`
-    color: #5151C6;
-    font-size:30px;
-    text-align:center;
-    background: white;
-`
+
 
 const Sticky = styled.div`
     position:sticky;

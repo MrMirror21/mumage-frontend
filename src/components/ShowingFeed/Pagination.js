@@ -23,6 +23,7 @@ const Pagination = ({ total, limit, pageNum, setPage }) => {
               key={i}
               onClick={() => { setPage(firstNum + i); }}
               aria-current={pageNum === firstNum + i ? "page" : null}
+              style={{ zIndex: "50px" }}
             >
               {firstNum + i}
             </Button>
@@ -43,6 +44,7 @@ export default Pagination;
 const Nav = styled.nav`
   display: flex;
   justify-content: center;
+  width: 100%;
   align-items: center;
   gap: 4px;
   margin: 16px;
@@ -50,15 +52,16 @@ const Nav = styled.nav`
 
 const Button = styled.button`
   border-radius: 10px;
+  text-align: center;
+  padding: 1px 1px 0px 1px;
   border: none;
-  padding: 8px;
-  margin: 0;
-  background: linear-gradient(to left, #3385ff, #0052cc );;
+  width: 2em;
+  height: 2.2em;
+  background: linear-gradient(271deg, #888BF4 0%, #5151C6 100%);
   color: white;
-  font-size: 0.5rem;
 
   &:hover {
-    background: linear-gradient(to left, #3385ff, #0052cc );
+    background: linear-gradient(271deg, #888BF4 0%, #5151C6 100%);
     cursor: pointer;
   }
 
@@ -69,8 +72,10 @@ const Button = styled.button`
   }
 
   &[aria-current] {
-    background: linear-gradient(to left, #3385ff, #0052cc );
-    padding: 11px;
+    background: linear-gradient(271deg, #5151C6 0%, #888BF4 100%);
+    width: 2.2em;
+    height:2.4em;
+    font-size: 15px;
     font-weight: bold;
     cursor: revert;
     transform: revert;

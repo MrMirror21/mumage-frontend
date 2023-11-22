@@ -34,7 +34,7 @@ const Profile = ({ width }) => {
     return (
         <Column>
             <BasicWrapper style={{ fontStyle: "italic" }}>@{user["nickname"]}</BasicWrapper>
-            <GiHamburgerMenu style={{ width: "2em", height: "2em", position: "absolute", right: "2em", top: "2em", color: "#696969" }} onClick={() => setIsSideOpen(true)} />
+            <GiHamburgerMenu style={{ width: "2em", height: "2em", position: "absolute", right: "2em", top: "3.4em", color: "#696969" }} onClick={() => setIsSideOpen(true)} />
             <BasicWrapper>{UserProfile}</BasicWrapper>
             <BottomLineLeft /> <BottomLineRight />
             <BasicWrapper>
@@ -90,7 +90,7 @@ const BottomLineLeft = styled.div`
     border-bottom: solid;
     position: absolute;
     width: 41%;
-    top: 6em;
+    top: 12.5em;
     display: flex;
     color: #BDBDBD;
 `
@@ -98,7 +98,7 @@ const BottomLineRight = styled.div`
     border-bottom: solid;
     position: absolute;
     width: 41%;
-    top: 6em;
+    top: 12.5em;
     right: 0;
     display: flex;
     color: #BDBDBD;

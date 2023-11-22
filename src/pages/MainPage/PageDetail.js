@@ -6,6 +6,9 @@ import styled from "styled-components";
 import { userInfo } from "../../utils/FetchDataRecoil";
 import { useRecoilState } from "recoil";
 import { postsDataState, usersDataState } from "../../store/ServerData";
+import { useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
 
 const PageDetail = () => {
     const params = useParams();
@@ -101,67 +104,115 @@ const PageDetail = () => {
             objectFit: "cover",
         }} />;
     const navigate = useNavigate();
+
+    const [playData, setPlayData] = useState({ isPlaying: false, currentlyPlaying: null });
+    const audioRef = useRef(null);
+
+    const togglePlay = () => {
+        if (playData.currentlyPlaying) {
+            playData.currentlyPlaying.current.pause();
+        }
+        audioRef.current.play();
+        setPlayData({ isPlaying: true, currentlyPlaying: audioRef });
+    };
+
+    const togglePause = () => {
+        if (playData.currentlyPlaying) {
+            playData.currentlyPlaying.current.pause();
+            setPlayData({ isPlaying: false, currentlyPlaying: null });
+        }
+    };
+
+    const style = {
+        fontSize: "30px",
+    }
+
     return (
-        <>
-            <Sticky>
-                <TopSection>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <div style={{ maxWidth: "33em", border: "3px solid #BDBDBD", borderRadius: "15px" }}>
+
+
+                <TopSection style={{ marginTop: "1.5em", marginLeft: "0.25em" }}>
                     <IoMdArrowBack style={{
                         width: "2em",
                         height: "2em",
-                        marginLeft: "8px",
+                        marginTop: "1.8em",
                     }}
                         onClick={() => navigate(-1)} />
-                    <div style={{ fontSize: "25px", fontWeight: "bold" }}>
+                    <Header style={{ marginRight: "1em" }}>
                         MUMAGE
-                    </div>
+                    </Header>
                     <div></div>
                 </TopSection>
+                <Frame>
+                    <Div onClick={() => navigate(`/userPage/${post["userId"]}`)}>
+                        <div style={{ marginLeft: "10px" }}>
+                            {UserProfile}
+                        </div>
+                        <div style={{ marginBottom: "5px", fontWeight: "bold" }}>{post.nickname}</div>
 
-            </Sticky>
-            <Frame>
-                <Div onClick={() => navigate(`/userPage/${post["userId"]}`)}>
-                    <div style={{ marginLeft: "10px" }}>
-                        {UserProfile}
+                    </Div>
+                    <div style={{ display: "flex", "justifyContent": "center" }}>
+                        <Img src={post.imageUrl} key={post.postId} alt='icon' />
                     </div>
-                    <div style={{ marginBottom: "5px" }}>{post.nickname}</div>
 
-                </Div>
-                <Img src={post.imageUrl} key={post.postId} alt='icon' />
-            </Frame>
-            <div>
-                <HeadComment>
-                    {post.context === "" ?
-                        <div style={{ color: "#BDBDBD" }}>No Context</div>
-                        : post.context
-                    }
-                </HeadComment>
-                <Row>
-                    {post.genre.map((e, i) => {
-                        return (
-                            <GenreInfo key={i}>
-                                <div style={{ fontStyle: "italic" }}>
-                                    #{e}
-                                </div>
-                            </GenreInfo>
-                        )
-                    })}
+                </Frame>
 
-                </Row>
-                <HeartInfo>
-                    {post["liked"]}
-                    <div onClick={onHeartClickHandler}>
-                        {isHeart() ?
-                            <AiFillHeart style={{ width: "2.5em", height: "2.5em", color: "red" }} />
-                            : <AiOutlineHeart style={{ width: "2.5em", height: "2.5em", color: "red" }} />
+                <Detail>
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ fontSize: "15px", fontWeight: "bold" }}>
+                            {post["title"]}
+                        </div>
+                        <cite style={{ fontSize: "13px", color: "#BDBDBD" }}>
+                            {post["artist"]}
+                        </cite>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <SongPlaySection onClick={playData.isPlaying ? togglePause : togglePlay} >
+                            {playData.isPlaying ?
+                                <FontAwesomeIcon className="audio" icon={faStop} style={style} />
+                                : <FontAwesomeIcon className="audio" icon={faPlay} style={style}
+                                />}
+                            <audio ref={audioRef}>
+                                <source src={post["trackUrl"]} />
+                            </audio>
+                        </SongPlaySection>
+                    </div>
+
+                    <HeartInfo>
+                        <div style={{ color: "#BDBDBD" }}>
+                            {post["liked"]}
+                        </div>
+                        <div onClick={onHeartClickHandler}>
+                            {isHeart() ?
+                                <AiFillHeart style={{ width: "2em", height: "2em", color: "#5151C6" }} />
+                                : <AiOutlineHeart style={{ width: "2em", height: "2em", color: "#5151C6" }} />
+                            }
+                        </div>
+                    </HeartInfo>
+                </Detail>
+                <div style={{ padding: "2em" }}>
+                    <HeadComment>
+                        {post.context === "" ?
+                            <div style={{ color: "#BDBDBD" }}>No Context</div>
+                            : post.context
                         }
-                    </div>
-                </HeartInfo>
+                    </HeadComment>
+                    <Row>
+                        {post.genre.map((e, i) => {
+                            return (
+                                <GenreInfo key={i}>
+                                    <div style={{ fontStyle: "italic" }}>
+                                        #{e}
+                                    </div>
+                                </GenreInfo>
+                            )
+                        })}
 
-                <SongInfo>
-                    <div style={{ fontStyle: "italic" }}>Song Title: {post.title}</div>
-                </SongInfo>
+                    </Row>
+                </div>
             </div>
-        </>
+        </div>
     );
 }
 
@@ -188,6 +239,7 @@ const Frame = styled.div`
 const Img = styled.img`
     width: 100%;
     height: 100%;
+    max-width: 38em;
     object-fit: cover;
     margin-bottom: 2em;
     
@@ -203,12 +255,6 @@ const Div = styled.div`
     height: 40px;
     justify-content: flex-start;
     gap: 20px;
-`
-
-const Sticky = styled.div`
-    position:sticky;
-    top:0;
-    text-align:center;
 `
 
 const HeadComment = styled.div`
@@ -236,16 +282,8 @@ const HeartInfo = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-`
 
-const SongInfo = styled.div`
-    display: block;
-    padding: 3px;
-    text-align:center;
-    margin-left: 5px;
-    margin-top: 20px;
-    margin-bottom: 25px;
+    margin-top : -15px;
 `
 
 const ProfileImg = styled.img`
@@ -253,4 +291,51 @@ const ProfileImg = styled.img`
     width: 2em;
     height: 2em;
     object-fit: cover;
+`
+
+const SongPlaySection = styled.div`
+`
+
+const Header = styled.header`
+    text-align: center;
+  padding-bottom: 5px;
+  margin: 16px;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: transparent;
+  background: linear-gradient(271deg, #888BF4 0%, #5151C6 100%);
+  -webkit-background-clip: text;
+  position: relative;
+
+  &::before {
+    content: 'MUMAGE';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-shadow: 
+      -1px -1px 0 #000,  
+       1px -1px 0 #000,
+      -1px  1px 0 #000,
+       1px  1px 0 #000;
+    z-index: -1;
+  }
+`
+
+const Detail = styled.div`
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content:center;
+    justify-item: center;
+    margin-top: -1em;
+`
+
+const ContextSection = styled.div`
+  display: inline-block;
 `

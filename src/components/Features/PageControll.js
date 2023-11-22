@@ -19,7 +19,7 @@ import Joyride, { ACTIONS, STATUS, EVENTS } from 'react-joyride';
 const styleEmojiPlus = {
     "width": "1.5em",
     "height": " 1.5em",
-    "color": "#3385ff",
+    "color": "#2F80ED",
 }
 
 const PageControll = () => {
@@ -61,7 +61,7 @@ const PageControll = () => {
 
 
     return (
-        <>
+        <div style={{ width: "100%", height: "100%" }}>
             <button onClick={startTour}>Start Tour</button>
             <Joyride
                 styles={{
@@ -93,6 +93,12 @@ const PageControll = () => {
                 }}
 
             />
+            <TopSection>
+                <Header className="title">
+                    MUMAGE
+                </Header>
+            </TopSection>
+
             {ind === 1 ? <SectionDevide /> : <MyPage />}
             <Sticky>
                 <BotNav>
@@ -100,7 +106,7 @@ const PageControll = () => {
                         <GoHome style={{
                             width: "2.4em",
                             height: "2.4em",
-                            color: ind === 1 ? "#3385ff" : "BDBDBD",
+                            color: ind === 1 ? "#2F80ED" : "BDBDBD",
                         }} />
                     </FirstCol>
                     <SecondCol onClick={() => navigate('/addPost')} className="bottomNav">
@@ -113,12 +119,12 @@ const PageControll = () => {
                         <FaRegUser style={{
                             width: "2em",
                             height: "2em",
-                            color: ind === 3 ? "#3385ff" : "BDBDBD",
+                            color: ind === 3 ? "#2F80ED" : "BDBDBD",
                         }} />
                     </ThirdCol>
                 </BotNav>
             </Sticky>
-        </>
+        </div>
 
     );
 }
@@ -158,7 +164,7 @@ const SecondCol = styled(Column)`
     border-radius: 12em;
     width: 60px;
     height: 60px;
-    background: linear-gradient(to left, #3385ff, #0052cc );
+    background: linear-gradient(271deg, #888BF4 0%, #5151C6 100%);
 `
 
 const Second2Col = styled.div`
@@ -236,3 +242,39 @@ const INITIAL_STATE = {
     steps: steps,
     key: new Date(),
 };
+
+const Header = styled.header`
+    text-align: center;
+  padding-bottom: 5px;
+  margin: 16px;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: transparent;
+  background: linear-gradient(271deg, #888BF4 0%, #5151C6 100%);
+  -webkit-background-clip: text;
+  position: relative;
+
+  &::before {
+    content: 'MUMAGE';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-shadow: 
+      -1px -1px 0 #000,  
+       1px -1px 0 #000,
+      -1px  1px 0 #000,
+       1px  1px 0 #000;
+    z-index: -1;
+  }
+`
+const TopSection = styled.div`
+    display: flex;
+    justify-content: center;
+    background: white;
+`

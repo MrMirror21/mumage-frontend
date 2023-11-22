@@ -1,29 +1,33 @@
 import React, { lazy, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { generateImage, getLyrics, searchMusic } from '../utils/axios'
+import { generateImage, getGenre, getLyrics, searchMusic } from '../utils/axios'
 import SearchBar from '../components/Upload/SearchBar'
 import TrackCard from '../components/Upload/TrackCard'
+import { useRecoilState } from 'recoil'
+import { postsDataState } from '../store/ServerData'
 
 const ImagePreview = lazy(() => import('../components/Upload/ImagePreview'))
 
 const Upload = () => {
   const [currentStep, setCurrentStep] = useState("music");
   const [imageURL, setImageURL] = useState([])
+  const posts = useRecoilState(postsDataState);
   const [generateOption, setGenerateOption] = useState({
     "prompt" : "",
     "negative_prompt": "bad anatomy, distortion, low quality, low contrast, draft, amateur, cut off, frame, ugly face, text, letter, watermark, poor face rendering, awkward hand posture, different number of fingers",
     "samples" : 4,
   })
+  const [selectedTrack, setSelectedTrack] = useState();
   const [postData, setPostData] = useState({
-    "postId": 0,
-    "userId": 0,
-    "nickname": "",
+    "postId": posts[0].length + 1,
+    "userId": 2,
+    "nickname": "팔레트",
     "genre": [],
-    "title": "",
-    "artist": "",
+    "title": selectedTrack?.title,
+    "artist": selectedTrack?.album.artists[0].name,
     "trackUrl": "",
-    "externalUrl" : "",
+    "externalUrl" : selectedTrack?.external_urls.spotify,
     "imageUrl": "",
     "context": "",
     "liked": 0,
@@ -34,8 +38,11 @@ const Upload = () => {
     isPlaying: false,
     currentlyPlaying: null,
   });
-  const [selectedTrack, setSelectedTrack] = useState();
 
+const handleChooseTrack = () => {
+  getGenre(selectedTrack?.album.artists[0].id, postData, setPostData);
+  setCurrentStep("image");
+}
 
   return (
     <>
@@ -58,7 +65,7 @@ const Upload = () => {
             {!!searchList[0]? searchList.map((track) => 
               <TrackCard track={track} playData={playData} setPlayData={setPlayData} setTrack={setSelectedTrack} /> ) 
               : undefined}
-            <ChooseSongButton onClick={()=>setCurrentStep("image")}>곡 선택 완료</ChooseSongButton>
+            <ChooseSongButton onClick={()=>handleChooseTrack()}>곡 선택 완료</ChooseSongButton>
           </SearchSection>            
         :
         <ImageSection>
@@ -82,8 +89,6 @@ const Upload = () => {
           </ConsoleSection>
         </ImageSection>
         }
-      <LyricsSection>
-      </LyricsSection>
       </Wrapper>
     </>
   )
@@ -135,13 +140,6 @@ const ImageSection = styled.div`
   width: 100vw;
   height: 100vh;
   background: #F1F1FE;
-`;
-
-const LyricsSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 `;
 
 const GenerateLyricsButton = styled.div`

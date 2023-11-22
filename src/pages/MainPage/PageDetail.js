@@ -36,7 +36,6 @@ const PageDetail = () => {
                 return prev.map((p) => {
                     if (p["userId"] === userOwn["userId"]) {
                         const likedList = p["liked"].filter((i) => i["postId"] !== parseInt(postIdentifier));
-                        console.log(likedList);
                         return {
                             ...p,
                             "liked": likedList,
@@ -111,7 +110,7 @@ const PageDetail = () => {
                         height: "2em",
                         marginLeft: "8px",
                     }}
-                        onClick={() => navigate('/')} />
+                        onClick={() => navigate(-1)} />
                     <div style={{ fontSize: "25px", fontWeight: "bold" }}>
                         MUMAGE
                     </div>
@@ -120,11 +119,12 @@ const PageDetail = () => {
 
             </Sticky>
             <Frame>
-                <Div>
+                <Div onClick={() => navigate(`/userPage/${post["userId"]}`)}>
                     <div style={{ marginLeft: "10px" }}>
                         {UserProfile}
                     </div>
                     <div style={{ marginBottom: "5px" }}>{post.nickname}</div>
+
                 </Div>
                 <Img src={post.imageUrl} key={post.postId} alt='icon' />
             </Frame>

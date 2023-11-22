@@ -2,12 +2,13 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from "react";
 
-import { filteredPostsState, isfollowing, page, postsFilterState, usersState } from '../../utils/FetchDataRecoil';
+import { filteredPostsState, isfollowing, page, postsFilterState, userInfo } from '../../utils/FetchDataRecoil';
 import Pagination from "./Pagination";
 import styled from "styled-components";
 
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { GrDocumentSound } from "react-icons/gr";
+import { postsDataState, usersDataState } from '../../store/ServerData';
 
 
 const ShowFeed = () => {
@@ -16,8 +17,85 @@ const ShowFeed = () => {
     const [pageNum, setPage] = useRecoilState(page);
     const setFilter = useSetRecoilState(postsFilterState);
     const postsList = useRecoilValue(filteredPostsState);
-    const users = useRecoilValue(usersState);
+    const [users, setUsers] = useRecoilState(usersDataState);
 
+    const [posts, setPosts] = useRecoilState(postsDataState);
+
+    const [userOwn, setUserOwn] = useRecoilState(userInfo);
+
+    const isHeart = (postId) => {
+        return userOwn["liked"].some((likedPostId) => postId === likedPostId["postId"])
+    }
+
+    const onHeartClickHandler = (postIdentifier) => {
+        if (isHeart(postIdentifier)) {
+            setPosts((prev) => {
+                return prev.map((post) => {
+                    if (post["postId"] === parseInt(postIdentifier)) {
+                        return {
+                            ...post,
+                            "liked": post["liked"] - 1,
+                        };
+                    } else {
+                        return post;
+                    }
+                })
+            })
+            setUsers((prev) => {
+                return prev.map((p) => {
+                    if (p["userId"] === userOwn["userId"]) {
+                        const likedList = p["liked"].filter((i) => i["postId"] !== parseInt(postIdentifier));
+                        return {
+                            ...p,
+                            "liked": likedList,
+                        }
+                    }
+                    return p;
+                });
+            })
+            setUserOwn((prev) => {
+                const likedList = prev["liked"].filter((i) => {
+                    return i["postId"] !== parseInt(postIdentifier);
+                })
+                return {
+                    ...prev,
+                    "liked": likedList,
+                }
+            })
+        } else {
+            setPosts((prev) => {
+                return prev.map((post) => {
+                    if (post["postId"] === parseInt(postIdentifier)) {
+                        return {
+                            ...post,
+                            "liked": post["liked"] + 1,
+                        };
+                    } else {
+                        return post;
+                    }
+                })
+            })
+            setUsers((prev) => {
+                return prev.map((p) => {
+                    if (p["userId"] === userOwn["userId"]) {
+                        const likedList = [...p["liked"], { "postId": parseInt(postIdentifier) }];
+                        return {
+                            ...p,
+                            "liked": likedList,
+                        }
+                    }
+                    return p;
+                });
+            })
+            setUserOwn((prev) => {
+                const likedList = [...prev["liked"], { "postId": parseInt(postIdentifier) }];
+                return {
+                    ...prev,
+                    "liked": likedList,
+                }
+            })
+        }
+    }
     useEffect(() => {
         const updateFilter = () => {
             isFollowing ? setFilter("Following") : setFilter("Recommend");
@@ -33,7 +111,7 @@ const ShowFeed = () => {
 
                     <>
                         <Feed className="image">
-                            {postsList.slice(offset, offset + limit).map((post) => {
+                            {postsList.slice(offset, offset + limit).map((post, i) => {
                                 const user = users.find((e) => {
                                     return e["userId"] === post["userId"];
                                 });
@@ -48,7 +126,9 @@ const ShowFeed = () => {
                                 return (
                                     <Frame key={post.postId}>
                                         <Div style={{ alignItems: "center" }}>
-                                            <NameDiv>
+                                            <NameDiv onClick={() => {
+                                                navigate(`/userPage/${post["userId"]}`)
+                                            }}>
                                                 {UserProfile}
                                                 {post["nickname"]}
                                             </NameDiv>
@@ -60,7 +140,13 @@ const ShowFeed = () => {
                                             />
                                             <DivBot>
                                                 {post["liked"]}
-                                                <AiOutlineHeart style={{ width: "1.5em", height: "1.5em", color: "red" }} />
+                                                <div onClick={() => onHeartClickHandler(post["postId"])}>
+                                                    {isHeart(post["postId"]) ?
+                                                        <AiFillHeart style={{ width: "1.5em", height: "1.5em", color: "red" }} />
+                                                        : <AiOutlineHeart style={{ width: "1.5em", height: "1.5em", color: "red" }} />}
+
+                                                </div>
+
                                             </DivBot>
                                         </Div>
                                     </Frame>
@@ -91,61 +177,61 @@ export default ShowFeed;
 
 const Feed = styled.div`
     display: flex;
-    flex-direction:column;
-    align-items:center;
-    padding: 2em;
-    gap: 10px;
-`
+                                            flex-direction:column;
+                                            align-items:center;
+                                            padding: 2em;
+                                            gap: 10px;
+                                            `
 
 const Frame = styled.div`
-    background-color: #FFF;
-    border-radius: 10px;
-    padding: 0.5em 0em 0.5em 0em;
-    margin-bottom: 10px;
-`
+                                            background-color: #FFF;
+                                            border-radius: 10px;
+                                            padding: 0.5em 0em 0.5em 0em;
+                                            margin-bottom: 10px;
+                                            `
 
 const Img = styled.img`
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    
-&:hover {
-        background: #404040;
-        cursor: pointer;
+                                            width: 100%;
+                                            height: 100%;
+                                            object-fit: cover;
+
+                                            &:hover {
+                                                background: #404040;
+                                            cursor: pointer;
     }
-`
+                                            `
 
 const Div = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-`
+                                            display: flex;
+                                            flex-direction: column;
+                                            gap: 5px;
+                                            `
 const NameDiv = styled.div`
-    display: flex;
-    justify-content: space-around;
-    
-`
+                                            display: flex;
+                                            justify-content: space-around;
+
+                                            `
 const DivBot = styled.div`
-    display: flex;
-    justify-content: right;
-    margin-right: 20px;
-    gap:5px;
-`
+                                            display: flex;
+                                            justify-content: right;
+                                            margin-right: 20px;
+                                            gap:5px;
+                                            `
 
 const ProfileImg = styled.img`
-    border-radius: 10em;
-    width: 1.5em;
-    height: 1.5em;
-    object-fit: cover;
-`
+                                            border-radius: 10em;
+                                            width: 1.5em;
+                                            height: 1.5em;
+                                            object-fit: cover;
+                                            `
 
 const EmptyPage = styled.div`
-    width: 100%;
-    height:100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 10em;
-    background-color: #F6F7F9;
-`
+                                            width: 100%;
+                                            height:100%;
+                                            display: flex;
+                                            flex-direction: column;
+                                            justify-content: center;
+                                            align-items: center;
+                                            padding: 10em;
+                                            background-color: #F6F7F9;
+                                            `

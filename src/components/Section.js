@@ -172,6 +172,10 @@ const Section = () => {
         {displayedData.map((data, index) => (
           <Link to={`/Post/${data["postId"]}`} key={index}>
             <GridItem key={index}><img src={data["imageUrl"]}/></GridItem>
+            <div id="grid-text">
+              <div id="grid-title">{data["title"]}</div>
+              <div id="grid-artist">{data["artist"]}</div>
+            </div>
           </Link>
         ))}
       </GridContainer>

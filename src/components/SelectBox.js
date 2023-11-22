@@ -28,7 +28,9 @@ const SelectBox = ({onChange, className}) => {
       alignItems: 'center',
       position: 'relative',
       boxShadow: 'none',
-      outline: 'none'
+      outline: 'none',
+      border: 0,
+      
     }),
     menu: (styles) => ({
       ...styles,

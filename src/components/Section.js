@@ -162,8 +162,8 @@ const Section = () => {
         </SelectBoxContainer>
 
         <div className="section-menu">
-          <button className="section-menu-icon" onClick={toggleSmallGridSize}>
-            {gridColumns === 3 ? 'View more' : 'View less'}
+          <button className="section-menu-icon" onClick={gridColumns === 3 || gridColumns === 4 ? toggleSmallGridSize : toggleLargeGridSize}>
+            {gridColumns === 3 || gridColumns === 5? 'View more' : 'View less'}
           </button>
           <button className="section-menu-icon" onClick={toggleOrder}>
             {order === 'default' ? 'Trending' : 'Recent'}

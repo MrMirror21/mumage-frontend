@@ -19,7 +19,7 @@ import Joyride, { ACTIONS, STATUS, EVENTS } from 'react-joyride';
 const styleEmojiPlus = {
     "width": "1.5em",
     "height": " 1.5em",
-    "color": "#2F80ED",
+    "color": "#5151C6",
 }
 
 const PageControll = () => {
@@ -106,10 +106,10 @@ const PageControll = () => {
                         <GoHome style={{
                             width: "2.4em",
                             height: "2.4em",
-                            color: ind === 1 ? "#2F80ED" : "BDBDBD",
+                            color: ind === 1 ? "#5151C6" : "BDBDBD",
                         }} />
                     </FirstCol>
-                    <SecondCol onClick={() => navigate('/addPost')} className="bottomNav">
+                    <SecondCol onClick={() => navigate('/upload')} className="bottomNav">
                         <Second2Col>
                             <FaPlus style={styleEmojiPlus} />
                         </Second2Col>
@@ -119,7 +119,7 @@ const PageControll = () => {
                         <FaRegUser style={{
                             width: "2em",
                             height: "2em",
-                            color: ind === 3 ? "#2F80ED" : "BDBDBD",
+                            color: ind === 3 ? "#5151C6" : "BDBDBD",
                         }} />
                     </ThirdCol>
                 </BotNav>

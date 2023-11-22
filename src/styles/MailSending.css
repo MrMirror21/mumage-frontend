@@ -28,10 +28,17 @@ textarea[type="message"] {
   resize: none;
 }
   
-button[type="submit"] {
+#submitBtn {
   padding: 5px 10px 6px 10px;
   color: white;
   cursor: pointer;
+  text-align: center;
+  width: 80px;
   border-radius: 10px;
   background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));
+}
+
+#closeBtn {
+  text-align: center;
+  width: 80px;
 }

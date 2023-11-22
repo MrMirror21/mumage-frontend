@@ -28,7 +28,7 @@ export const GridItem = styled.div`
   }
 `;
 
-export const Button = styled.button`
+export const Button = styled.div`
   padding: 5px 8px 5px 8px;
   color: white;
   cursor: pointer;

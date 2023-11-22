@@ -1,12 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
+import Image3dIcon from "../../assets/3dImage.jpg"
+
 
 const ImagePreview = ({imageURL, postData, setImage}) => {
   return (
   <>
     <ImageSection>
       <ImageContainer>
-        {imageURL.map((image) => 
+        {imageURL.length === 0 ?
+        <IconContainer>
+          <ImageIcon src={Image3dIcon} />
+        </IconContainer> 
+        :
+        imageURL.map((image) => 
         <GridItem className={postData.imageUrl === image ? " selected" : ""}
         >
           <img 
@@ -50,6 +57,18 @@ const ImageContainer = styled.div`
   .selected {
     background: #888BF4;
   }
+`;
+
+const IconContainer = styled.div`
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ImageIcon = styled.img`
+  width: 500px;
+  background: #313338;
 `;
 
 const GridItem = styled.div`

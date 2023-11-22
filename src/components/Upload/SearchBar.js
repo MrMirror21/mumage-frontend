@@ -36,6 +36,7 @@ export const StyledSearchBar = styled.div`
   min-width: 375px;
   padding-left: 30px;
   padding-right: 30px;
+  margin: 10px 0px;
   border-radius: 100px;
   background: #fafafa;
   input {

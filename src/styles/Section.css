@@ -46,3 +46,7 @@ a {
     color:var(--text-text-secondary, #828282);
     font-size: 10px;
 }
+
+#body {
+    min-height: 100vh;
+}

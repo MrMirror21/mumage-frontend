@@ -153,32 +153,34 @@ const Section = () => {
 
   return (
     <div>
-      <SelectBoxContainer id="select-block">
-        <SelectBox onChange={(value) => {
-          setSectionValue(value);
-          setCurrentPage(1);
-        }} />
-      </SelectBoxContainer>
+      <div id="body">
+        <SelectBoxContainer id="select-block">
+          <SelectBox onChange={(value) => {
+            setSectionValue(value);
+            setCurrentPage(1);
+          }} />
+        </SelectBoxContainer>
 
-      <div className="section-menu">
-        <button className="section-menu-icon" onClick={toggleSmallGridSize}>
-          {gridColumns === 3 ? 'View more' : 'View less'}
-        </button>
-        <button className="section-menu-icon" onClick={toggleOrder}>
-          {order === 'default' ? 'Trending' : 'Recent'}
-        </button>
+        <div className="section-menu">
+          <button className="section-menu-icon" onClick={toggleSmallGridSize}>
+            {gridColumns === 3 ? 'View more' : 'View less'}
+          </button>
+          <button className="section-menu-icon" onClick={toggleOrder}>
+            {order === 'default' ? 'Trending' : 'Recent'}
+          </button>
+        </div>
+        <GridContainer id="grid-block"style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
+          {displayedData.map((data, index) => (
+            <Link to={`/Post/${data["postId"]}`} key={index}>
+              <GridItem key={index}><img src={data["imageUrl"]}/></GridItem>
+              <div id="grid-text">
+                <div id="grid-title">{data["title"]}</div>
+                <div id="grid-artist">{data["artist"]}</div>
+              </div>
+            </Link>
+          ))}
+        </GridContainer>
       </div>
-      <GridContainer id="grid-block"style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
-        {displayedData.map((data, index) => (
-          <Link to={`/Post/${data["postId"]}`} key={index}>
-            <GridItem key={index}><img src={data["imageUrl"]}/></GridItem>
-            <div id="grid-text">
-              <div id="grid-title">{data["title"]}</div>
-              <div id="grid-artist">{data["artist"]}</div>
-            </div>
-          </Link>
-        ))}
-      </GridContainer>
       <Pagination>
         <Button onClick={handleDownPage} disabled={isDisabled('down')}>&lt;</Button>
           {getPageNumbers().map(number => (
@@ -187,7 +189,7 @@ const Section = () => {
               onClick={() => handleChangePage(number)}
               disabled={isDisabled('page')(number)}
             >
-            {number}
+              {number}
             </PageButton>
           ))}  
         <Button onClick={handleUpPage} disabled={isDisabled('up')}>&gt;</Button>

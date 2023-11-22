@@ -62,10 +62,11 @@ const PageControll = () => {
 
     return (
         <div style={{ width: "100%", height: "100%" }}>
-            <Tour
+            {ind === 1 ? <Tour
                 onClick={startTour}
                 color="#5151C6"
-            />
+            /> : null}
+
             <Joyride
                 styles={{
                     options: {

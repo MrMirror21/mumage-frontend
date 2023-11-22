@@ -10,6 +10,8 @@ import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
 
+import { ReactComponent as Globe } from '../../assets/globe.svg';
+
 const PageDetail = () => {
     const params = useParams();
     const postIdentifier = params.postId;
@@ -105,15 +107,21 @@ const PageDetail = () => {
         }} />;
     const navigate = useNavigate();
 
+    const [c, setC] = useState("");
     const [playData, setPlayData] = useState({ isPlaying: false, currentlyPlaying: null });
     const audioRef = useRef(null);
 
     const togglePlay = () => {
-        if (playData.currentlyPlaying) {
-            playData.currentlyPlaying.current.pause();
+        if (post["trackUrl"] !== "") {
+            if (playData.currentlyPlaying) {
+                playData.currentlyPlaying.current.pause();
+            }
+            audioRef.current.play();
+            setPlayData({ isPlaying: true, currentlyPlaying: audioRef });
+        } else {
+            setC("#BDBDBD");
         }
-        audioRef.current.play();
-        setPlayData({ isPlaying: true, currentlyPlaying: audioRef });
+
     };
 
     const togglePause = () => {
@@ -123,13 +131,9 @@ const PageDetail = () => {
         }
     };
 
-    const style = {
-        fontSize: "30px",
-    }
-
     return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <div style={{ maxWidth: "33em", border: "3px solid #BDBDBD", borderRadius: "15px" }}>
+            <div style={{ maxWidth: "33em" }}>
 
 
                 <TopSection style={{ marginTop: "1.5em", marginLeft: "0.25em" }}>
@@ -170,26 +174,33 @@ const PageDetail = () => {
                     <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                         <SongPlaySection onClick={playData.isPlaying ? togglePause : togglePlay} >
                             {playData.isPlaying ?
-                                <FontAwesomeIcon className="audio" icon={faStop} style={style} />
-                                : <FontAwesomeIcon className="audio" icon={faPlay} style={style}
+                                <FontAwesomeIcon className="audio" icon={faStop} style={{ fontSize: "30px", color: c }} />
+                                : <FontAwesomeIcon className="audio" icon={faPlay} style={{ fontSize: "30px", color: c }}
                                 />}
                             <audio ref={audioRef}>
                                 <source src={post["trackUrl"]} />
                             </audio>
                         </SongPlaySection>
                     </div>
+                    <div style={{ display: "flex", justifyContent: 'center', alignItems: 'center', gap: "2em" }}>
+                        <Globe
+                            style={{ width: "1.5em", height: "1.5em" }}
+                            onClick={() => window.open(`${post["externalUrl"]}`)}
+                        />
+                        <HeartInfo>
 
-                    <HeartInfo>
-                        <div style={{ color: "#BDBDBD" }}>
-                            {post["liked"]}
-                        </div>
-                        <div onClick={onHeartClickHandler}>
-                            {isHeart() ?
-                                <AiFillHeart style={{ width: "2em", height: "2em", color: "#5151C6" }} />
-                                : <AiOutlineHeart style={{ width: "2em", height: "2em", color: "#5151C6" }} />
-                            }
-                        </div>
-                    </HeartInfo>
+                            <div style={{ color: "#BDBDBD" }}>
+                                {post["liked"]}
+                            </div>
+                            <div onClick={onHeartClickHandler}>
+                                {isHeart() ?
+                                    <AiFillHeart style={{ width: "2em", height: "2em", color: "#5151C6" }} />
+                                    : <AiOutlineHeart style={{ width: "2em", height: "2em", color: "#5151C6" }} />
+                                }
+                            </div>
+                        </HeartInfo>
+                    </div>
+
                 </Detail>
                 <div style={{ padding: "2em" }}>
                     <HeadComment>

@@ -27,6 +27,11 @@ const MyLiked = ({ gridColumns }) => {
                                 src={post.imageUrl}
                                 alt={`Post by ${post.username}`}
                                 onClick={() => navigate(`/imgDetail/${post.postId}`)} />
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', marginLeft: '10px' }}>
+                                <GridTitle>{post.title}</GridTitle>
+                                <GridArtist>{post.artist}</GridArtist>
+                            </div>
+
                         </div>
                     ))}
                 </Row> :
@@ -72,6 +77,21 @@ const EmptyPage = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 6em;
+    padding: 8em;
     background-color: #F6F7F9;
+    margin-top:-10px;
+`
+
+const GridTitle = styled.div`
+    font-weight: 600;
+    color: black;
+    font-size: 12px;
+    margin-top: 10px;
+    margin-bottom: 2px;
+`
+
+const GridArtist = styled.div`
+    font-weight: 500;
+    color: var(--text - text - secondary, #828282);
+    font-size: 10px;  
 `

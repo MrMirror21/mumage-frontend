@@ -10,6 +10,7 @@ import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { GrDocumentSound } from "react-icons/gr";
 import { postsDataState, usersDataState } from '../../store/ServerData';
 import TrackCard from '../Features/GetTrack';
+import { ReactComponent as Globe } from '../../assets/globe.svg';
 
 
 const ShowFeed = () => {
@@ -129,7 +130,7 @@ const ShowFeed = () => {
                                 return (
                                     <Frame key={post.postId}>
                                         <Div style={{ alignItems: "center" }}>
-                                            <NameDiv onClick={() => {
+                                            <NameDiv className="userInfo" onClick={() => {
                                                 navigate(`/userPage/${post["userId"]}`)
                                             }}>
                                                 <div>
@@ -153,7 +154,12 @@ const ShowFeed = () => {
                                                 <SongPlaySection>
                                                     <TrackCard track={post["trackUrl"]} />
                                                 </SongPlaySection>
+
                                                 <DivBot>
+                                                    <Globe
+                                                        style={{ width: "1.5em", height: "1.5em", marginRight: "10px" }}
+                                                        onClick={() => window.open(`${post["externalUrl"]}`)}
+                                                    />
                                                     <div>
                                                         {post["liked"]}
                                                     </div>

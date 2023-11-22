@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { React, useReducer } from 'react'
 import { GoHome } from "react-icons/go";
-import { FaRegUser } from "react-icons/fa";
+import { FaRegUser, FaQuestionCircle } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import styled from "styled-components";
 import { useEffect } from "react";
@@ -62,7 +62,10 @@ const PageControll = () => {
 
     return (
         <div style={{ width: "100%", height: "100%" }}>
-            <button onClick={startTour}>Start Tour</button>
+            <Tour
+                onClick={startTour}
+                color="#5151C6"
+            />
             <Joyride
                 styles={{
                     options: {
@@ -97,6 +100,7 @@ const PageControll = () => {
                 <Header className="title">
                     MUMAGE
                 </Header>
+
             </TopSection>
 
             {ind === 1 ? <SectionDevide /> : <MyPage />}
@@ -130,6 +134,20 @@ const PageControll = () => {
 }
 
 export default PageControll;
+
+const Tour = styled(FaQuestionCircle)`
+    position: absolute;
+    right: 2em;
+    top: 2.2em;
+    opacity: 50%;
+    width: 1.5em;
+    height: 1.5em;
+    &:hover {
+        opacity: 100%;
+        width: 2em;
+        height: 2em;
+    }
+`
 
 const BotNav = styled.nav`
     display: grid;
@@ -195,11 +213,15 @@ const steps = [
     },
     {
         target: ".following",
-        content: "클릭시 추천이미지를 보여줘요!",
+        content: "클릭시 Following과 Recommend를 옮겨 다니며 게시물을 확인할 수 있어요",
+    },
+    {
+        target: ".userInfo",
+        content: "클릭한 유저의 페이지에 가볼 수 있어요!"
     },
     {
         target: ".image",
-        content: "이미지 & 클릭시 상세페이지 이동",
+        content: "이미지를 클릭하면 상세페이지로 이동해요!",
     },
     {
         target: ".pagination",

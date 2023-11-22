@@ -17,7 +17,7 @@ const MyFeed = ({ gridColumns }) => {
         setIndex(index);
     }
     return (
-        <>
+        <div style={{ width: "100%", height: "100%", minHeight: "500px" }}>
             <MenuSection>
                 <MenuSectionDetail
                     onClick={() => onClickHandler(1)}
@@ -66,7 +66,7 @@ const MyFeed = ({ gridColumns }) => {
                 </Fr> :
                 <MyLiked gridColumns={gridColumns} />
             }
-        </>
+        </div>
     );
 }
 
@@ -119,6 +119,6 @@ const EmptyPage = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 6em;
+    padding: 8em;
     background-color: #F6F7F9;
 `

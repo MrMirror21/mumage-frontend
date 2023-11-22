@@ -7,17 +7,22 @@ import { useState } from 'react';
 const TrackCard = ({ track }) => {
     const audioRef = useRef(null);
     const [playData, setPlayData] = useState({ isPlaying: false, currentlyPlaying: null });
-
+    const [c, setC] = useState("");
 
     const togglePlay = () => {
-        playData.currentlyPlaying !== null && playData.currentlyPlaying.current.pause();
-        audioRef.current.play();
-        setPlayData({ isPlaying: true, currentlyPlaying: audioRef, })
+        if (track !== "") {
+            playData.currentlyPlaying !== null && playData.currentlyPlaying.current.pause();
+            audioRef.current.play();
+            setPlayData({ isPlaying: true, currentlyPlaying: audioRef, })
+        } else {
+            setC("#BDBDBD");
+        }
     }
     const togglePause = () => {
         playData.currentlyPlaying.current.pause();
         setPlayData({ isPlaying: false, currentlyPlaying: null, })
     }
+    console.log(track === "")
     return (
         <>
             <Wrapper>
@@ -26,8 +31,9 @@ const TrackCard = ({ track }) => {
                         <source src={track} />
                     </audio>
                     {playData.currentlyPlaying === audioRef ?
+
                         <FontAwesomeIcon className="audio" icon={faStop} style={{ fontSize: '20px' }} onClick={togglePause} />
-                        : <FontAwesomeIcon className="audio" icon={faPlay} style={{ fontSize: '20px' }} onClick={togglePlay} />}
+                        : <FontAwesomeIcon className="audio" icon={faPlay} style={{ color: c, fontSize: '20px' }} onClick={togglePlay} />}
                 </Footer>
             </Wrapper>
         </>

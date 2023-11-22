@@ -1,29 +1,35 @@
 import React, { lazy, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { generateImage, getLyrics, searchMusic } from '../utils/axios'
+import { generateImage, getGenre, getLyrics, searchMusic } from '../utils/axios'
 import SearchBar from '../components/Upload/SearchBar'
 import TrackCard from '../components/Upload/TrackCard'
+import { useRecoilState } from 'recoil'
+import { postsDataState } from '../store/ServerData'
+import Icon from '../components/Icon'
 
 const ImagePreview = lazy(() => import('../components/Upload/ImagePreview'))
 
 const Upload = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState("music");
   const [imageURL, setImageURL] = useState([])
+  const [posts, setPosts] = useRecoilState(postsDataState);
   const [generateOption, setGenerateOption] = useState({
     "prompt" : "",
     "negative_prompt": "bad anatomy, distortion, low quality, low contrast, draft, amateur, cut off, frame, ugly face, text, letter, watermark, poor face rendering, awkward hand posture, different number of fingers",
     "samples" : 4,
   })
+  const [selectedTrack, setSelectedTrack] = useState();
   const [postData, setPostData] = useState({
-    "postId": 0,
-    "userId": 0,
-    "nickname": "",
+    "postId": posts[0].length + 1,
+    "userId": 2,
+    "nickname": "팔레트",
     "genre": [],
-    "title": "",
-    "artist": "",
+    "title": selectedTrack?.name,
+    "artist": selectedTrack?.album.artists[0].name,
     "trackUrl": "",
-    "externalUrl" : "",
+    "externalUrl" : selectedTrack?.external_urls.spotify,
     "imageUrl": "",
     "context": "",
     "liked": 0,
@@ -34,12 +40,24 @@ const Upload = () => {
     isPlaying: false,
     currentlyPlaying: null,
   });
-  const [selectedTrack, setSelectedTrack] = useState();
 
+const handleChooseTrack = () => {
+  getGenre(selectedTrack?.album.artists[0].id, postData, setPostData);
+  setCurrentStep("image");
+}
+
+const handleUpload = async () => {
+  console.log(postData)
+  setPosts([...posts, postData])
+  alert("업로드가 완료되었습니다.")
+  navigate("/")
+}
 
   return (
     <>
-      <Link to='/'><Header>MUMAGE</Header></Link>
+      <HeaderWrapper>
+        <Link to='/'><Icon /></Link>
+      </HeaderWrapper>
       <Wrapper>
         {currentStep === "music" ? 
           <SearchSection>
@@ -58,7 +76,7 @@ const Upload = () => {
             {!!searchList[0]? searchList.map((track) => 
               <TrackCard track={track} playData={playData} setPlayData={setPlayData} setTrack={setSelectedTrack} /> ) 
               : undefined}
-            <ChooseSongButton onClick={()=>setCurrentStep("image")}>곡 선택 완료</ChooseSongButton>
+            <ChooseSongButton onClick={()=>handleChooseTrack()}>곡 선택 완료</ChooseSongButton>
           </SearchSection>            
         :
         <ImageSection>
@@ -77,19 +95,22 @@ const Upload = () => {
                   <GenerateLyricsButton onClick={()=>getLyrics(selectedTrack.id, generateOption, setImageURL, setGenerateOption)}>프롬프트 생성</GenerateLyricsButton>
                   : <RegenerateButton onClick={()=>generateImage(generateOption, setImageURL)}>재생성하기</RegenerateButton>
                 }
+                <UploadButton onClick={()=>handleUpload()}>업로드</UploadButton>
               </ButtonSection>
             </ConsoleBox>
           </ConsoleSection>
         </ImageSection>
         }
-      <LyricsSection>
-      </LyricsSection>
       </Wrapper>
     </>
   )
 }
 
 export default Upload
+
+const HeaderWrapper = styled.div`
+  background: #ffffff;
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -137,13 +158,6 @@ const ImageSection = styled.div`
   background: #F1F1FE;
 `;
 
-const LyricsSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
 const GenerateLyricsButton = styled.div`
   display: flex;
   align-items: center;
@@ -171,6 +185,8 @@ const GenerateLyricsButton = styled.div`
 const PrevButton = styled(GenerateLyricsButton)``;
 
 const RegenerateButton = styled(GenerateLyricsButton)``;
+
+const UploadButton = styled(GenerateLyricsButton)``;
 
 const ConsoleSection = styled.div`
   display: flex;

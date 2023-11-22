@@ -45,6 +45,27 @@ export const searchMusic = (searchInput, setSearchList) => {
   });
 }
 
+export const getGenre = (searchInput, postData, setPostData) => {
+  console.log(process.env.REACT_APP_SPOTIFY_KEY);
+  let config = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: `${process.env.REACT_APP_SPOTIFY_URL}/artists/${searchInput}`,
+    headers: { 
+      'Authorization': `Bearer ${process.env.REACT_APP_SPOTIFY_KEY}`, 
+    },
+  };
+  
+  axios.request(config)
+  .then((response) => {
+    console.log(response.data.genres);
+    setPostData({...postData, "genre" : response.data.genres});
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+}
+
 export const getLyrics = (trackId, generateOption, setImageURL, setGenerateOption) => {
   let config = {
     method: 'get',

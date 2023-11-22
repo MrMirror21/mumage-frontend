@@ -30,7 +30,7 @@ export const searchMusic = (searchInput, setSearchList) => {
   let config = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: `${process.env.REACT_APP_SPOTIFY_URL}/search?q=${searchInput}&type=track&limit=3`,
+    url: `${process.env.REACT_APP_SPOTIFY_URL}/search?q=${searchInput}&type=track&limit=5`,
     headers: { 
       'Authorization': `Bearer ${process.env.REACT_APP_SPOTIFY_KEY}`, 
     },
@@ -45,7 +45,7 @@ export const searchMusic = (searchInput, setSearchList) => {
   });
 }
 
-export const getLyrics = (trackId, generateOption, setImageURL) => {
+export const getLyrics = (trackId, generateOption, setImageURL, setGenerateOption) => {
   let config = {
     method: 'get',
     maxBodyLength: Infinity,
@@ -58,7 +58,7 @@ export const getLyrics = (trackId, generateOption, setImageURL) => {
     const originLyrics = response.data.lines;
     const result = originLyrics.map(line => line.words).join('. ');
     console.log("lyrics done");
-    getPrompt(result, generateOption, setImageURL);
+    getPrompt(result, generateOption, setImageURL, setGenerateOption);
   })
   .catch((error) => {
     console.log(error);
@@ -76,7 +76,7 @@ export const login = () => {
   window.location.href="/upload"
 }
 
-export const getPrompt = async (message, generateOption, setImageURL) => {
+export const getPrompt = async (message, generateOption, setImageURL, setGenerateOption) => {
   const apiKey = process.env.REACT_APP_GPT_KEY;
   let config = {
     method: 'post',
@@ -89,7 +89,7 @@ export const getPrompt = async (message, generateOption, setImageURL) => {
     data : {
       'model' : "gpt-3.5-turbo",
       "messages": [
-        { "role": "system", "content": "You are prompt generator. Task of you is to convert song lyrics into a single descriptive prompt under 4 lines that can be utilized by an image creation AI to generate an image aligned with the lyrical content."},
+        { "role": "system", "content": "You are prompt generator. Task is to convert song lyrics into a single descriptive prompt under 3 sentences that can be utilized by an image creation AI to generate an image aligned with the lyrical content. You have to finish this task in 10 seconds."},
         { "role": "user", "content": `${message}`},
       ],
       'max_tokens': 500,
@@ -100,6 +100,7 @@ export const getPrompt = async (message, generateOption, setImageURL) => {
   .then((response) => {
     console.log(response.data.choices[0].message.content);
     const result = response.data.choices[0].message.content;
+    setGenerateOption({...generateOption, "prompt" : result});
     generateImage({...generateOption, "prompt" : result}, setImageURL)
   })
   .catch((error) => {

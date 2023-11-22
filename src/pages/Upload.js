@@ -1,4 +1,5 @@
 import React, { lazy, useState } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { generateImage, getLyrics, searchMusic } from '../utils/axios'
 import SearchBar from '../components/Upload/SearchBar'
@@ -38,6 +39,7 @@ const Upload = () => {
 
   return (
     <>
+      <Link to='/'><Header>MUMAGE</Header></Link>
       <Wrapper>
         {currentStep === "music" ? 
           <SearchSection>
@@ -68,8 +70,14 @@ const Upload = () => {
                 value={generateOption.prompt} 
                 onChange={(e) => setGenerateOption({...generateOption, "prompt" : e.currentTarget.value})}
                 placeholder='생성할 그림이 무엇인지 입력해주세요.'/>
-              <GenerateButton onClick={() => generateImage(generateOption, setImageURL)}>이미지 생성하기</GenerateButton>
-              <GenerateLyricsButton onClick={()=>getLyrics(selectedTrack.id, generateOption, setImageURL)}>프롬프트 생성</GenerateLyricsButton>
+              <ButtonSection>
+                <PrevButton onClick={()=>setCurrentStep("music")}>이전으로</PrevButton>
+                <GenerateButton onClick={() => generateImage(generateOption, setImageURL)}>이미지 생성하기</GenerateButton>
+                {imageURL.length === 0 ? 
+                  <GenerateLyricsButton onClick={()=>getLyrics(selectedTrack.id, generateOption, setImageURL, setGenerateOption)}>프롬프트 생성</GenerateLyricsButton>
+                  : <RegenerateButton onClick={()=>generateImage(generateOption, setImageURL)}>재생성하기</RegenerateButton>
+                }
+              </ButtonSection>
             </ConsoleBox>
           </ConsoleSection>
         </ImageSection>
@@ -90,6 +98,37 @@ const Wrapper = styled.div`
   height: 100vh;
   align-items: center;
   justify-content: center;
+`;
+
+const Header = styled.header`
+  text-align: center;
+  padding-bottom: 5px;
+  margin: 16px;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: transparent;
+  background: linear-gradient(271deg, #888BF4 0%, #5151C6 100%);
+  -webkit-background-clip: text;
+  position: relative;
+
+  &::before {
+    content: 'MUMAGE';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-shadow: 
+      -1px -1px 0 #000,  
+      1px -1px 0 #000,
+      -1px  1px 0 #000,
+      1px  1px 0 #000;
+    z-index: -1;
+  }
 `;
 
 const ImageSection = styled.div`
@@ -129,6 +168,10 @@ const GenerateLyricsButton = styled.div`
   }
 `;
 
+const PrevButton = styled(GenerateLyricsButton)``;
+
+const RegenerateButton = styled(GenerateLyricsButton)``;
+
 const ConsoleSection = styled.div`
   display: flex;
   width: 100vw;
@@ -152,6 +195,15 @@ const PromptInput = styled.input`
   outline: none;
   background: #F1F1FE;
 `;
+
+const ButtonSection = styled.div`
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+
 const GenerateButton = styled.button`
   height: 64px;
   width: 150px;
@@ -167,7 +219,6 @@ const GenerateButton = styled.button`
 const SearchSection = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   margin: 1rem;
 `;

@@ -53,6 +53,7 @@ const ImageContainer = styled.div`
     width: 300px;
     margin: 10px;
     object-fit: fill;
+    border-radius : 10px;
   }
   .selected {
     background: #888BF4;
@@ -68,7 +69,9 @@ const IconContainer = styled.div`
 
 const ImageIcon = styled.img`
   width: 500px;
+  margin-top: 100px;
   background: #313338;
+  border-radius: 20px;
 `;
 
 const GridItem = styled.div`

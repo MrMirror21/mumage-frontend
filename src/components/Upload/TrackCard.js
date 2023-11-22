@@ -30,7 +30,7 @@ const TrackCard = ({track, playData, setPlayData, setTrack}) => {
               <audio ref = {audioRef}>
                 <source src={track.preview_url} />
               </audio>
-              {playData.currentlyPlaying === audioRef ? <PauseIcon onClick={togglePause} width='25px'/> : <PlayIcon onClick={togglePlay} width='40px' fill='#313338' />}
+              {playData.currentlyPlaying === audioRef ? <PauseIcon onClick={togglePause} fill='#5151C6' width='25px'/> : <PlayIcon onClick={togglePlay} width='40px' fill='#5151C6' />}
             </Footer>
         </Card>
       </Wrapper>

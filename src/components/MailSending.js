@@ -11,7 +11,7 @@ const Modal= ({ isOpen, onClose }) => {
       <div id="modalContent">
         <h2>Thanks for your opinion!</h2>
         <p>Your email has been successfully sent.<br></br>Your opinion will greatly help us improve our services.</p>
-        <button id="closeBtn" onClick={onClose}>Close</button>
+        <div id="closeBtn" onClick={onClose}>Close</div>
       </div>
     </div>
   );
@@ -38,6 +38,10 @@ const MailSending = () => {
 
     const handleMessageChange = (e) => {
       setMessage(e.target.value);
+    }
+
+    const handleDivSubmit = () => {
+      document.getElementById("hiddenSubmit").click(); 
     }
 
     return (
@@ -73,10 +77,16 @@ const MailSending = () => {
           errors={state.errors}
           className="validation-error"
         />
-        <div>
-        <button type="submit" disabled={state.submitting}>Submit</button>
+        <input type="submit" id="hiddenSubmit" style={{ display: 'none' }} />
+        <div 
+          onClick={handleDivSubmit}
+          role="button"
+          tabIndex={0}
+          id="submitBtn"
+        >
+          Submit
+        </div>
         <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
-      </div>
       </form>
     );
 }

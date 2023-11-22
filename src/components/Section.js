@@ -28,16 +28,16 @@ export const GridItem = styled.div`
   }
 `;
 
-export const Button = styled.button`
+export const Button = styled.div`
+  cursor: ${({ disabled }) => disabled ? 'default' : 'pointer'};
+  opacity: ${({ disabled }) => disabled ? 0.5 : 1};
   padding: 5px 8px 5px 8px;
   color: white;
-  cursor: pointer;
   border-radius: 10px;
   background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));
 `;
 
 const PageButton = styled(Button)`
-
 `;
 
 const Section = () => {
@@ -93,13 +93,29 @@ const Section = () => {
     }
   }, [windowWidth]);
 
+  const isDisabled = (buttonType) => {
+    switch (buttonType) {
+      case 'up':
+        return currentPage === totalPage;
+      case 'down':
+        return currentPage === 1;
+      case 'page':
+        return number => currentPage === number;
+      default:
+        return false;
+    }
+  };
+
   const handleUpPage = () => {
+    if (isDisabled('up')) return;
     setCurrentPage(currentPage + 1);
   }
   const handleDownPage = () => {
+    if (isDisabled('down')) return;
     setCurrentPage(currentPage - 1);
   }
   const handleChangePage = (page) => {
+    if (isDisabled('page')(page)) return;
     setCurrentPage(page);
   }
 
@@ -137,40 +153,46 @@ const Section = () => {
 
   return (
     <div>
-      <SelectBoxContainer id="select-block">
-        <SelectBox onChange={(value) => {
-          setSectionValue(value);
-          setCurrentPage(1);
-        }} />
-      </SelectBoxContainer>
+      <div id="body">
+        <SelectBoxContainer id="select-block">
+          <SelectBox onChange={(value) => {
+            setSectionValue(value);
+            setCurrentPage(1);
+          }} />
+        </SelectBoxContainer>
 
-      <div className="section-menu">
-        <button className="section-menu-icon" onClick={toggleSmallGridSize}>
-          {gridColumns === 3 ? 'View more' : 'View less'}
-        </button>
-        <button className="section-menu-icon" onClick={toggleOrder}>
-          {order === 'default' ? 'Trending' : 'Recent'}
-        </button>
+        <div className="section-menu">
+          <button className="section-menu-icon" onClick={toggleSmallGridSize}>
+            {gridColumns === 3 ? 'View more' : 'View less'}
+          </button>
+          <button className="section-menu-icon" onClick={toggleOrder}>
+            {order === 'default' ? 'Trending' : 'Recent'}
+          </button>
+        </div>
+        <GridContainer id="grid-block"style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
+          {displayedData.map((data, index) => (
+            <Link to={`/Post/${data["postId"]}`} key={index}>
+              <GridItem key={index}><img src={data["imageUrl"]}/></GridItem>
+              <div id="grid-text">
+                <div id="grid-title">{data["title"]}</div>
+                <div id="grid-artist">{data["artist"]}</div>
+              </div>
+            </Link>
+          ))}
+        </GridContainer>
       </div>
-      <GridContainer id="grid-block"style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
-        {displayedData.map((data, index) => (
-          <Link to={`/Post/${data["postId"]}`} key={index}>
-            <GridItem key={index}><img src={data["imageUrl"]}/></GridItem>
-          </Link>
-        ))}
-      </GridContainer>
       <Pagination>
-        <Button onClick={handleDownPage} disabled={currentPage === 1}>&lt;</Button>
+        <Button onClick={handleDownPage} disabled={isDisabled('down')}>&lt;</Button>
           {getPageNumbers().map(number => (
             <PageButton
               key={number}
               onClick={() => handleChangePage(number)}
-              disabled={currentPage === number}
+              disabled={isDisabled('page')(number)}
             >
-            {number}
+              {number}
             </PageButton>
           ))}  
-        <Button onClick={handleUpPage} disabled={currentPage === totalPage}>&gt;</Button>
+        <Button onClick={handleUpPage} disabled={isDisabled('up')}>&gt;</Button>
       </Pagination>
     </div>
   )

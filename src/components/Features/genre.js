@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const FavoriteGenre = ({ genreList }) => {
-    const display = genreList[0] === "" && genreList["genres"][1] === "" && genreList["genres"][2] === "" ? null :
+    const display = ((genreList[0] === "" && genreList[1] === "" && genreList[2] === "")) ? [] :
         genreList.map((g, i) => (
             g === "" ? null :
                 <Ggenre key={i}>#{g}</Ggenre>

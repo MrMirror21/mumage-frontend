@@ -52,7 +52,7 @@ const Section = () => {
   const matchedData = postData.filter(data => data["genre"].includes(sectionValue));
   
   const sortedData = matchedData.sort((a, b) => {
-    if (order == 'likes') {
+    if (order === 'likes') {
       return b["liked"] - a["liked"];
     }
     return 0;
@@ -169,6 +169,7 @@ const Section = () => {
             {order === 'default' ? 'Trending' : 'Recent'}
           </button>
         </div>
+        <div className='grid-container'>
         <GridContainer id="grid-block"style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
           {displayedData.map((data, index) => (
             <Link to={`/imgDetail/${data["postId"]}`} key={index}>
@@ -180,8 +181,8 @@ const Section = () => {
             </Link>
           ))}
         </GridContainer>
-      </div>
-      <Pagination>
+        </div>
+        <Pagination>
         <Button onClick={handleDownPage} disabled={isDisabled('down')}>&lt;</Button>
           {getPageNumbers().map(number => (
             <PageButton
@@ -194,6 +195,7 @@ const Section = () => {
           ))}  
         <Button onClick={handleUpPage} disabled={isDisabled('up')}>&gt;</Button>
       </Pagination>
+      </div>
     </div>
   )
 }

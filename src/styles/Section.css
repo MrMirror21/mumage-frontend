@@ -50,3 +50,7 @@ a {
 #body {
     min-height: 100vh;
 }
+
+.grid-container {
+    min-height: 500px;
+}

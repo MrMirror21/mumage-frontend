@@ -59,7 +59,7 @@ const handleUpload = async () => {
         <Link to='/'><Icon /></Link>
       </HeaderWrapper>
       <Wrapper>
-        {currentStep === "music" ? 
+        {currentStep === "music" &&
           <SearchSection>
             <StepTitle>이미지를 생성할 곡을 선택해주세요.</StepTitle>
             {selectedTrack && <div>선택된 음악 : {selectedTrack?.name} : {selectedTrack?.album.artists[0].name}</div>}
@@ -78,7 +78,8 @@ const handleUpload = async () => {
               : undefined}
             <ChooseSongButton onClick={()=>handleChooseTrack()}>곡 선택 완료</ChooseSongButton>
           </SearchSection>            
-        :
+        }
+        {currentStep === "image" && 
         <ImageSection>
           <ImagePreview imageURL={imageURL} postData={postData} setImage={setPostData}/>
           <ConsoleSection>
@@ -90,9 +91,9 @@ const handleUpload = async () => {
                 placeholder='생성할 그림이 무엇인지 입력해주세요.'/>
               <ButtonSection>
                 <PrevButton onClick={()=>setCurrentStep("music")}>이전으로</PrevButton>
-                <GenerateButton onClick={() => generateImage(generateOption, setImageURL)}>이미지 생성하기</GenerateButton>
+                {/**<GenerateButton onClick={() => generateImage(generateOption, setImageURL)}>이미지 생성하기</GenerateButton>**/}
                 {imageURL.length === 0 ? 
-                  <GenerateLyricsButton onClick={()=>getLyrics(selectedTrack.id, generateOption, setImageURL, setGenerateOption)}>프롬프트 생성</GenerateLyricsButton>
+                  <GenerateLyricsButton onClick={()=>getLyrics(selectedTrack.id, generateOption, setImageURL, setGenerateOption)}>이미지 생성하기</GenerateLyricsButton>
                   : <RegenerateButton onClick={()=>generateImage(generateOption, setImageURL)}>재생성하기</RegenerateButton>
                 }
                 <UploadButton onClick={()=>handleUpload()}>업로드</UploadButton>
@@ -100,6 +101,11 @@ const handleUpload = async () => {
             </ConsoleBox>
           </ConsoleSection>
         </ImageSection>
+        }
+        {currentStep === "post" && 
+        <PostSection>
+          
+        </PostSection>
         }
       </Wrapper>
     </>
@@ -119,37 +125,6 @@ const Wrapper = styled.div`
   height: 100vh;
   align-items: center;
   justify-content: center;
-`;
-
-const Header = styled.header`
-  text-align: center;
-  padding-bottom: 5px;
-  margin: 16px;
-  font-size: 40px;
-  font-weight: 700;
-  letter-spacing: 4px;
-  color: transparent;
-  background: linear-gradient(271deg, #888BF4 0%, #5151C6 100%);
-  -webkit-background-clip: text;
-  position: relative;
-
-  &::before {
-    content: 'MUMAGE';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 40px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-shadow: 
-      -1px -1px 0 #000,  
-      1px -1px 0 #000,
-      -1px  1px 0 #000,
-      1px  1px 0 #000;
-    z-index: -1;
-  }
 `;
 
 const ImageSection = styled.div`
@@ -172,6 +147,7 @@ const GenerateLyricsButton = styled.div`
   background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));
 
   margin-top: 1.5rem;
+  margin : 10px;
   color: #ffffff;
   font-size: 1rem;
   font-weight: 600;
@@ -247,3 +223,5 @@ const StepTitle = styled.div`
 `;
 
 const ChooseSongButton = styled(GenerateLyricsButton)``;
+
+const PostSection = styled.div``;

@@ -26,10 +26,10 @@ const Upload = () => {
     "userId": 2,
     "nickname": "팔레트",
     "genre": [],
-    "title": selectedTrack?.name,
-    "artist": selectedTrack?.album.artists[0].name,
+    "title": "",
+    "artist": "",
     "trackUrl": "",
-    "externalUrl" : selectedTrack?.external_urls.spotify,
+    "externalUrl" : "",
     "imageUrl": "",
     "context": "",
     "liked": 0,
@@ -41,8 +41,13 @@ const Upload = () => {
     currentlyPlaying: null,
   });
 
-const handleChooseTrack = () => {
+const handleChooseTrack = (selectedTrack) => {
   getGenre(selectedTrack?.album.artists[0].id, postData, setPostData);
+  setPostData({...postData, 
+    "title": selectedTrack.name, 
+    "artist" : selectedTrack.album.artists[0].name, 
+    "trackUrl" : selectedTrack.preview_url,
+    "externalUrl" : selectedTrack?.external_urls.spotify,})
   setCurrentStep("image");
 }
 
@@ -76,7 +81,7 @@ const handleUpload = async () => {
             {!!searchList[0]? searchList.map((track) => 
               <TrackCard track={track} playData={playData} setPlayData={setPlayData} setTrack={setSelectedTrack} /> ) 
               : undefined}
-            <ChooseSongButton onClick={()=>handleChooseTrack()}>곡 선택 완료</ChooseSongButton>
+            <ChooseSongButton onClick={()=>handleChooseTrack(selectedTrack)}>곡 선택 완료</ChooseSongButton>
           </SearchSection>            
         }
         {currentStep === "image" && 
@@ -86,8 +91,8 @@ const handleUpload = async () => {
             <ConsoleBox>
               {selectedTrack && <div>선택된 음악 : {selectedTrack?.name} : {selectedTrack?.album.artists[0].name}</div>}
               <PromptInput 
-                value={generateOption.prompt} 
-                onChange={(e) => setGenerateOption({...generateOption, "prompt" : e.currentTarget.value})}
+                value={postData.context} 
+                onChange={(e) => setPostData({...postData, "context" : e.currentTarget.value})}
                 placeholder='생성할 그림이 무엇인지 입력해주세요.'/>
               <ButtonSection>
                 <PrevButton onClick={()=>setCurrentStep("music")}>이전으로</PrevButton>

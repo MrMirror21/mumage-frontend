@@ -171,7 +171,7 @@ const Section = () => {
         </div>
         <GridContainer id="grid-block"style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
           {displayedData.map((data, index) => (
-            <Link to={`/Post/${data["postId"]}`} key={index}>
+            <Link to={`/imgDetail/${data["postId"]}`} key={index}>
               <GridItem key={index}><img src={data["imageUrl"]}/></GridItem>
               <div id="grid-text">
                 <div id="grid-title">{data["title"]}</div>

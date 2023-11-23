@@ -138,11 +138,6 @@ const Section = () => {
     return pages;
   }
 
-  const isWindowWidthGreaterThan =() => {
-    let width = 800;
-    return windowWidth >= width;
-  }
-
   const toggleOrder = () => {
     if (order === 'default') {
       setOrder('likes');

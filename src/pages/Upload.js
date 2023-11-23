@@ -22,7 +22,7 @@ const Upload = () => {
   })
   const [selectedTrack, setSelectedTrack] = useState();
   const [postData, setPostData] = useState({
-    "postId": posts[0].length + 1,
+    "postId": 0,
     "userId": 2,
     "nickname": "팔레트",
     "genre": [],
@@ -41,23 +41,24 @@ const Upload = () => {
     currentlyPlaying: null,
   });
 
-const handleChooseTrack = (selectedTrack) => {
+const handleChooseTrack = () => {
   getGenre(selectedTrack?.album.artists[0].id, postData, setPostData);
-  setPostData({...postData, 
-    "title": selectedTrack.name, 
-    "artist" : selectedTrack.album.artists[0].name, 
-    "trackUrl" : selectedTrack.preview_url,
-    "externalUrl" : selectedTrack?.external_urls.spotify,})
   setCurrentStep("image");
 }
 
 const handleUpload = async () => {
-  console.log(postData)
-  setPosts([...posts, postData])
+  const newPost = {...postData,
+    "postId" : posts.length + 1, 
+    "title": selectedTrack.name, 
+    "artist" : selectedTrack.album.artists[0].name, 
+    "trackUrl" : selectedTrack.preview_url,
+    "externalUrl" : selectedTrack?.external_urls.spotify,
+  }
+  console.log(newPost)
+  setPosts([...posts, newPost])
   alert("업로드가 완료되었습니다.")
   navigate("/")
 }
-
   return (
     <>
       <HeaderWrapper>
@@ -81,7 +82,7 @@ const handleUpload = async () => {
             {!!searchList[0]? searchList.map((track) => 
               <TrackCard track={track} playData={playData} setPlayData={setPlayData} setTrack={setSelectedTrack} /> ) 
               : undefined}
-            <ChooseSongButton onClick={()=>handleChooseTrack(selectedTrack)}>곡 선택 완료</ChooseSongButton>
+            <ChooseSongButton onClick={()=>handleChooseTrack()}>곡 선택 완료</ChooseSongButton>
           </SearchSection>            
         }
         {currentStep === "image" && 
@@ -96,7 +97,6 @@ const handleUpload = async () => {
                 placeholder='생성할 그림이 무엇인지 입력해주세요.'/>
               <ButtonSection>
                 <PrevButton onClick={()=>setCurrentStep("music")}>이전으로</PrevButton>
-                {/**<GenerateButton onClick={() => generateImage(generateOption, setImageURL)}>이미지 생성하기</GenerateButton>**/}
                 {imageURL.length === 0 ? 
                   <GenerateLyricsButton onClick={()=>getLyrics(selectedTrack.id, generateOption, setImageURL, setGenerateOption)}>이미지 생성하기</GenerateLyricsButton>
                   : <RegenerateButton onClick={()=>generateImage(generateOption, setImageURL)}>재생성하기</RegenerateButton>
@@ -106,11 +106,6 @@ const handleUpload = async () => {
             </ConsoleBox>
           </ConsoleSection>
         </ImageSection>
-        }
-        {currentStep === "post" && 
-        <PostSection>
-          
-        </PostSection>
         }
       </Wrapper>
     </>
@@ -201,18 +196,6 @@ const ButtonSection = styled.div`
   align-items: center;
 `;
 
-const GenerateButton = styled.button`
-  height: 64px;
-  width: 150px;
-  background: #7054ff;
-  color: #ffffff;
-  font-family: Pretendard;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 100px;
-`;
-
 const SearchSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -228,5 +211,3 @@ const StepTitle = styled.div`
 `;
 
 const ChooseSongButton = styled(GenerateLyricsButton)``;
-
-const PostSection = styled.div``;

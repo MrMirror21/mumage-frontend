@@ -33,3 +33,8 @@
 - 업로드, 좋아요 한 게시물 확인
 - 개발자에게 메일로 문의 기능 지원
 <img width="600" alt="스크린샷 2023-11-23 오후 10 01 57" src="https://github.com/Musicstagram/mumage-frontend/assets/49388937/0390a931-c3d6-4718-af6e-618bb6bf7b29">
+
+### Contact
+- Savien/Woo Jun Han : mylittlesentry@gmail.com
+- soyeon-kk : sy040103@khu.ac.kr
+- joonyjin : joonyjin@khu.ac.kr

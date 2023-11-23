@@ -6,23 +6,23 @@ import React, { useRef, useEffect } from 'react';
 import useConfirm from '../../hooks/confirm';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 
-import { getSavedProfileImage, getSavedFileImage, getFavoriteGenre } from '../../utils/FetchDataRecoil';
-
+import { getSavedFileImage, getFavoriteGenre } from '../../utils/FetchDataRecoil';
 import AvatarEditor from 'react-avatar-editor';
 import styled from 'styled-components';
 import { useState } from 'react';
 
+import { ReactComponent as ProfileIcon } from "../../assets/Profile.svg";
+import { usersDataState } from '../../store/ServerData';
 
 
-const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen }) => {
+
+const EditProfile = ({ onRequestClose, modalIsOpen, setIsSideOpen, isSideOpen, user, setUser }) => {
     useEffect(() => {
-        modalIsOpen ? setIsSideOpen(false) : setIsSideOpen(isSideOpen)
-        console.log(file);
-    }, [modalIsOpen]);
-
-    const setSavedImage = useSetRecoilState(getSavedProfileImage);
+        modalIsOpen ? setIsSideOpen(false) : setIsSideOpen(isSideOpen);
+    }, [modalIsOpen, setIsSideOpen, isSideOpen]);
     const [file, setFile] = useRecoilState(getSavedFileImage);
     const editorRef = useRef(null);
+    const [users, setUsers] = useRecoilState(usersDataState);
 
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
@@ -37,15 +37,46 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen })
 
     const action = () => {
         setFile("");
-        setSavedImage(null);
-        setModalIsOpen(false);
+
+        setUser(prev => ({
+            ...prev,
+            "profileUrl": ProfileIcon,
+        }));
+        setUsers((prev) => {
+            return prev.map((p) => {
+                if (p["userId"] === user["userId"]) {
+                    return {
+                        ...p,
+                        "profileUrl": ProfileIcon,
+                    };
+                }
+                return p;
+            })
+        })
+        onRequestClose();
     }
 
     const actionAll = () => {
         setFile("");
-        setSavedImage(null);
-        setModalIsOpen(false);
+        onRequestClose();
         setFavoriteGenre(["", "", ""]);
+        setUser(prev => ({
+            ...prev,
+            "profileUrl": ProfileIcon,
+            "genres": [],
+        }));
+        setUsers((prev) => {
+            return prev.map((p) => {
+                if (p["userId"] === user["userId"]) {
+                    return {
+                        ...p,
+                        "genres": [],
+                        "profileUrl": ProfileIcon,
+                    };
+                }
+                return p;
+            })
+        })
     }
 
     const confirmDelete = useConfirm(
@@ -74,10 +105,26 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen })
     const handleSave = () => {
         if (editorRef.current) {
             const canvas = editorRef.current.getImageScaledToCanvas().toDataURL();
-            setSavedImage(canvas);
-            setModalIsOpen(false);
+            setUser(prev => ({
+                ...prev,
+                "profileUrl": canvas,
+                "genres": [firstValue, secondValue, thirdValue],
+            }));
             setFavoriteGenre([firstValue, secondValue, thirdValue]);
+            setUsers((prev) => {
+                return prev.map((p) => {
+                    if (p["userId"] === user["userId"]) {
+                        return {
+                            ...p,
+                            "genres": [firstValue, secondValue, thirdValue],
+                            "profileUrl": canvas,
+                        };
+                    }
+                    return p;
+                })
+            })
             alert("Done!");
+            onRequestClose();
         }
     }
     //getRootPros : dropzone의 클릭, 드래그 등 각종 이벤트에 대응하는 함수
@@ -87,9 +134,9 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen })
         <div key={file.name} >
             <div>
                 <AvatarEditor
-                    key={file ? file.name : 'no-file'}
+                    key={file ? file.name : "setted-image"}
                     ref={editorRef}
-                    image={file.preview}
+                    image={file ? file.preview : typeof (user["profileUrl"]) === 'string' ? user["profileUrl"] : require('../../assets/Profile.svg').default}
                     width={100}
                     height={100}
                     border={0}
@@ -101,14 +148,9 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen })
             </div>
         </div>
     );
-    useEffect(() => {
-        // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-        return () => URL.revokeObjectURL(file.preview);
-    }, [file]);
-
 
     return (
-        <Modal style={customStyles} isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} appElement={document.getElementById('root')} >
+        <Modal style={customStyles} isOpen={modalIsOpen} onRequestClose={onRequestClose} appElement={document.getElementById('root')} >
             <Frame>
                 <Header>Edit Profile</Header>
                 {thumbs}
@@ -147,7 +189,7 @@ const EditProfile = ({ modalIsOpen, setModalIsOpen, setIsSideOpen, isSideOpen })
 
                 <BottomNavigation>
                     <ResetButton onClick={() => handleReset()}>Reset</ResetButton>
-                    <SaveExitButton onClick={handleSave}>Save & Exit</SaveExitButton>
+                    <SaveExitButton onClick={() => handleSave()}>Save & Exit</SaveExitButton>
                     <ResetButton onClick={handleResetAll}>Reset all</ResetButton>
                 </BottomNavigation>
             </Frame>

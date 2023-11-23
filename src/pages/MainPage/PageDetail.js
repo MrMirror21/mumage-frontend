@@ -1,62 +1,238 @@
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { IoMdArrowBack } from "react-icons/io";
 import { useNavigate, useParams } from "react-router";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
+
+import { userInfo } from "../../utils/FetchDataRecoil";
+import { useRecoilState } from "recoil";
+import { postsDataState, usersDataState } from "../../store/ServerData";
+import { useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
+
+import { ReactComponent as Globe } from '../../assets/globe.svg';
 
 const PageDetail = () => {
     const params = useParams();
+    const postIdentifier = params.postId;
+    const [posts, setPosts] = useRecoilState(postsDataState);
+    const [users, setUsers] = useRecoilState(usersDataState);
+    const [userOwn, setUserOwn] = useRecoilState(userInfo);
+
+    const isHeart = () => {
+        return userOwn["liked"].some((likedPostId) => post["postId"] === likedPostId["postId"])
+    }
+
+    const onHeartClickHandler = () => {
+        if (isHeart()) {
+            setPosts((prev) => {
+                return prev.map((post) => {
+                    if (post["postId"] === parseInt(postIdentifier)) {
+                        return {
+                            ...post,
+                            "liked": post["liked"] - 1,
+                        };
+                    } else {
+                        return post;
+                    }
+                })
+            })
+            setUsers((prev) => {
+                return prev.map((p) => {
+                    if (p["userId"] === userOwn["userId"]) {
+                        const likedList = p["liked"].filter((i) => i["postId"] !== parseInt(postIdentifier));
+                        return {
+                            ...p,
+                            "liked": likedList,
+                        }
+                    }
+                    return p;
+                });
+            })
+            setUserOwn((prev) => {
+                const likedList = prev["liked"].filter((i) => {
+                    return i["postId"] !== parseInt(postIdentifier);
+                })
+                return {
+                    ...prev,
+                    "liked": likedList,
+                }
+            })
+        } else {
+            setPosts((prev) => {
+                return prev.map((post) => {
+                    if (post["postId"] === parseInt(postIdentifier)) {
+                        return {
+                            ...post,
+                            "liked": post["liked"] + 1,
+                        };
+                    } else {
+                        return post;
+                    }
+                })
+            })
+            setUsers((prev) => {
+                return prev.map((p) => {
+                    if (p["userId"] === userOwn["userId"]) {
+                        const likedList = [...p["liked"], { "postId": parseInt(postIdentifier) }];
+                        return {
+                            ...p,
+                            "liked": likedList,
+                        }
+                    }
+                    return p;
+                });
+            })
+            setUserOwn((prev) => {
+                const likedList = [...prev["liked"], { "postId": parseInt(postIdentifier) }];
+                return {
+                    ...prev,
+                    "liked": likedList,
+                }
+            })
+        }
+    }
+
+    const post = posts[postIdentifier - 1];
+    const user = users.find((e) => {
+        return e["userId"] === post["userId"]
+    });
+    const Profile = user["profileUrl"];
+    const UserProfile = typeof (user["profileUrl"]) === 'string' ? <ProfileImg src={user["profileUrl"]} alt="profileImg" />
+        : <Profile style={{
+            borderRadius: "10em",
+            width: "2em",
+            height: "2em",
+            objectFit: "cover",
+        }} />;
     const navigate = useNavigate();
-    const genre = "K-Pop";
-    const title = "Fry's Dream";
-    const context = "나만의 길을 찾고 싶다";
-    const heart = 304;
+
+    const [c, setC] = useState("");
+    const [playData, setPlayData] = useState({ isPlaying: false, currentlyPlaying: null });
+    const audioRef = useRef(null);
+
+    const togglePlay = () => {
+        if (post["trackUrl"] !== "") {
+            if (playData.currentlyPlaying) {
+                playData.currentlyPlaying.current.pause();
+            }
+            audioRef.current.play();
+            setPlayData({ isPlaying: true, currentlyPlaying: audioRef });
+        } else {
+            setC("#BDBDBD");
+        }
+
+    };
+
+    const togglePause = () => {
+        if (playData.currentlyPlaying) {
+            playData.currentlyPlaying.current.pause();
+            setPlayData({ isPlaying: false, currentlyPlaying: null });
+        }
+    };
+
     return (
-        <>
-            <Sticky>
-                <TopSection>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <div style={{ maxWidth: "33em" }}>
+
+
+                <TopSection style={{ marginTop: "1.5em", marginLeft: "0.25em" }}>
                     <IoMdArrowBack style={{
                         width: "2em",
                         height: "2em",
-                        marginLeft: "8px",
+                        marginTop: "1.8em",
                     }}
-                        onClick={() => navigate('/')} />
-                    <div style={{ fontSize: "25px", fontWeight: "bold" }}>
+                        onClick={() => navigate(-1)} />
+                    <Header style={{ marginRight: "1em" }}>
                         MUMAGE
-                    </div>
+                    </Header>
                     <div></div>
                 </TopSection>
+                <Frame>
+                    <Div onClick={() => navigate(`/userPage/${post["userId"]}`)}>
+                        <div style={{ marginLeft: "10px" }}>
+                            {UserProfile}
+                        </div>
+                        <div style={{ marginBottom: "5px", fontWeight: "bold" }}>{post.nickname}</div>
 
-            </Sticky>
-            <Frame>
-                <Div>
-                    <div>
-                        <ProfileImg src="https://img.freepik.com/premium-vector/male-avatar-icon-unknown-anonymous-person-default-avatar-profile-icon-social-media-user-business-man-man-profile-silhouette-isolated-white-background-vector-illustration_735449-120.jpg?w=900" />
+                    </Div>
+                    <div style={{ display: "flex", "justifyContent": "center" }}>
+                        <Img src={post.imageUrl} key={post.postId} alt='icon' />
                     </div>
-                    <div style={{ marginBottom: "5px" }}>{params.authorName}</div>
-                </Div>
-                <Img src={`https://picsum.photos/id/${params.imgId}/${params.width}/${params.height}`} alt='icon' />
-            </Frame>
-            <div>
-                <HeadComment>
-                    {context}
-                </HeadComment>
-                <GenreInfo>
-                    <div style={{ fontStyle: "italic" }}>#{genre}</div>
-                </GenreInfo>
-                <HeartInfo>
-                    <AiOutlineHeart style={{ width: "2em", height: "2em" }} />
-                    <div>{heart}</div>
-                </HeartInfo>
-                <SongInfo>
-                    <div style={{ fontStyle: "italic" }}>Song Title: {title}</div>
-                </SongInfo>
+
+                </Frame>
+
+                <Detail>
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ fontSize: "15px", fontWeight: "bold" }}>
+                            {post["title"]}
+                        </div>
+                        <cite style={{ fontSize: "13px", color: "#BDBDBD" }}>
+                            {post["artist"]}
+                        </cite>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <SongPlaySection onClick={playData.isPlaying ? togglePause : togglePlay} >
+                            {playData.isPlaying ?
+                                <FontAwesomeIcon className="audio" icon={faStop} style={{ fontSize: "30px", color: c }} />
+                                : <FontAwesomeIcon className="audio" icon={faPlay} style={{ fontSize: "30px", color: c }}
+                                />}
+                            <audio ref={audioRef}>
+                                <source src={post["trackUrl"]} />
+                            </audio>
+                        </SongPlaySection>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: 'center', alignItems: 'center', gap: "2em" }}>
+                        <Globe
+                            style={{ width: "1.5em", height: "1.5em" }}
+                            onClick={() => window.open(`${post["externalUrl"]}`)}
+                        />
+                        <HeartInfo>
+
+                            <div style={{ color: "#BDBDBD" }}>
+                                {post["liked"]}
+                            </div>
+                            <div onClick={onHeartClickHandler}>
+                                {isHeart() ?
+                                    <AiFillHeart style={{ width: "2em", height: "2em", color: "#5151C6" }} />
+                                    : <AiOutlineHeart style={{ width: "2em", height: "2em", color: "#5151C6" }} />
+                                }
+                            </div>
+                        </HeartInfo>
+                    </div>
+
+                </Detail>
+                <div style={{ padding: "2em" }}>
+                    <HeadComment>
+                        {post.context === "" ?
+                            <div style={{ color: "#BDBDBD" }}>No Context</div>
+                            : post.context
+                        }
+                    </HeadComment>
+                    <Row>
+                        {post.genre.map((e, i) => {
+                            return (
+                                <GenreInfo key={i}>
+                                    <div style={{ fontStyle: "italic" }}>
+                                        #{e}
+                                    </div>
+                                </GenreInfo>
+                            )
+                        })}
+
+                    </Row>
+                </div>
             </div>
-        </>
+        </div>
     );
 }
 
 export default PageDetail;
+
+const Row = styled.div`
+    display: flex;
+    flex-direction: row;
+`
 
 const TopSection = styled.div`
     display: flex;
@@ -74,6 +250,7 @@ const Frame = styled.div`
 const Img = styled.img`
     width: 100%;
     height: 100%;
+    max-width: 38em;
     object-fit: cover;
     margin-bottom: 2em;
     
@@ -91,21 +268,6 @@ const Div = styled.div`
     gap: 20px;
 `
 
-const ProfileImg = styled.img`
-    margin-left: 10px;
-    object-fit: cover;
-    border-radius: 10em;
-    width: 1.5em;
-    height: 1.5em;
-    border: 2px solid #000;
-`
-
-const Sticky = styled.div`
-    position:sticky;
-    top:0;
-    text-align:center;
-`
-
 const HeadComment = styled.div`
     margin-left: 5px;
     font-size: 20px;
@@ -113,29 +275,78 @@ const HeadComment = styled.div`
 `
 
 const GenreInfo = styled.div`
-    display: block;
+    display: flex;
+    flex-direction: row;
     padding: 3px;
     border-radius: 10px;
-    width: 80px;
+    width: auto;
+    height: 30px;
     text-align:center;
     margin-left: 5px;
     margin-top: 10px;
-    background: #BDBDBD;
+    background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));
+    color:white;
 `
 
 const HeartInfo = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    padding: 20px;
+    align-items: center;
+
+    margin-top : -15px;
 `
 
-const SongInfo = styled.div`
-    display: block;
-    padding: 3px;
-    text-align:center;
-    margin-left: 5px;
-    margin-top: 50px;
-    margin-bottom: 25px;
+const ProfileImg = styled.img`
+    border-radius: 10em;
+    width: 2em;
+    height: 2em;
+    object-fit: cover;
+`
+
+const SongPlaySection = styled.div`
+`
+
+const Header = styled.header`
+    text-align: center;
+  padding-bottom: 5px;
+  margin: 16px;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: transparent;
+  background: linear-gradient(271deg, #888BF4 0%, #5151C6 100%);
+  -webkit-background-clip: text;
+  position: relative;
+
+  &::before {
+    content: 'MUMAGE';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-shadow: 
+      -1px -1px 0 #000,  
+       1px -1px 0 #000,
+      -1px  1px 0 #000,
+       1px  1px 0 #000;
+    z-index: -1;
+  }
+`
+
+const Detail = styled.div`
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content:center;
+    justify-item: center;
+    margin-top: -1em;
+`
+
+const ContextSection = styled.div`
+  display: inline-block;
 `

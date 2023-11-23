@@ -1,41 +1,38 @@
 import styled from "styled-components";
-import { useRecoilValue } from 'recoil';
-import { getFavoriteGenre } from "../../utils/FetchDataRecoil";
-import { useEffect } from "react";
 
-const FavoriteGenre = () => {
-
-    const genres = useRecoilValue(getFavoriteGenre);
-    useEffect(() => {
-        console.log(genres);
-    }, [genres]);
-    const display = (genres[0] === "" || genres[0] === " ") ? <Nothing>Write your Favorite Genres!</Nothing> : <Genre>
-        {genres.map((g, i) => (
-            <Ggenre key={i}>#{g}</Ggenre>
-        ))}
-    </Genre>;
+const FavoriteGenre = ({ genreList }) => {
+    const display = ((genreList[0] === "" && genreList[1] === "" && genreList[2] === "")) ? [] :
+        genreList.map((g, i) => (
+            g === "" ? null :
+                <Ggenre key={i}>#{g}</Ggenre>
+        ))
     //fetch data and get chosen Genre <div key={post.id} className="post">
-    return display;
+    return (
+        <Genre>
+            {display}
+        </Genre>
+    )
 }
 
 export default FavoriteGenre;
 
 
 const Genre = styled.div`
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            margin-left: 10px;
-            margin-top: 10px;
-            `
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-left: 10px;
+    margin-top: 10px;
+    gap: 10px;
+`
 
 const Ggenre = styled.div`
-    display: grid;
-    text-align: center;
-    align-items: center;
-    border-bottom: 3px solid #aaa;
-    line-height: 2em;
-    width: 100px;
-    
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    width: 100%;
+    color: #5151C6;
+    background-color: #F1F1FE;
+    border-radius: 10px;
 `
 
 const Nothing = styled.div`

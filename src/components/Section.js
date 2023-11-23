@@ -1,21 +1,21 @@
 import React, {useState, useEffect} from 'react'
 import SelectBox from './SelectBox'
-import {FakeDataArr} from '../store/FakeDataArr'
+import {postsDataState} from '../store/ServerData'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { currentPageState, sectionValueState, orderState } from '../utils/DataRecoilState';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
+import '../styles/Section.css';
 
 const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
-  gap: 5px; 
+  gap: 20px; 
   padding: 5px;
   margin : 16px; 
 `;
 
 export const GridItem = styled.div`
-  border: 6px solid black;
   aspect-ratio: 1 / 1;
   position : relative;
   img {
@@ -23,20 +23,21 @@ export const GridItem = styled.div`
     width : 100%;
     height : 100%,
     object-fit : cover;
+    border-radius: 10px;
+    z-index: 10;
   }
 `;
 
-export const Button = styled.button`
-border: none;
-padding: 8px;
-margin: 0;
-background: #262626;
-color: white;
-font-size: 0.5rem;
+export const Button = styled.div`
+  cursor: ${({ disabled }) => disabled ? 'default' : 'pointer'};
+  opacity: ${({ disabled }) => disabled ? 0.5 : 1};
+  padding: 5px 8px 5px 8px;
+  color: white;
+  border-radius: 10px;
+  background: var(--Primary, linear-gradient(271deg, #888BF4 0%, #5151C6 100%));
 `;
 
 const PageButton = styled(Button)`
-
 `;
 
 const Section = () => {
@@ -46,16 +47,34 @@ const Section = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [gridColumns, setGridColumns] = useState(3)
   const [itemsPerPage, setItemsPerPage] = useState(9);
+  const postData = useRecoilValue(postsDataState);
 
-  const matchedData = FakeDataArr.filter(data => data["장르"] === sectionValue);
+  const matchedData = postData.filter(data => data["genre"].includes(sectionValue));
+  
   const sortedData = matchedData.sort((a, b) => {
-    if (order == 'likes') {
-      return b["좋아요"] - a["좋아요"];
+    if (order === 'likes') {
+      return b["liked"] - a["liked"];
     }
     return 0;
   })
   const totalPage = Math.ceil(sortedData.length / itemsPerPage); 
   const displayedData = sortedData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const toggleSmallGridSize = () => {
+    if (gridColumns === 3) {
+      handleGridChange(4, 4 * 4);
+    } else {
+      handleGridChange(3, 3 * 3);
+    }
+  }
+
+  const toggleLargeGridSize = () => {
+    if (gridColumns === 5) {
+      handleGridChange(7, 7 * 3);
+    } else {
+      handleGridChange(5, 5 * 2);
+    }
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -74,13 +93,29 @@ const Section = () => {
     }
   }, [windowWidth]);
 
+  const isDisabled = (buttonType) => {
+    switch (buttonType) {
+      case 'up':
+        return currentPage === totalPage;
+      case 'down':
+        return currentPage === 1;
+      case 'page':
+        return number => currentPage === number;
+      default:
+        return false;
+    }
+  };
+
   const handleUpPage = () => {
+    if (isDisabled('up')) return;
     setCurrentPage(currentPage + 1);
   }
   const handleDownPage = () => {
+    if (isDisabled('down')) return;
     setCurrentPage(currentPage - 1);
   }
   const handleChangePage = (page) => {
+    if (isDisabled('page')(page)) return;
     setCurrentPage(page);
   }
 
@@ -103,50 +138,59 @@ const Section = () => {
     return pages;
   }
 
-  const isWindowWidthGreaterThan =() => {
-    let width = 800;
-    return windowWidth >= width;
+  const toggleOrder = () => {
+    if (order === 'default') {
+      setOrder('likes');
+    } else {
+      setOrder('default');
+    }
   }
 
   return (
     <div>
-      <SelectBoxContainer>
-        <SelectBox onChange = {(value) => {
-          setSectionValue(value);
-          setCurrentPage(1);
-        }} />
-      </SelectBoxContainer>
-      <SelectOrderContainer>
-        <Button onClick = {() => setOrder("default")}>최신</Button>
-        <Button onClick = {() => setOrder("likes")}>트렌딩</Button>
-      </SelectOrderContainer>
-      <SelectGridContainer>
-        <Button onClick = {() => handleGridChange(3, 3 * 3)} style = {{display : isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===3}>3X3</Button>
-        <Button onClick = {() => handleGridChange(4, 4 * 4)} style = {{display : isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===4}>4X4</Button>
-        <Button onClick = {() => handleGridChange(5, 5 * 2)} style = {{display : !isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===5}>5X2</Button>
-        <Button onClick = {() => handleGridChange(7, 7 * 3)} style = {{display : !isWindowWidthGreaterThan() ? 'none' : 'block'}} disabled={gridColumns===7}>7X3</Button>
-      </SelectGridContainer>
-      <GridContainer style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
-        {displayedData.map((data, index) => (
-          <Link to={`/Post/${data["id"]}`} key={index}>
-            <GridItem key={index}><img src={data["url"]}/></GridItem>
-          </Link>
-        ))}
-      </GridContainer>
-      <Pagination>
-        <Button onClick={handleDownPage} disabled={currentPage === 1}>&lt;</Button>
+      <div id="body">
+        <SelectBoxContainer id="select-block">
+          <SelectBox onChange={(value) => {
+            setSectionValue(value);
+            setCurrentPage(1);
+          }} />
+        </SelectBoxContainer>
+
+        <div className="section-menu">
+          <button className="section-menu-icon" onClick={gridColumns === 3 || gridColumns === 4 ? toggleSmallGridSize : toggleLargeGridSize}>
+            {gridColumns === 3 || gridColumns === 5? 'View more' : 'View less'}
+          </button>
+          <button className="section-menu-icon" onClick={toggleOrder}>
+            {order === 'default' ? 'Trending' : 'Recent'}
+          </button>
+        </div>
+        <div className='grid-container'>
+        <GridContainer id="grid-block"style = {{gridTemplateColumns : `repeat(${gridColumns}, 1fr)` }}>
+          {displayedData.map((data, index) => (
+            <Link to={`/imgDetail/${data["postId"]}`} key={index}>
+              <GridItem key={index}><img src={data["imageUrl"]}/></GridItem>
+              <div id="grid-text">
+                <div id="grid-title">{data["title"]}</div>
+                <div id="grid-artist">{data["artist"]}</div>
+              </div>
+            </Link>
+          ))}
+        </GridContainer>
+        </div>
+        <Pagination>
+        <Button onClick={handleDownPage} disabled={isDisabled('down')}>&lt;</Button>
           {getPageNumbers().map(number => (
             <PageButton
               key={number}
               onClick={() => handleChangePage(number)}
-              disabled={currentPage === number}
+              disabled={isDisabled('page')(number)}
             >
-            {number}
+              {number}
             </PageButton>
           ))}  
-        <Button onClick={handleUpPage} disabled={currentPage === totalPage}>&gt;</Button>
+        <Button onClick={handleUpPage} disabled={isDisabled('up')}>&gt;</Button>
       </Pagination>
-      <Button><Link to='/ContactUs' style={{ color: 'white', textDecoration: 'none' }}>개발자에게 문의하기</Link></Button>
+      </div>
     </div>
   )
 }

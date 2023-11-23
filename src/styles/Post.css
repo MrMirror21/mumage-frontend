@@ -1,0 +1,96 @@
+#arrow-left-icon {
+    background-color: rgb(255, 255, 255);
+    border : none;
+}
+
+#like {
+    background-color: rgb(255, 255, 255);
+    border : none;
+}
+
+.arrow-left-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    padding: 0px 5px;
+    margin-bottom: 15px;
+}
+#nickname {
+    padding: 5px 10px;
+    color: var(--text-text-primary, #242424);
+    font-size: 25px;
+}
+
+#likeNum {
+    width: 20px;
+    height: 20px;
+    display: flex;        
+    justify-content: center; 
+    align-items: center; 
+}
+
+#User {
+    display: flex;
+    width: 375px;
+    padding: 10px 14px;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+}
+
+#like-num {
+    margin-right: 10px;
+    color: var(--text-text-secondary, #828282);
+}
+
+#like-num-icon {
+    display: inline-block;
+    color: transparent;
+    color : #5151C6
+}
+
+#user {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+#user-icon {
+    display: inline-block;
+    color: transparent;
+    color : #5151C6
+}
+
+.like-num-menu {
+    display: flex;        
+    justify-content: center; 
+    align-items: center; 
+    padding: 12px 16px;
+}
+
+#text {
+    margin-left: 16px;
+}
+
+#title {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+#artist {
+    font-size: 15px;
+    margin-bottom: 20px;
+    color: var(--text-text-secondary, #828282);
+    font-weight: 500;
+}
+
+#context {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.audio {
+    color : #5151C6;
+    padding: 10px 14px;
+    align-items: center;
+}

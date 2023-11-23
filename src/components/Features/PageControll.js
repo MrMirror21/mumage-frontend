@@ -15,20 +15,10 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 
 import Joyride, { ACTIONS, STATUS, EVENTS } from 'react-joyride';
-
-const styleEmojiPlus = {
-    "width": "1.5em",
-    "height": " 1.5em",
-    "color": "#5151C6",
-}
+import BottomNavBar from './BottomNavBar';
 
 const PageControll = () => {
-    const navigate = useNavigate();
     const [ind, setIndex] = useRecoilState(index);
-    const onClickHander = (Index) => {
-        setIndex(Index);
-
-    }
     const [user, setUser] = useRecoilState(userInfo);
     const users = useRecoilValue(usersDataState);
     const posts = useRecoilValue(postsDataState);
@@ -105,30 +95,7 @@ const PageControll = () => {
             </TopSection>
 
             {ind === 1 ? <SectionDevide /> : <MyPage />}
-            <Sticky>
-                <BotNav>
-                    <FirstCol onClick={() => onClickHander(1)} aria-disabled={ind === 1}>
-                        <GoHome style={{
-                            width: "2.4em",
-                            height: "2.4em",
-                            color: ind === 1 ? "#5151C6" : "BDBDBD",
-                        }} />
-                    </FirstCol>
-                    <SecondCol onClick={() => navigate('/upload')} className="bottomNav">
-                        <Second2Col>
-                            <FaPlus style={styleEmojiPlus} />
-                        </Second2Col>
-
-                    </SecondCol>
-                    <ThirdCol onClick={() => onClickHander(3)} aria-disabled={ind === 3}>
-                        <FaRegUser style={{
-                            width: "2em",
-                            height: "2em",
-                            color: ind === 3 ? "#5151C6" : "BDBDBD",
-                        }} />
-                    </ThirdCol>
-                </BotNav>
-            </Sticky>
+            <BottomNavBar />
         </div>
 
     );
@@ -170,7 +137,6 @@ const Column = styled.div`
     cursor: revert;
     transform: revert;
     }
-
 `
 
 const FirstCol = styled(Column)`

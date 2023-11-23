@@ -99,6 +99,7 @@ const Fr = styled.nav`
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 800px;
     margin-top: 0px;
     padding: 20px 20px 20px 20px;
 `
@@ -114,7 +115,8 @@ const FeedImg = styled.img`
 
 const EmptyPage = styled.div`
     width: 100%;
-    height:100%;
+    height: 100%;
+    min-height: 800px;
     display: flex;
     flex-direction: column;
     justify-content: center;

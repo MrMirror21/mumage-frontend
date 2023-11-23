@@ -1,13 +1,13 @@
 import { React, Suspense } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
-import styled from 'styled-components'
 import './SectionChange.css';
 
 import Loading from '../../components/Features/Loading';
 import ShowFeed from '../../components/ShowingFeed/ImageRender';
 import { isfollowing, page } from '../../utils/FetchDataRecoil';
 import { useState } from 'react';
+import SectionBar from '../../components/Features/MenuSection';
 
 const SectionDevide = () => {
     const [isFollowing, setIsFollowing] = useRecoilState(isfollowing);
@@ -21,31 +21,7 @@ const SectionDevide = () => {
     return (
         <div style={{ backgroundColor: "#F6F7F9" }}>
             <div>
-                <Sticky>
-                    <MenuSection className='following'>
-                        <MenuSectionDetail
-                            onClick={() => onClickHandler(1)}
-                            style={{
-                                background: index === 1 ? "#F1F1FE" : "white",
-                                color: index === 1 ? "#5151C6" : "#BDBDBD",
-                                pointerEvents: index === 1 ? "none" : "visible",
-                            }}
-                            aria-disabled={index === 1}
-                        >
-                            Following
-                        </MenuSectionDetail>
-                        <MenuSectionDetail
-                            onClick={() => onClickHandler(2)}
-                            style={{
-                                background: index === 2 ? "#F1F1FE" : "white",
-                                color: index === 2 ? "#5151C6" : "#BDBDBD",
-                                pointerEvents: index === 2 ? "none" : "visible",
-                            }}
-                        >
-                            Recommend
-                        </MenuSectionDetail>
-                    </MenuSection>
-                </Sticky>
+                <SectionBar index={index} onClickHandler={onClickHandler}/>
                 <Suspense fallback={<Loading />}>
                     <ShowFeed />
                 </Suspense>
@@ -55,32 +31,6 @@ const SectionDevide = () => {
 }
 
 export default SectionDevide;
-
-
-
-
-
-const Sticky = styled.div`
-    position:sticky;
-    top:0;
-`
-
-const MenuSection = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    background-color: #FFF;
-`
-
-const MenuSectionDetail = styled.div`
-    padding: 10px;
-
-    width: 100%;
-    text-align: center;
-    background-color: #F1F1FE;
-    border-radius: 10px;
-`
 
 //const TopSection = styled.header`
 //display: flex;

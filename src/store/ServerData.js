@@ -5,11 +5,13 @@ import nowAndThen from "../assets/now and then.png";
 import houdini from "../assets/Houdini.png";
 import standingNextToYou from "../assets/standing next to you.png";
 import perfectNight from "../assets/perfect night.png";
-import sayingEndOfUs from "../assets/헤어지자 말해요.png";
-import fallInFall from "../assets/가을 타나봐.png"
+import sayingEndOfUs from "../assets/sayBrokeUp.png";
+import fallInFall from "../assets/fallInFall.png"
 import notSorry from "../assets/not sorry.png";
 import maybeMan from "../assets/maybe man.png";
 import dieForYou from "../assets/die 4 you.png";
+import superShy from "../assets/super shy.png";
+import privateStory from "../assets/privateStory.png";
 import { ReactComponent as ProfileIcon } from "../assets/Profile.svg";
 import { atom } from 'recoil';
 
@@ -185,7 +187,7 @@ export const postsDataState = atom({
       "userId": 1,
       "nickname": "이리듬",
       "genre": ["k-pop ballad"],
-      "title": "헤어지자 말해요",
+      "title": "Let's Say Goodbye",
       "artist": "Park Jae Jung",
       "trackUrl": "https://p.scdn.co/mp3-preview/55878d433b375e41b0fdde2f5fded09c88898ba4?cid=613834041d6342f8b26d78e730c2c746",
       "externalUrl" : "https://open.spotify.com/track/2KNEK9rGKQKKNE6FTt8PvQ",         
@@ -198,7 +200,7 @@ export const postsDataState = atom({
       "userId": 1,
       "nickname": "이리듬",
       "genre": ["k-pop ballad"],
-      "title": "가을 타나봐",
+      "title": "Fall in fall",
       "artist": "Vibe",
       "trackUrl": "https://p.scdn.co/mp3-preview/43307ae13246ac33e9867ddd26ba29902fb03064?cid=613834041d6342f8b26d78e730c2c746",
       "externalUrl" : "https://open.spotify.com/track/5mwZ597mJSZ4MtO0EtxWBE",         
@@ -244,6 +246,32 @@ export const postsDataState = atom({
       "imageUrl": dieForYou,
       "context": "",
       "liked": 55,
+    },
+    {
+      "postId": 13,
+      "userId": 1,
+      "nickname": "이리듬",
+      "genre": ["easy listening"],
+      "title": "Super Shy",
+      "artist": "New Jeans",
+      "trackUrl": "https://p.scdn.co/mp3-preview/dab062e2cc708a2680ce84953a3581c5a679a230?cid=613834041d6342f8b26d78e730c2c746",
+      "externalUrl" : "https://open.spotify.com/track/5sdQOyqq2IDhvmx2lHOpwd",         
+      "imageUrl": superShy,
+      "context": "I'm super shy~",
+      "liked": 92,
+    },
+    {
+      "postId": 14,
+      "userId": 1,
+      "nickname": "이리듬",
+      "genre": ["k-pop ballad"],
+      "title": "A very personal story",
+      "artist": "Davichi",
+      "trackUrl": "https://p.scdn.co/mp3-preview/140d042d7a5c86d0222289abdf54273dfe7f1d26?cid=613834041d6342f8b26d78e730c2c746",
+      "externalUrl" : "https://open.spotify.com/track/3PWyWdzpWOfBmH7R5moC8O",         
+      "imageUrl": privateStory,
+      "context": "만나자, 아니다 말자. 보내자, 아니다 말자.",
+      "liked": 32,
     },
   ]
 })

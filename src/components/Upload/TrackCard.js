@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ReactComponent as PlayIcon } from "../../assets/play.svg";
 import { ReactComponent as PauseIcon } from "../../assets/pause.svg";
 
-const TrackCard = ({track, playData, setPlayData, setTrack}) => {
+const TrackCard = ({track, playData, setPlayData, setTrack, selectedTrack}) => {
   const audioRef = useRef(null);
 
   const togglePlay = () => {
@@ -18,7 +18,7 @@ const TrackCard = ({track, playData, setPlayData, setTrack}) => {
   return (
     <>
       <Wrapper>
-        <Card  onClick={() => setTrack(track)}>
+        <Card className={selectedTrack === track ? "selected" : ""}onClick={() => setTrack(track)}>
             <Header>
               <AlbumCover src={track.album.images[2].url}/>
             </Header>
@@ -43,6 +43,9 @@ export default TrackCard
 const Wrapper = styled.div`
 :hover{
   background: #f1f1f1;
+}
+.selected{
+  background: #F1F1FE;
 }
 `;
 

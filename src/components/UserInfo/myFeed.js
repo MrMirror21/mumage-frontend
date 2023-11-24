@@ -96,9 +96,6 @@ const Row = styled.nav`
     gap: 20px;
 `
 const Fr = styled.nav`
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 800px;
     margin-top: 0px;
     padding: 20px 20px 20px 20px;

@@ -1,4 +1,4 @@
-import React, { lazy, useState } from 'react'
+import React, { lazy, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { generateImage, getGenre, getLyrics, searchMusic } from '../utils/axios'
@@ -7,20 +7,24 @@ import TrackCard from '../components/Upload/TrackCard'
 import { useRecoilState } from 'recoil'
 import { postsDataState } from '../store/ServerData'
 import Icon from '../components/Icon'
+import { ReactComponent as PlayIcon } from "../assets/play.svg";
+import { ReactComponent as PauseIcon } from "../assets/pause.svg";
+
 
 const ImagePreview = lazy(() => import('../components/Upload/ImagePreview'))
 
 const Upload = () => {
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState("music");
+  const [currentStep, setCurrentStep] = useState("music")
+  const [loadingStep, setLoadingStep] = useState("")
   const [imageURL, setImageURL] = useState([])
-  const [posts, setPosts] = useRecoilState(postsDataState);
+  const [posts, setPosts] = useRecoilState(postsDataState)
   const [generateOption, setGenerateOption] = useState({
     "prompt" : "",
     "negative_prompt": "bad anatomy, distortion, low quality, low contrast, draft, amateur, cut off, frame, ugly face, text, letter, watermark, poor face rendering, awkward hand posture, different number of fingers",
     "samples" : 4,
   })
-  const [selectedTrack, setSelectedTrack] = useState();
+  const [selectedTrack, setSelectedTrack] = useState()
   const [postData, setPostData] = useState({
     "postId": 0,
     "userId": 2,
@@ -40,6 +44,17 @@ const Upload = () => {
     isPlaying: false,
     currentlyPlaying: null,
   });
+  const audioRef = useRef(null);
+
+  const togglePlay = () => {
+    playData.currentlyPlaying !== null && playData.currentlyPlaying.current.pause();
+    audioRef.current.play();
+    setPlayData({isPlaying: true, currentlyPlaying: audioRef,})
+  }
+  const togglePause = () => {
+    playData.currentlyPlaying.current.pause();
+    setPlayData({isPlaying: false, currentlyPlaying: null,})
+  }
 
 const handleChooseTrack = () => {
   getGenre(selectedTrack?.album.artists[0].id, postData, setPostData);
@@ -68,8 +83,6 @@ const handleUpload = async () => {
         {currentStep === "music" &&
           <SearchSection>
             <StepTitle>이미지를 생성할 곡을 선택해주세요.</StepTitle>
-            {selectedTrack && <div>선택된 음악 : {selectedTrack?.name} : {selectedTrack?.album.artists[0].name}</div>}
-            {selectedTrack && <div>{selectedTrack.external_urls.spotify}</div>}
             <SearchBar
               width="600px" 
               height="60px" 
@@ -80,7 +93,7 @@ const handleUpload = async () => {
               onSubmit={()=>searchMusic(searchInput, setSearchList)}
             />
             {!!searchList[0]? searchList.map((track) => 
-              <TrackCard track={track} playData={playData} setPlayData={setPlayData} setTrack={setSelectedTrack} /> ) 
+              <TrackCard track={track} playData={playData} setPlayData={setPlayData} setTrack={setSelectedTrack} selectedTrack={selectedTrack}/> ) 
               : undefined}
             <ChooseSongButton onClick={()=>handleChooseTrack()}>곡 선택 완료</ChooseSongButton>
           </SearchSection>            
@@ -90,7 +103,18 @@ const handleUpload = async () => {
           <ImagePreview imageURL={imageURL} postData={postData} setImage={setPostData}/>
           <ConsoleSection>
             <ConsoleBox>
-              {selectedTrack && <div>선택된 음악 : {selectedTrack?.name} : {selectedTrack?.album.artists[0].name}</div>}
+              {selectedTrack && 
+              <InfoBox>
+                <div className='text'>선택된 음악 : {selectedTrack?.name} : {selectedTrack?.album.artists[0].name}</div>
+                <Footer>
+                <audio ref = {audioRef}>
+                  <source src={selectedTrack.preview_url} />
+                </audio>
+                {playData.currentlyPlaying === audioRef ? <PauseIcon onClick={togglePause} fill='#5151C6' width='25px'/> : <PlayIcon onClick={togglePlay} width='40px' fill='#5151C6' />}
+                </Footer>              
+              </InfoBox>
+
+              }
               <PromptInput 
                 value={postData.context} 
                 onChange={(e) => setPostData({...postData, "context" : e.currentTarget.value})}
@@ -174,7 +198,15 @@ const ConsoleBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 10px;
+`;
+
+const InfoBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  .text {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const PromptInput = styled.input`
@@ -211,3 +243,11 @@ const StepTitle = styled.div`
 `;
 
 const ChooseSongButton = styled(GenerateLyricsButton)``;
+
+const Footer = styled.div`
+  width: 100px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

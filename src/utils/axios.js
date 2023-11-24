@@ -94,7 +94,7 @@ export const registerUser = (userInfo) => {
 
 export const login = () => {
   alert("로그인이 완료되었습니다.")
-  window.location.href="/upload"
+  window.location.href="/"
 }
 
 export const getPrompt = async (message, generateOption, setImageURL, setGenerateOption) => {

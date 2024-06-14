@@ -7,6 +7,10 @@
 <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/recoil-3578E5?style=for-the-badge&logo=recoil&logoColor=white"> <img src="https://img.shields.io/badge/styledcomponents-DB7093?style=for-the-badge&logo=styled-components&logoColor=white"> <img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openAI&logoColor=white"> <img src="https://img.shields.io/badge/Framer-0055FF?style=for-the-badge&logo=Framer&logoColor=white"> <img src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=Axios&logoColor=white"> <img src="https://img.shields.io/badge/yarn-2C8EBB?style=for-the-badge&logo=yarn&logoColor=white">
  
 ---
+### Front-End
+- <b>기획 및 리드 개발자</b>로서 협업을 위한 컨벤션 및 업무 분배
+- 다양한 API 활용해 <b>음악에 어울리는 이미지 생성 기능 구현</b>
+
 ### 주요 기능
 ✅ 회원가입, 로그인
 
@@ -15,6 +19,7 @@
 
 ✅ 이미지 생성 및 업로드
 - Spotify API : 곡 검색, 리스트 업, 미리듣기 제공
+- [spotify-lyrics-api](https://github.com/akashrchandran/spotify-lyrics-api) : 가사 추출
 - OpenAI API : 곡 가사를 바탕으로 이미지 생성 위한 프롬프트 생성
 - Karlo API : 프롬프트를 기반으로 이미지 생성
 
